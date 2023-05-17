@@ -8,7 +8,7 @@ const Main: React.FC<AuthPageProps> = ({}) => {
   return (
     <div className='w-screen h-screen grid justify-center items-center '>
       <div className='flex flex-col w-[500px] gap-5 justify-center'>
-        <p className='text-center font-bold'>This is main page of the app</p>
+        <p className='text-center font-bold'>خوش آمدید</p>
         <Counter />
         <Link
           to='/auth'
