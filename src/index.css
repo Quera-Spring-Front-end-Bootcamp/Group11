@@ -5,7 +5,7 @@
 @layer components {
   .bg-auth {
     clip-path: polygon(0 37%, 100% 1%, 100% 100%, 0 100%);
-  }
+  }      
   .bg-primary {
     background: #208d8e;
   }
