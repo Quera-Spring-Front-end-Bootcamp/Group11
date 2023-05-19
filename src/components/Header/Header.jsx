@@ -3,7 +3,7 @@ import { Anchor as MantineAnchor } from '@mantine/core';
 
 const Header = () => {
   return (
-    <header className='container flex items-center justify-between gap-5 py-3'>
+    <header className='container flex items-center justify-between gap-5 py-3 absolute right-1/2 translate-x-1/2'>
       <MantineAnchor
         href='/'
         title='کوئرا تسک منیجر'

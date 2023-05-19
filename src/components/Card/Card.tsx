@@ -7,7 +7,12 @@ type CardProps = Pick<
 >;
 
 const Card = (props: CardProps) => {
-  return <MantineCard {...props}></MantineCard>;
+  return (
+    <MantineCard
+      radius='20px'
+      shadow='0px 12px 50px rgba(0, 0, 0, 0.18)'
+      {...props}></MantineCard>
+  );
 };
 
 export default Card;
