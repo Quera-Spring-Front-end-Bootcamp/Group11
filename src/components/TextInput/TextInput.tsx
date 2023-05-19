@@ -1,7 +1,7 @@
 import { TextInput as MantineTextInput } from '@mantine/core';
 import { TextInputProps as MantineTextInputProps } from '@mantine/core';
 
-const TextInput = ({ children, ...otherProps }: MantineTextInputProps) => {
+const TextInput = ({ ...otherProps }: MantineTextInputProps) => {
   return (
     <MantineTextInput
       styles={() => ({
