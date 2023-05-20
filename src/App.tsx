@@ -1,7 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
-
 import Auth from './pages/Auth';
 import Main from './pages/Main';
 import { LogInCard, SignUpCard, ForgetPassword } from './components/AuthCards';
