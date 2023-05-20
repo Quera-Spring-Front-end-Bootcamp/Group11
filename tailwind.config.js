@@ -8,11 +8,10 @@ export default {
     extend: {
       colors: {
         primary: '#208D8E',
-        black: '#000000',
-        white: '#FFFFFF',
         gray: '#AAAAAA',
       },
       borderRadius: {
+        6: '6px',
         20: '20px',
       },
       boxShadow: {
