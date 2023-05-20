@@ -29,6 +29,13 @@ export default {
         16: '16px',
         32: '32px',
       },
+      padding: {
+        a: '8px 23.5px'
+      },
+      height: {
+        40: '40px',
+        48: '48px'
+      }
     },
   },
   plugins: [],

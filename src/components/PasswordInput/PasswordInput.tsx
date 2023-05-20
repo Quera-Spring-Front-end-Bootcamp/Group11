@@ -18,6 +18,7 @@ const PasswordInput = ({ ...otherProps }: MantinePasswordInputProps) => {
         label: {
           width: '100%',
           textAlign: 'right',
+          marginBottom: '8px'
         },
         visibilityToggle: {
           display: 'none',

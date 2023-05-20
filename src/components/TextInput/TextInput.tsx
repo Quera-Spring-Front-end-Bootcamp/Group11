@@ -11,6 +11,7 @@ const TextInput = ({ ...otherProps }: MantineTextInputProps) => {
         label: {
           width: '100%',
           textAlign: 'right',
+          marginBottom: '8px'
         },
       })}
       radius='6px'
