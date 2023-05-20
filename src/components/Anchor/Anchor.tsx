@@ -3,7 +3,7 @@ import type { AnchorProps as MantineAnchorProps } from "@mantine/core";
 
 type AnchorProps = Pick<
   MantineAnchorProps,
-  'align' | 'children' | 'color' | 'size' | 'weight'
+  'align' | 'children' | 'color' | 'size' | 'weight' | 'className'
 >;
 
 const Anchor = (props: AnchorProps) => {

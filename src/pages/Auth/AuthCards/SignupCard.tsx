@@ -1,27 +1,26 @@
 import {
-  Anchor,
   Button,
   Card,
   PasswordInput,
   TextInput,
   Title,
 } from '../../../components';
+import { Checkbox } from '@mantine/core';
 
 type SignUpCardProps = {};
 
-const SignUpCard = ({}: SignUpCardProps) => {
+const SignUpCard = ({ }: SignUpCardProps) => {
   return (
-    <Card className='flex flex-col gap-3 p-5'>
-      <Title>به کوئرا تسک منیجر خوش برگشتی :)</Title>
+    <Card className='flex flex-col gap-8 p-5'>
+      <Title>ثبت‌نام در کوئرا تسک منیجر</Title>
 
+      <TextInput label='نام کامل'></TextInput>
       <TextInput label='ایمیل'></TextInput>
       <PasswordInput label='رمزعبور'></PasswordInput>
-      <Anchor>رمز عبور را فراموش کرده‌ای؟</Anchor>
-      <Button className='bg-primary'>ورود</Button>
-      <div className='flex items-center justify-center gap-2'>
-        <div>رمز عبور را فراموش کرده‌ای؟</div>
-        <Anchor>ثبت نام</Anchor>
-      </div>
+      <Checkbox
+      label="قوانین و مقررات را می‌پذیرم."
+      />
+      <Button className='bg-primary h-40'>ثبت نام</Button>
     </Card>
   );
 };

@@ -3,7 +3,7 @@ import type { TitleProps as MantineTitleProps } from '@mantine/core';
 
 type TitleProps = Pick<
   MantineTitleProps,
-  'align' | 'children' | 'color' | 'gradient' | 'size' | 'weight'
+  'align' | 'children' | 'color' | 'gradient' | 'size' | 'weight' | 'className'
 >;
 
 const Title = (props: TitleProps) => {
