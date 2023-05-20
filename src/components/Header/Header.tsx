@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Anchor as MantineAnchor } from '@mantine/core';
 
-const Header = () => {
+type HeaderProps = {};
+const Header = ({}: HeaderProps) => {
   return (
     <header className='container flex items-center justify-between gap-5 py-3 absolute right-1/2 translate-x-1/2'>
       <MantineAnchor

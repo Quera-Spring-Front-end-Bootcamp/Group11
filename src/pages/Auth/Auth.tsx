@@ -1,9 +1,6 @@
-import { useParams, Outlet, useOutlet, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Header from '../components/Header/Header';
+import { useOutlet, useNavigate, Outlet } from 'react-router-dom';
+import { Header } from '../../components';
 import { useEffect } from 'react';
-
-import  Card  from '../components/Card'
 
 export interface AuthPageProps {}
 
@@ -19,11 +16,9 @@ const Auth: React.FC<AuthPageProps> = ({}) => {
   return (
     <>
       <Header />
-      <div className='h-screen relative'>
+      <div className='bg-gray-100 h-screen w-full flex flex-col items-center justify-center'>
         <div className='absolute bottom-0 right-0 left-0 bg-gradient-to-r from-blue-400 to-emerald-400 h-[50vh] bg-auth'></div>
-        <div className='h-screen grid justify-center items-center '>
-          <!-- remove conflicts -->
-        </div>
+        <Outlet />
       </div>
     </>
   );
