@@ -1,8 +1,8 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 
-import Auth from './pages/Auth';
+import Auth from './pages/Auth/Auth';
 import Main from './pages/Main';
-import { LogInCard, SignUpCard, ForgetPassword } from './components/AuthCards';
+import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
 
 function App() {
   const location = useLocation();

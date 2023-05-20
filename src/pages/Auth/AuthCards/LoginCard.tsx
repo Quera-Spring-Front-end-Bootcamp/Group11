@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom';
-import { Card } from '../Card';
-import { Title } from '../Title';
+import { Card, Title } from '../../../components';
 
 type LogInCardProps = {};
 
