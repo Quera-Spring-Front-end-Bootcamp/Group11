@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  input[type=text], input[type=password] {
-    height: 40px !important;
-  }
   .bg-auth {
     clip-path: polygon(0 37%, 100% 1%, 100% 100%, 0 100%);
   }

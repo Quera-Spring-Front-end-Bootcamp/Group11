@@ -7,11 +7,15 @@ const TextInput = ({ ...otherProps }: MantineTextInputProps) => {
       styles={() => ({
         input: {
           textAlign: 'right',
+          ':focus': {
+            borderColor: '#AE9F9F',
+          },
+          height: '40px',
         },
         label: {
           width: '100%',
           textAlign: 'right',
-          marginBottom: '8px'
+          marginBottom: '8px',
         },
       })}
       radius='6px'
