@@ -8,17 +8,24 @@ const PasswordInput = ({ ...otherProps }: MantinePasswordInputProps) => {
         input: {
           textAlign: 'right',
           width: '100%',
+          height: '40px',
+          ':focus-within': {
+            borderColor: '#AE9F9F',
+          },
         },
+
         innerInput: {
           textAlign: 'right',
           width: '100%',
           paddingLeft: 'calc(2.25rem / 3)',
           paddingRight: 'calc(2.25rem / 3)',
+          marginTop: 0,
+          height: 'auto',
         },
         label: {
           width: '100%',
           textAlign: 'right',
-          marginBottom: '8px'
+          marginBottom: '8px',
         },
         visibilityToggle: {
           display: 'none',
