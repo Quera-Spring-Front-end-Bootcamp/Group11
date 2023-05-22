@@ -9,18 +9,16 @@ import { Checkbox } from '@mantine/core';
 
 type SignUpCardProps = {};
 
-const SignUpCard = ({ }: SignUpCardProps) => {
+const SignUpCard = ({}: SignUpCardProps) => {
   return (
-    <Card className='flex flex-col gap-8 p-5'>
+    <Card className='flex flex-col gap-8'>
       <Title>ثبت‌نام در کوئرا تسک منیجر</Title>
 
       <TextInput label='نام کامل'></TextInput>
       <TextInput label='ایمیل'></TextInput>
       <PasswordInput label='رمزعبور'></PasswordInput>
-      <Checkbox
-      label="قوانین و مقررات را می‌پذیرم."
-      />
-      <Button className='bg-primary h-40'>ثبت نام</Button>
+      <Checkbox label='قوانین و مقررات را می‌پذیرم.' />
+      <Button h={'48px'}>ثبت نام</Button>
     </Card>
   );
 };
