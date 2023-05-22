@@ -4,8 +4,8 @@ import {
   PasswordInput,
   TextInput,
   Title,
+  Checkbox
 } from '../../../components';
-import { Checkbox } from '@mantine/core';
 
 type SignUpCardProps = {};
 
@@ -18,7 +18,7 @@ const SignUpCard = ({}: SignUpCardProps) => {
       <TextInput label='ایمیل'></TextInput>
       <PasswordInput label='رمزعبور'></PasswordInput>
       <Checkbox label='قوانین و مقررات را می‌پذیرم.' />
-      <Button h={'48px'}>ثبت نام</Button>
+      <Button h={'48px'}>ثبت‌نام</Button>
     </Card>
   );
 };

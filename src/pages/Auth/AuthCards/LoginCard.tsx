@@ -23,11 +23,11 @@ const LogInCard = ({}: LogInCardProps) => {
       </Link>
       <Button h={'48px'}>ورود</Button>
       <div className='flex items-center justify-center gap-2'>
-        <div>ثبت نام کرده ای؟</div>
+        <div>ثبت‌نام کرده ای؟</div>
         <Link
           className='text-primary font-bold'
           to='/auth/signup'>
-          ثبت نام
+          ثبت‌نام
         </Link>
       </div>
     </Card>

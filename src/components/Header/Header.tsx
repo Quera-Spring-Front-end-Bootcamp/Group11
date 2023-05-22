@@ -18,9 +18,9 @@ const Header = ({}: HeaderProps) => {
 
       {isLoginPage ? (
         <div className='flex items-center gap-5'>
-          <span>ثبت نام نکرده ای؟</span>
+          <span>ثبت‌نام نکرده‌ای؟</span>
           <Link to='/auth/signup'>
-            <Button w={95}>ثبت نام</Button>
+            <Button w={95}>ثبت‌نام</Button>
           </Link>
         </div>
       ) : (

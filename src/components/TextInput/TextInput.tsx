@@ -16,6 +16,9 @@ const TextInput = ({ ...otherProps }: MantineTextInputProps) => {
           width: '100%',
           textAlign: 'right',
           marginBottom: '8px',
+          fontWeight: '400',
+          fontSize: '14px',
+          lineHeight: '21px',
         },
       })}
       radius='6px'
