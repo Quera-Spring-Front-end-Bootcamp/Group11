@@ -11,7 +11,7 @@ const LogInCard = ({ }: LogInCardProps) => {
       <TextInput label='ایمیل'></TextInput>
       <PasswordInput label='رمزعبور'></PasswordInput>
       <Link className='text-primary text-12 -mt-6' to='/auth/forgetPassword'>رمز عبور را فراموش کرده‌ای؟</Link>
-      <Button className='bg-primary h-40'>ورود</Button>
+      <Button>ورود</Button>
       <div className='flex items-center justify-center gap-2'>
         <div>ثبت نام کرده ای؟</div>
         <Link className='text-primary font-bold' to='/auth/signup'>ثبت نام</Link>

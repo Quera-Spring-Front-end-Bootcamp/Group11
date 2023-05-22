@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Anchor as MantineAnchor } from '@mantine/core';
+import { Button } from '../../components';
 
 type HeaderProps = {};
-const Header = ({ }: HeaderProps) => {
+const Header = ({}: HeaderProps) => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/auth/login';
 
@@ -18,23 +19,18 @@ const Header = ({ }: HeaderProps) => {
       {isLoginPage ? (
         <div className='flex items-center gap-5'>
           <span>ثبت نام نکرده ای؟</span>
-          <Link
-            to='/auth/signup'
-            className='bg-primary p-a rounded-md text-white text-14'>
-            ثبت نام
+          <Link to='/auth/signup'>
+            <Button w={95}>ثبت نام</Button>
           </Link>
         </div>
       ) : (
         <div className='flex items-center gap-5'>
           <span>قبلا ثبت‌نام کرده‌ای؟</span>
-          <Link
-            to='/auth/login'
-            className='bg-primary p-a rounded-md text-white text-14'>
-            ورود
+          <Link to='/auth/login'>
+            <Button w={95}>ورود</Button>
           </Link>
         </div>
       )}
-
     </header>
   );
 };

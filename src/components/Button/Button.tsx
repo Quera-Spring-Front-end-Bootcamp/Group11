@@ -8,6 +8,19 @@ interface ButtonProps extends MantineButtonProps {
 const Button = ({ children, onClick, ...otherProps }: ButtonProps) => {
   return (
     <MantineButton
+      h={'40px'}
+      radius={'6px'}
+      p={'10px'}
+      c={'white'}
+      bg={'#208D8E'}
+      fs={'14'}
+      fw={'700'}
+      lh={'22px'}
+      sx={{
+        '&:hover': {
+          backgroundColor: '#277576',
+        },
+      }}
       onClick={onClick}
       {...otherProps}>
       {children}
