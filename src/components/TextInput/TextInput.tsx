@@ -6,9 +6,10 @@ const TextInput = ({ ...otherProps }: MantineTextInputProps) => {
     <MantineTextInput
       styles={() => ({
         input: {
+          border: '1px solid #AAAAAA',
           textAlign: 'right',
           ':focus': {
-            borderColor: '#AE9F9F',
+            border: '2px solid gray',
           },
           height: '40px',
         },

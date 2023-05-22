@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         primary: '#208D8E',
+        darkPrimary : '#277576',
         gray: '#AAAAAA',
       },
       borderRadius: {
@@ -18,6 +19,7 @@ export default {
         mainCard: '0px 12px 50px rgba(0, 0, 0, 0.18);',
       },
       lineHeight: {
+        19: '19px',
         21: '21px',
         22: '22px',
         24: '24px',

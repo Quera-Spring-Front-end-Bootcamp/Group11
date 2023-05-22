@@ -13,7 +13,8 @@ const Checkbox = ({ onClick, ...otherProps }: CheckboxProps) => {
           height : '20px',
           width: '20px',
           borderRadius: '4px',
-          border: '1px solid #999999'
+          border: '1px solid #999999',
+          cursor: 'pointer'
         },
         label: {
           fontWeight: '400',

@@ -6,11 +6,12 @@ const PasswordInput = ({ ...otherProps }: MantinePasswordInputProps) => {
     <MantinePasswordInput
       styles={() => ({
         input: {
+          border: '1px solid #AAAAAA',
           textAlign: 'right',
           width: '100%',
           height: '40px',
           ':focus-within': {
-            borderColor: '#AE9F9F',
+            border: '2px solid gray',
           },
         },
 

@@ -11,21 +11,29 @@ type LogInCardProps = {};
 
 const LogInCard = ({}: LogInCardProps) => {
   return (
-    <Card className='flex flex-col gap-8'>
+    <Card className='flex flex-col'>
       <Title>به کوئرا تسک منیجر خوش برگشتی :)</Title>
 
-      <TextInput label='ایمیل'></TextInput>
-      <PasswordInput label='رمزعبور'></PasswordInput>
+      <TextInput
+        className='mt-[29px]'
+        label='ایمیل'></TextInput>
+      <PasswordInput
+        className='mt-[20px]'
+        label='رمزعبور'></PasswordInput>
       <Link
-        className='text-primary text-12 -mt-6'
+        className='text-primary text-12 mt-[8px] font-semibold leading-19'
         to='/auth/forgetPassword'>
         رمز عبور را فراموش کرده‌ای؟
       </Link>
-      <Button h={'48px'}>ورود</Button>
-      <div className='flex items-center justify-center gap-2'>
-        <div>ثبت‌نام کرده ای؟</div>
+      <Button
+        className='mt-[32px]'
+        h={'48px'}>
+        ورود
+      </Button>
+      <div className='flex items-center justify-center mt-[20.5px]'>
+        <div className='font-normal text-16 leading-24 ml-[7px]'>ثبت‌نام نکرده‌ای؟</div>
         <Link
-          className='text-primary font-bold'
+          className='text-primary font-bold text-16 leading-[25px]'
           to='/auth/signup'>
           ثبت‌نام
         </Link>
