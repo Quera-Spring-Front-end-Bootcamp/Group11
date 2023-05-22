@@ -11,6 +11,7 @@ const Card = (props: CardProps) => {
     <MantineCard
       radius='20px'
       shadow='0px 12px 50px rgba(0, 0, 0, 0.18)'
+      p={'24px'}
       {...props}></MantineCard>
   );
 };

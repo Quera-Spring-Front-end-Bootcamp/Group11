@@ -9,11 +9,21 @@ const Checkbox = ({ onClick, ...otherProps }: CheckboxProps) => {
   return (
     <MantineCheckbox
       styles={() => ({
+        input: {
+          height : '20px',
+          width: '20px',
+          borderRadius: '4px',
+          border: '1px solid #999999',
+          cursor: 'pointer'
+        },
         label: {
-          fontSize: '2rem',
+          fontWeight: '400',
+          fontSize: '16px',
+          lineHeight: '24px',
+          marginRight: '8px'
         },
       })}
-      color='gray'
+      color='cyan'
       onClick={onClick}
       {...otherProps}
     />

@@ -1,16 +1,15 @@
 import { Title as MantineTitle } from '@mantine/core';
 import type { TitleProps as MantineTitleProps } from '@mantine/core';
 
-type TitleProps = Pick<
-  MantineTitleProps,
-  'align' | 'children' | 'color' | 'gradient' | 'size' | 'weight' | 'className'
->;
-
-const Title = (props: TitleProps) => {
+const Title = ({ children, ...otherProps }: MantineTitleProps) => {
   return (
     <MantineTitle
-      size='32px'
-      {...props}></MantineTitle>
+      fw={'600'}
+      fs={'32px'}
+      lh={'50px'}
+      {...otherProps}>
+      {children}
+    </MantineTitle>
   );
 };
 
