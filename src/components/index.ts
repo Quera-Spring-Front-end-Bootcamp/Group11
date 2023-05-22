@@ -6,6 +6,7 @@ import { PasswordInput } from './PasswordInput';
 import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
+import { Accordion } from './Accordion';
 
 export {
   Anchor,
@@ -16,4 +17,5 @@ export {
   TextInput,
   Title,
   Checkbox,
+  Accordion
 };
