@@ -3,6 +3,7 @@ import { Modal } from '../Modal';
 import { onClose } from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
 import { title } from 'process';
 import { useCallback, useMemo, useState } from 'react';
+import { TextInput } from '../..';
 
 interface CreateWorkSpaceModalProps {
   children?: React.ReactNode;
@@ -24,11 +25,16 @@ const CreateWorkSpaceModal = ({ children }: CreateWorkSpaceModalProps) => {
   const open = useSelector((state: any) => state.CreateWorkSpaceModal.open);
 
   let title;
-  let content;
+  let body;
   let footer;
 
   if (step === STEPS.NAME) {
     title = 'ساختن ورک‌اسپیس جدید';
+    body = (
+      <>
+        <TextInput label='نام ورک‌اسپیس' />
+      </>
+    );
   }
   if (step === STEPS.COLOR) {
     title = 'انتخاب رنگ ورک‌اسپیس';
@@ -67,7 +73,7 @@ const CreateWorkSpaceModal = ({ children }: CreateWorkSpaceModalProps) => {
       opened={open}
       onClose={() => dispatch(onClose())}
       title={title}
-      content={content}
+      body={body}
       footer={footer}
       actionLabel={actionLabel}
       action={onSubmit}

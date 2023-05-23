@@ -1,4 +1,4 @@
-import { Modal as MantineModal } from '@mantine/core';
+import { Center, Modal as MantineModal } from '@mantine/core';
 import { ModalProps as MantineModalProps } from '@mantine/core';
 import { Button } from '../..';
 
@@ -19,15 +19,35 @@ const Modal = ({
   return (
     <>
       <MantineModal
+        radius='md'
+        styles={() => ({
+          content: {
+            padding: '12px 16px',
+          },
+          title: {
+            textAlign: 'center',
+            width: '100%',
+            fontSize: '24px',
+            fontWeight: 'bold',
+          },
+        })}
         centered
         {...otherProps}>
-        <MantineModal.Body>{body}</MantineModal.Body>
-        {footer}
-        <Button
-          onClick={action}
-          className='w-full'>
-          {actionLabel}
-        </Button>
+        <MantineModal.Body
+          mt='1rem'
+          mb='3rem'
+          p='0'>
+          {body}
+        </MantineModal.Body>
+        <div>{footer}</div>
+
+        {action && (
+          <Button
+            onClick={action}
+            className='w-full'>
+            {actionLabel}
+          </Button>
+        )}
       </MantineModal>
     </>
   );
