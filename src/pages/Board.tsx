@@ -1,16 +1,19 @@
-import React from 'react';
-
 import { Container } from '../components';
+import { useSelector, useDispatch } from 'react-redux';
+import { CreateWorkSpaceModal } from '../components/Modal';
 
-export interface AuthPageProps {}
+type BoardPageProps = {};
 
-const Board: React.FC<AuthPageProps> = ({}) => {
+const Board = ({}): BoardPageProps => {
   return (
-    <Container>
-      <div className='bg-red-400/30 h-screen grid justify-center items-center text-[10rem]'>
-        صفحه اصلی
-      </div>
-    </Container>
+    <>
+      <CreateWorkSpaceModal />
+      <Container>
+        <div className='bg-red-400/30 h-screen grid justify-center items-center text-[10rem]'>
+          صفحه اصلی
+        </div>
+      </Container>
+    </>
   );
 };
 
