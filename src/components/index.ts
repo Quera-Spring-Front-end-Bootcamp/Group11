@@ -6,8 +6,10 @@ import { PasswordInput } from './PasswordInput';
 import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
+import { Container } from './Container';
 
 export {
+  Container,
   Anchor,
   Button,
   Card,
