@@ -49,7 +49,9 @@ const Modal = ({
         centered
         withCloseButton={false}
         {...otherProps}>
+        {/*Header Section*/}
         <MantineModal.Header>
+          {/* back button if it is a multi step modal */}
           {back && (
             <div
               className='absolute left-0 text-[#848e96] text-xl cursor-pointer'
@@ -57,17 +59,24 @@ const Modal = ({
               <MdOutlineKeyboardBackspace />
             </div>
           )}
+
+          {/* title and close button */}
           <MantineModal.Title>{title}</MantineModal.Title>
           <MantineModal.CloseButton />
         </MantineModal.Header>
+
+        {/*body Section*/}
         <MantineModal.Body
           mt='1rem'
           mb='3rem'
           p='0'>
           {body}
         </MantineModal.Body>
-        <div>{footer}</div>
 
+        {/*footer section if included */}
+        <div>{footer}</div>
+        
+        {/* action button if included */}
         {action && (
           <Button
             onClick={action}

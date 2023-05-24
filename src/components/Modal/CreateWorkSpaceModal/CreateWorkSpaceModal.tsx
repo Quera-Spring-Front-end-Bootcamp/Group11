@@ -16,6 +16,7 @@ interface CreateWorkSpaceModalProps {
   modalFooter?: React.ReactNode;
 }
 
+//enumerate modal steps
 enum STEPS {
   NAME = 0,
   COLOR = 1,
@@ -24,13 +25,16 @@ enum STEPS {
 
 const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
   const [step, setStep] = useState(STEPS.NAME);
+  const dispatch = useDispatch();
+  const open = useSelector((state: any) => state.CreateWorkSpaceModal.open);
+
   const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    formState: { errors },
+    register, //register function will pass to text inputs
+    handleSubmit, //submit function
+    setValue, //set custom value by ID
+    getValues, //get value by id
+    watch, //watch value for change
+    formState: { errors }, //error for form validation
   } = useForm<FieldValues>({
     defaultValues: {
       workSpaceName: '',
@@ -47,9 +51,6 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
       shouldValidate: true,
     });
   };
-
-  const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.CreateWorkSpaceModal.open);
 
   let title;
   let body;
@@ -133,14 +134,18 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
     );
   }
 
+  //previous step function
   const onBack = () => {
     if (step === STEPS.NAME) return;
     setStep((value) => value - 1);
   };
+
+  //next step function
   const onNext = () => {
     setStep((value) => value + 1);
   };
 
+  //label of main button, will change dynamically according to STEP
   const actionLabel = useMemo(() => {
     if (step === STEPS.OVERVIEW) {
       return 'ساختن ورک‌اسپیس';
@@ -148,6 +153,7 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
     return 'ادامه';
   }, [step]);
 
+  //if not on first step return true -> render back button
   const haveback = useMemo(() => {
     if (step === STEPS.NAME) {
       return false;
@@ -155,10 +161,11 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
     return true;
   }, [step]);
 
+  //submit form value
   const onSubmit = () => {
-    if (step !== STEPS.OVERVIEW) return onNext();
+    if (step !== STEPS.OVERVIEW) return onNext(); //if not on last Step simply go next step
 
-    ///submit functionality here
+    ///submit functionality here for last step
     console.log(getValues());
   };
 

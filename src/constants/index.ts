@@ -1,3 +1,8 @@
+/**
+ * this file is for constant values 
+ * to prevent main files to get complicated we put constants in here
+ */
+
 export const workSpaceColors = [
   '#84C6A1',
   '#78C6B0',
