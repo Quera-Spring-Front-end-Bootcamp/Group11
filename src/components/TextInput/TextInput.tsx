@@ -1,21 +1,7 @@
 import { TextInput as MantineTextInput } from '@mantine/core';
 import { TextInputProps as MantineTextInputProps } from '@mantine/core';
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
-interface inputProps extends MantineTextInputProps {
-  id: string;
-  register: UseFormRegister<FieldValues>;
-  required?: boolean;
-  errors?: FieldErrors;
-}
-
-const TextInput = ({
-  id,
-  required,
-  register,
-  errors,
-  ...otherProps
-}: inputProps) => {
+const TextInput = ({ ...otherProps }: MantineTextInputProps) => {
   return (
     <MantineTextInput
       styles={() => ({
@@ -31,12 +17,12 @@ const TextInput = ({
           width: '100%',
           textAlign: 'right',
           marginBottom: '8px',
+          fontWeight: '400',
           fontSize: '14px',
           lineHeight: '21px',
         },
       })}
       radius='6px'
-      {...register(id, { required })}
       {...otherProps}
     />
   );

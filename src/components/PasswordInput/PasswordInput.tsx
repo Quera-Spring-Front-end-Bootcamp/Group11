@@ -27,6 +27,7 @@ const PasswordInput = ({ ...otherProps }: MantinePasswordInputProps) => {
           width: '100%',
           textAlign: 'right',
           marginBottom: '8px',
+          fontWeight: '400',
           fontSize: '14px',
           lineHeight: '21px',
         },
