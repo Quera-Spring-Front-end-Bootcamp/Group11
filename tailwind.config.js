@@ -13,6 +13,7 @@ export default {
       },
       borderRadius: {
         6: '6px',
+        8: '8px',
         20: '20px',
       },
       boxShadow: {
@@ -29,6 +30,7 @@ export default {
         12: '12px',
         14: '14px',
         16: '16px',
+        24: '24px',
         32: '32px',
       },
       padding: {

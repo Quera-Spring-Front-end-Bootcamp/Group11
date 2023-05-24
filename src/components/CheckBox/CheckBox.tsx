@@ -17,7 +17,6 @@ const Checkbox = ({ onClick, ...otherProps }: CheckboxProps) => {
           cursor: 'pointer'
         },
         label: {
-          fontWeight: '400',
           fontSize: '16px',
           lineHeight: '24px',
           marginRight: '8px'
