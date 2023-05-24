@@ -6,13 +6,10 @@ import { PasswordInput } from './PasswordInput';
 import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
-import { ColorInput } from './ColorInput';
-
 import { Container } from './Container';
 
 export {
   Container,
-  ///
   Anchor,
   Button,
   Card,
@@ -21,5 +18,4 @@ export {
   TextInput,
   Title,
   Checkbox,
-  ColorInput,
 };
