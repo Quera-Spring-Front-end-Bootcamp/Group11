@@ -1,3 +1,3 @@
-import LogOutButton from "./LogOutButton";
+import LogOutButton from './LogOutButton';
 
-export {LogOutButton}
+export { LogOutButton };
