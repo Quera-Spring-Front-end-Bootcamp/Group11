@@ -1,5 +1,6 @@
-import { Center, Modal as MantineModal } from '@mantine/core';
+import { Modal as MantineModal } from '@mantine/core';
 import { ModalProps as MantineModalProps } from '@mantine/core';
+import { MdOutlineKeyboardBackspace } from 'react-icons/md';
 import { Button } from '../..';
 
 interface ModalProps extends MantineModalProps {
@@ -7,6 +8,8 @@ interface ModalProps extends MantineModalProps {
   footer?: React.ReactElement;
   actionLabel?: string;
   action?: () => void;
+  back?: boolean;
+  backAction: () => void;
 }
 
 const Modal = ({
@@ -14,6 +17,9 @@ const Modal = ({
   footer,
   action,
   actionLabel,
+  back,
+  backAction,
+  title,
   ...otherProps
 }: ModalProps) => {
   return (
@@ -21,8 +27,14 @@ const Modal = ({
       <MantineModal
         radius='md'
         styles={() => ({
+          root: {
+            position: 'relative',
+          },
           content: {
-            padding: '12px 16px',
+            padding: '0px 16px 12px 16px',
+          },
+          body: {
+            paddingTop: 0,
           },
           title: {
             textAlign: 'center',
@@ -30,9 +42,24 @@ const Modal = ({
             fontSize: '24px',
             fontWeight: 'bold',
           },
+          header: {
+            padding: '24px 0',
+          },
         })}
         centered
+        withCloseButton={false}
         {...otherProps}>
+        <MantineModal.Header>
+          {back && (
+            <div
+              className='absolute left-0 text-[#848e96] text-xl cursor-pointer'
+              onClick={backAction}>
+              <MdOutlineKeyboardBackspace />
+            </div>
+          )}
+          <MantineModal.Title>{title}</MantineModal.Title>
+          <MantineModal.CloseButton />
+        </MantineModal.Header>
         <MantineModal.Body
           mt='1rem'
           mb='3rem'
