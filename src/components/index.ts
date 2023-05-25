@@ -7,6 +7,7 @@ import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
 import { Container } from './Container';
+import { LogOutButton } from './LogOutButton';
 import { NewTaskButton } from './NewTaskButton';
 
 export {
@@ -19,5 +20,6 @@ export {
   TextInput,
   Title,
   Checkbox,
+  LogOutButton,
   NewTaskButton
 };
