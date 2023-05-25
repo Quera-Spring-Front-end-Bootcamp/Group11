@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Auth from './pages/Auth/Auth';
-import Main from './pages/Main';
+import Board from './pages/Board';
 import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       key={location.pathname}>
       <Route
         path='/'
-        element={<Main />}
+        element={<Board />}
       />
       <Route
         path='/auth'
