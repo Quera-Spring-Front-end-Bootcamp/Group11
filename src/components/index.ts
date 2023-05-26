@@ -7,6 +7,8 @@ import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
 import { Container } from './Container';
+import { Avatar } from './Avatar';
+import { MiniProfile } from './MiniProfile';
 
 export {
   Container,
@@ -18,4 +20,6 @@ export {
   TextInput,
   Title,
   Checkbox,
+  Avatar,
+  MiniProfile,
 };
