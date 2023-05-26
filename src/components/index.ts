@@ -8,10 +8,15 @@ import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
 ///Buttons
+import { Container } from './Container';
+import { Avatar } from './Avatar';
+import { MiniProfile } from './MiniProfile';
+import { LogOutButton } from './LogOutButton';
 import { NewTaskButton } from './NewTaskButton';
 ///Others
 import { Container } from './Container';
 import { Accordion } from './Accordion';
+
 
 
 export {
@@ -27,6 +32,9 @@ export {
   Title,
   Checkbox,
   ////
+  Avatar,
+  MiniProfile,
+  LogOutButton,
   NewTaskButton
   ////
 };

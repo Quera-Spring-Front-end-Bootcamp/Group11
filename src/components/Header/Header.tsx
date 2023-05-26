@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Anchor as MantineAnchor } from '@mantine/core';
 import { Button } from '../../components';
+import LogoType from '../LogoType/LogoType';
 
 type HeaderProps = {};
 const Header = ({}: HeaderProps) => {
@@ -9,12 +9,7 @@ const Header = ({}: HeaderProps) => {
 
   return (
     <header className='container flex items-center justify-between gap-5 py-20 absolute right-1/2 translate-x-1/2'>
-      <MantineAnchor
-        href='/'
-        title='کوئرا تسک منیجر'
-        className='font-extrabold text-32 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-500'>
-        کوئرا تسک منیجر
-      </MantineAnchor>
+      <LogoType />
 
       {isLoginPage ? (
         <div className='flex items-center gap-5'>
