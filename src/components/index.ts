@@ -9,6 +9,9 @@ import { Checkbox } from './CheckBox';
 import { Container } from './Container';
 import { Avatar } from './Avatar';
 import { MiniProfile } from './MiniProfile';
+import { LogOutButton } from './LogOutButton';
+import { NewTaskButton } from './NewTaskButton';
+
 
 export {
   Container,
@@ -22,4 +25,6 @@ export {
   Checkbox,
   Avatar,
   MiniProfile,
+  LogOutButton,
+  NewTaskButton
 };
