@@ -1,32 +1,54 @@
 import { Accordion as MantineAccordion } from '@mantine/core';
 
-import type { AccordionProps } from '@mantine/core';
+import type { AccordionProps as MantineAccordionProps } from '@mantine/core';
 
-const Accordion = ({children , ...otherProps}:AccordionProps) => {
+interface AccordionProps extends MantineAccordionProps {
+  inputArray: any;
+  labelFW: string;
+  labelFS: string;
+  labelLH: string;
+}
+const Accordion = ({
+  inputArray,
+  labelFW,
+  labelFS,
+  labelLH,
+}: AccordionProps) => {
+  // Pattern of AccArray:
+  // AccArray = [{id: id , AccTitle: AccTitle , AccDetails: [AccDetails]}]
+  const Acc = inputArray.map((item) => {
+    let details = [...item.AccDetail];
+
+    return (
+      <MantineAccordion.Item value={item.AccTitle}>
+        <MantineAccordion.Control>{item.AccTitle}</MantineAccordion.Control>
+        {details.map((detail) => (
+          <MantineAccordion.Panel>{detail}</MantineAccordion.Panel>
+        ))}
+      </MantineAccordion.Item>
+    );
+  });
+
   return (
     <MantineAccordion
       styles={() => ({
         chevron: {
-          marginLeft: '8px'
+          marginLeft: '8px',
         },
         item: {
           border: 'none',
         },
-        control : {
+        control: {
           padding: '0px',
-
         },
         label: {
           textAlign: 'right',
-          fontWeight: '600',
-          fontSize: '16px',
-          lineHeight: '25px',
+          fontWeight: labelFW,
+          fontSize: labelFS,
+          lineHeight: labelLH,
         },
       })}>
-      <MantineAccordion.Item value='workSpaces'>
-        <MantineAccordion.Control>ورک‌اسپیس‌ها</MantineAccordion.Control>
-        <MantineAccordion.Panel>{children}</MantineAccordion.Panel>
-      </MantineAccordion.Item>
+      {Acc}
     </MantineAccordion>
   );
 };
