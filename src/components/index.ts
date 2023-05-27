@@ -7,8 +7,8 @@ import { PasswordInput } from './PasswordInput';
 import { TextInput } from './TextInput';
 import { Title } from './Title';
 import { Checkbox } from './CheckBox';
+import { ColorInput } from './ColorInput';
 ///Buttons
-import { Container } from './Container';
 import { Avatar } from './Avatar';
 import { MiniProfile } from './MiniProfile';
 import { LogOutButton } from './LogOutButton';
@@ -17,11 +17,9 @@ import { NewTaskButton } from './NewTaskButton';
 import { Container } from './Container';
 import { Accordion } from './Accordion';
 
-
-
 export {
   Container,
-  Accordion
+  Accordion,
   ////
   Anchor,
   Button,
@@ -31,10 +29,11 @@ export {
   TextInput,
   Title,
   Checkbox,
+  ColorInput,
   ////
   Avatar,
   MiniProfile,
   LogOutButton,
-  NewTaskButton
+  NewTaskButton,
   ////
 };
