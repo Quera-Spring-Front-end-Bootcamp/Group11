@@ -1,3 +1,4 @@
+import { FieldValues, useForm } from 'react-hook-form';
 import {
   Card,
   Title,
@@ -10,14 +11,31 @@ import { Link } from 'react-router-dom';
 type LogInCardProps = {};
 
 const LogInCard = ({}: LogInCardProps) => {
+  const {
+    register, //register function will pass to text inputs
+    handleSubmit, //submit function
+    // setValue, //set custom value by ID
+    getValues, //get value by id
+    // watch, //watch value for change
+    formState: { errors }, //error for form validation
+  } = useForm<FieldValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
   return (
     <Card className='flex flex-col'>
       <Title>به کوئرا تسک منیجر خوش برگشتی :)</Title>
 
       <TextInput
+        id='email'
+        register={register}
         className='mt-[29px]'
         label='ایمیل'></TextInput>
       <PasswordInput
+        id='password'
+        register={register}
         className='mt-[20px]'
         label='رمزعبور'></PasswordInput>
       <Link
@@ -27,6 +45,9 @@ const LogInCard = ({}: LogInCardProps) => {
       </Link>
       <Link to='/'>
         <Button
+          onClick={() => {
+            console.log(getValues()); //demonstration 
+          }}
           className='mt-[32px]'
           h={'48px'}
           w={'100%'}>

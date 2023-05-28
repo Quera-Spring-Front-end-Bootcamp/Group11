@@ -1,9 +1,25 @@
 import { PasswordInput as MantinePasswordInput } from '@mantine/core';
 import { PasswordInputProps as MantinePasswordInputProps } from '@mantine/core';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
-const PasswordInput = ({ ...otherProps }: MantinePasswordInputProps) => {
+interface PasswordInputProps extends MantinePasswordInputProps {
+  id: string;
+  register: UseFormRegister<FieldValues>;
+  required?: boolean;
+  errors?: FieldErrors;
+}
+
+const PasswordInput = ({
+  id,
+  register,
+  required,
+  errors,
+  ...otherProps
+}: PasswordInputProps) => {
   return (
     <MantinePasswordInput
+      id={id}
+      {...register(id, { required })}
       styles={() => ({
         input: {
           border: '1px solid #AAAAAA',
@@ -27,7 +43,7 @@ const PasswordInput = ({ ...otherProps }: MantinePasswordInputProps) => {
           width: '100%',
           textAlign: 'right',
           marginBottom: '8px',
-          fontWeight: '400',
+          fontWeight: 'bold',
           fontSize: '14px',
           lineHeight: '21px',
         },
