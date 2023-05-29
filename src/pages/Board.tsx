@@ -10,8 +10,15 @@ const Board: React.FC<AuthPageProps> = ({}) => {
     <>
       <CreateWorkSpaceModal />
       <Container>
-        <div className='bg-red-400/30 h-screen grid justify-center items-center text-[10rem]'>
-          صفحه اصلی
+        <div className='h-screen flex'>
+          <div className='bg-slate-400 w-[340px]'>{/* <sideBar/> */}</div>
+          <div className='bg-red-300 w-[calc(100%-340px)] flex flex-col'>
+            <div className='h-[170px] bg-sky-600'>{/* <Header/> */}</div>
+
+            <div className='h-[calc(100%-170px)] bg-green-400'>
+              {/* <boardElement/> */}
+            </div>
+          </div>
         </div>
       </Container>
     </>

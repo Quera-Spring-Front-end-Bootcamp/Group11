@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const CreateWorkSpaceModalSlice = createSlice({
   name: 'CreateWorkSpaceModal',
   initialState: {
-    open: true,
+    open: false,
   },
   reducers: {
     onOpen: (state: any) => {
