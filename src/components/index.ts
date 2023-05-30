@@ -16,6 +16,7 @@ import { NewTaskButton } from './NewTaskButton';
 ///Others
 import { Container } from './Container';
 import { Accordion } from './Accordion';
+import { TaskCard } from './TaskCard';
 
 export {
   Container,
@@ -35,5 +36,6 @@ export {
   MiniProfile,
   LogOutButton,
   NewTaskButton,
+  TaskCard
   ////
 };
