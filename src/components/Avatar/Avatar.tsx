@@ -5,7 +5,7 @@ interface AvatarProps extends MantineAvatarProps {
   onClick?: () => void;
 }
 
-const Avatar = ({ children, onClick, ...otherProps }: AvatarProps) => {
+const Avatar = ({ size, children, onClick, ...otherProps }: AvatarProps) => {
   return (
     <MantineAvatar
       styles={() => ({
@@ -14,9 +14,10 @@ const Avatar = ({ children, onClick, ...otherProps }: AvatarProps) => {
         },
         placeholder: {
           border: '0',
-          fontSize: '14px',
+          fontSize: ((size =='md')?'12px':'10px'),
         },
       })}
+      size={size}
       radius={'xl'}
       onClick={onClick}
       {...otherProps}>
