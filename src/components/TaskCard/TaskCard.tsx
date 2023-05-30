@@ -1,0 +1,97 @@
+import { Avatar } from '..';
+import { Card } from '@mantine/core';
+import { VscChecklist } from 'react-icons/vsc';
+import { FiFlag, FiCheckCircle } from 'react-icons/fi';
+import { BsCheckSquare, BsThreeDots } from 'react-icons/bs';
+import { useState } from 'react';
+
+interface TagProp {
+  children: string;
+  tagColor: string;
+}
+const TaskCard = () => {
+  const [isHover, setIsHover] = useState(false);
+  const [isCheckList, setIsCheckList] = useState(true);
+  const Tag = ({ children, tagColor }: TagProp) => {
+    return (
+      <span
+        className={`ml-[12px] text-[10px] font-medium text-[#323232] leading-[15px]
+           py-[2px] px-[4px] h-[19px] rounded-e-[10px] bg-[${tagColor}]`}>
+        {children}
+      </span>
+    );
+  };
+  const onClick = () => {
+    console.log('card');
+  };
+  const onClick1 = (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
+    console.log('3dots');
+  };
+  return (
+    <Card
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+      onClick={onClick}
+      p={'10px'}
+      w={'250px'}
+      radius={'4px'}
+      shadow=' 0px 6px 8px rgba(0, 0, 0, 0.14)'
+      className=''>
+      <div className='flex flex-row items-center	justify-between'>
+        <span className='text-[10px] font-medium text-[#534D60]'>
+          پروژه اول
+        </span>
+        <Avatar
+          className={isHover ? ' visible' : ' invisible'}
+          size={'sm'}>
+          NM
+        </Avatar>
+      </div>
+      <div className='flex flex-row items-center mt-[9px]'>
+        <span className='text-[12px] font-medium text-[#0E0E0E] leading-[18px]'>
+          این یک تیتر برای تسک است.
+        </span>
+        <VscChecklist
+          className={
+            'text-[#BDC0C6] mr-[4px]' + (isCheckList ? ' block' : ' hidden')
+          }
+        />
+      </div>
+      <div className='flex flex-row items-center mt-[18.5px]'>
+        <FiFlag className='text-[#FB0606]' />
+        <span className='text-[10px] text-[#343434] font-medium mr-[5px]'>
+          ۵ مهر - فردا
+        </span>
+        <div className='flex flex-row items-center  text-[#BDC0C6] mr-[8px] '>
+          <BsCheckSquare className='text-[12px]' />
+          <span className='text-[10px] font-medium mr-[4px]'>۱۲ / ۲</span>
+        </div>
+      </div>
+      <div className='flex flex-row items-center mt-[20px]'>
+        <Tag tagColor={'#BFFDE3'}>پروژه</Tag>
+        <Tag tagColor={'#EEDFF7'}>درس</Tag>
+      </div>
+      <div
+        className={
+          'border-solid border-[1px] border-[#EFF0F0] mt-[18px] w-[100%]' +
+          (isHover ? ' block' : ' hidden')
+        }></div>
+
+      <div
+        className={
+          'flex-row items-center	mt-[20px] p-[0.5px] text-[#323232] justify-between' +
+          (isHover ? ' flex' : ' hidden')
+        }>
+        <FiCheckCircle />
+        <BsThreeDots onClick={onClick1} />
+      </div>
+    </Card>
+  );
+};
+
+export default TaskCard;
