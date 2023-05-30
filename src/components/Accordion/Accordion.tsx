@@ -7,42 +7,52 @@ interface AccordionProps extends MantineAccordionProps {
   labelFW: string;
   labelFS: string;
   labelLH: string;
+  detailPadd: string;
+  detailMarg: string;
 }
 const Accordion = ({
   inputArray,
   labelFW,
   labelFS,
   labelLH,
+  detailPadd,
+  detailMarg,
 }: AccordionProps) => {
   // Pattern of AccArray:
-  // AccArray = [{id: id , AccTitle: AccTitle , AccDetails: [AccDetails]}]
+  // AccArray = [{id: id , AccTitle: AccTitle , AccDetail: AccDetails}]
   const Acc = inputArray.map((item) => {
-    let details = [...item.AccDetail];
-
     return (
-      <MantineAccordion.Item value={item.AccTitle}>
+      <MantineAccordion.Item
+        key={item.id}
+        value={item.AccTitle}>
         <MantineAccordion.Control>{item.AccTitle}</MantineAccordion.Control>
-        {details.map((detail) => (
-          <MantineAccordion.Panel>{detail}</MantineAccordion.Panel>
-        ))}
+        <MantineAccordion.Panel>{item.AccDetail} </MantineAccordion.Panel>
       </MantineAccordion.Item>
     );
   });
 
   return (
     <MantineAccordion
+    transitionDuration={500}
       styles={() => ({
         chevron: {
-          marginLeft: '8px',
+          marginLeft: '0',
         },
         item: {
           border: 'none',
+          margin: '0px',
+
         },
         control: {
           padding: '0px',
         },
+        content: {
+          padding: detailPadd,
+          margin: detailMarg,
+        },
         label: {
           textAlign: 'right',
+          padding: '0px',
           fontWeight: labelFW,
           fontSize: labelFS,
           lineHeight: labelLH,
