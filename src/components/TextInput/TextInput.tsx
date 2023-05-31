@@ -36,7 +36,7 @@ const TextInput = ({
         },
       })}
       radius='6px'
-      {...register(id, { required })}
+      // {...register(id, { required })}
       {...otherProps}
     />
   );

@@ -7,76 +7,69 @@ import { FiPlusSquare } from 'react-icons/fi';
 
 const SideBar = () => {
   return (
-    <div className='flex flex-col bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] '>
-      <div className='mb-[31px] '>
-        <LogoType />
-      </div>
-
+    <div className='flex flex-col justify-between bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] '>
       <div>
-        <Accordion
-          
-          inputArray={[
-            {
-              id: 1,
-              AccTitle: 'ورک اسپیس‌ها',
-              AccDetail: (
-                <div>
-                  <div className='mb-[13px]'>
-                    <SearchInput />
+        <div className='mb-[31px] '>
+          <LogoType />
+        </div>
+
+        <div>
+          <Accordion
+            inputArray={[
+              {
+                id: 1,
+                AccTitle: 'ورک اسپیس‌ها',
+                AccDetail: (
+                  <div>
+                    <div className='mb-[13px]'>
+                      <SearchInput />
+                    </div>
+                    <div className='mb-[16px]'>
+                      <Button
+                        bg={'#D3D3D3'}
+                        c={'#1E1E1E'}
+                        fullWidth={true}
+                        leftIcon={<FiPlusSquare size='1.5rem' />}
+                        styles={() => ({
+                          root: {
+                            border: '0',
+                          },
+                          leftIcon: {
+                            marginLeft: '4px',
+                            marginRight: '0',
+                            padding: '4px',
+                          },
+                        })}
+                        sx={{
+                          '&:hover': {
+                            backgroundColor: 'gray',
+                            color: '#fff',
+                          },
+                        }}>
+                        ساختن اسپیس جدید
+                      </Button>
+                    </div>
+                    <div
+                      dir='ltr'
+                      className='h-[300px] overflow-auto pr-[10px] scrollbar scrollbar-w-[5px] scrollbar-track-zinc-300 scrollbar-thumb-zinc-400 scrollbar-track-rounded-3xl scrollbar-thumb-rounded-3xl'>
+                      <div dir='rtl'>
+                        <WorkSpaceList />
+                      </div>
+                    </div>
                   </div>
-                  <div className='mb-[16px]'>
-                    <Button
-                      bg={'#D3D3D3'}
-                      c={'#1E1E1E'}
-                      w={'100%'}
-                      leftIcon={<FiPlusSquare size='1.5rem' />}
-                      styles={() => ({
-                        root: {
-                          width: '100%',
-                          border: '0',
-                        },
-                        leftIcon: {
-                          marginLeft: '4px',
-                          marginRight: '0',
-                          padding: '4px',
-                        },
-                      })}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: 'gray',
-                          color: '#fff',
-                        },
-                      }}>
-                      ساختن اسپیس جدید
-                    </Button>
-                  </div>
-                  <div className='max-h-[310px] overflow-auto'>
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                    <WorkSpaceList />
-                  </div>
-                </div>
-              ),
-            },
-          ]}
-          labelFW={'600'}
-          labelFS={'16px'}
-          labelLH={'25px'}
-          detailPadd={'0px'}
-          detailMarg={'13px 0 0 0'}
-        />
+                ),
+              },
+            ]}
+            labelFW={'600'}
+            labelFS={'16px'}
+            labelLH={'25px'}
+            detailPadd={'0px'}
+            detailMarg={'13px 0 0 0'}
+          />
+        </div>
       </div>
 
-      <div className='absolute bottom-[30px] mt-[20px]'>
+      <div className='mt-[20px]'>
         <div className='mb-[20px]'>
           <MiniProfile />
         </div>
