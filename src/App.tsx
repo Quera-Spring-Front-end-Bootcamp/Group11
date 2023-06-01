@@ -3,6 +3,12 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
 import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
+import Profile from './pages/Profile/Profile';
+import {
+  AccountInfo,
+  PersonalInfo,
+  Settings,
+} from './pages/Profile/ProfileSection';
 
 function App() {
   const location = useLocation();
@@ -29,6 +35,22 @@ function App() {
         <Route
           path='forgetPassword'
           element={<ForgetPassword />}
+        />
+      </Route>
+      <Route
+        path='/profile'
+        element={<Profile />}>
+        <Route
+          path='personalInfo'
+          element={<PersonalInfo />}
+        />
+        <Route
+          path='accountInfo'
+          element={<AccountInfo />}
+        />
+        <Route
+          path='settings'
+          element={<Settings />}
         />
       </Route>
     </Routes>
