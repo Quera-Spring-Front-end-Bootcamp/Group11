@@ -11,7 +11,8 @@ const MiniProfile = () => {
           src={null}
           alt=''
           size={'md'}
-          color={'red'}>
+          color={'red'} fontSize={'12px'}
+          radius={'50%'}>
           NM
         </Avatar>
 
