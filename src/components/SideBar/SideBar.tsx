@@ -1,11 +1,16 @@
+import { FiPlusSquare } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+
 import { Accordion, LogOutButton, MiniProfile, Button } from '../';
 import { WorkSpaceList } from '../WorkSpaceList';
 import { SearchInput } from '../SearchInput';
-
 import LogoType from '../LogoType/LogoType';
-import { FiPlusSquare } from 'react-icons/fi';
+import CreateWorkSpaceModalSlice, {
+  onOpen,
+} from '../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
 
 const SideBar = () => {
+  const dispatch = useDispatch();
   return (
     <div className='flex flex-col justify-between bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] '>
       <div>
@@ -33,6 +38,7 @@ const SideBar = () => {
                         styles={() => ({
                           root: {
                             border: '0',
+                            backgroundColor: 'yellow',
                           },
                           leftIcon: {
                             marginLeft: '4px',
@@ -42,9 +48,11 @@ const SideBar = () => {
                         })}
                         sx={{
                           '&:hover': {
-                            backgroundColor: 'gray',
-                            color: '#fff',
+                            backgroundColor: '#D3D3D3aa',
                           },
+                        }}
+                        onClick={() => {
+                          dispatch(CreateWorkSpaceModalSlice.actions.onOpen());
                         }}>
                         ساختن اسپیس جدید
                       </Button>

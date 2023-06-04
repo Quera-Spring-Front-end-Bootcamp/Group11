@@ -22,6 +22,7 @@ const Button = ({ children, onClick, ...otherProps }: ButtonProps) => {
         },
       }}
       onClick={onClick}
+      className='transition'
       {...otherProps}>
       {children}
     </MantineButton>

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from '../Modal';
-import { onClose } from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
+import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useMemo, useState } from 'react';
 import { TextInput, ColorInput } from '../..';
@@ -172,7 +172,7 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
   return (
     <Modal
       opened={open}
-      onClose={() => dispatch(onClose())}
+      onClose={() => dispatch(CreateWorkSpaceModalSlice.actions.onClose())}
       title={title}
       body={body}
       footer={footer}

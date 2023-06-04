@@ -7,6 +7,7 @@ export const CreateWorkSpaceModalSlice = createSlice({
   },
   reducers: {
     onOpen: (state: any) => {
+      console.log('hello');
       state.open = true;
     },
     onClose: (state: any) => {
@@ -18,6 +19,4 @@ export const CreateWorkSpaceModalSlice = createSlice({
   },
 });
 
-export const { onOpen, onClose, onToggle } = CreateWorkSpaceModalSlice.actions;
-
-export default CreateWorkSpaceModalSlice.reducer;
+export default CreateWorkSpaceModalSlice;
