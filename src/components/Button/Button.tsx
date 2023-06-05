@@ -13,7 +13,7 @@ const Button = ({ children, onClick, ...otherProps }: ButtonProps) => {
       p={'10px'}
       c={'white'}
       bg={'#208D8E'}
-      fs={'14px'}
+      fz={'14px'}
       fw={'700'}
       lh={'22px'}
       sx={{
