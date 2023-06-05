@@ -1,11 +1,24 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
 import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
+import { useEffect } from 'react';
+
+import { BASE_URL } from './constants';
 
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    const fetchAuthentication = async () => {
+      const data = await axios.get(BASE_URL);
+      console.log(data);
+    };
+
+    fetchAuthentication();
+  });
 
   return (
     <Routes
