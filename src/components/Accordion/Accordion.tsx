@@ -4,7 +4,7 @@ import type { AccordionProps as MantineAccordionProps } from '@mantine/core';
 
 interface AccordionProps extends MantineAccordionProps {
   inputArray: any;
-  labelFW: string;
+  labelFW: 'bold' | 'normal' | 'bolder' | 'lighter';
   labelFS: string;
   labelLH: string;
   detailPadd: string;
@@ -33,7 +33,7 @@ const Accordion = ({
 
   return (
     <MantineAccordion
-    transitionDuration={500}
+      transitionDuration={500}
       styles={() => ({
         chevron: {
           marginLeft: '0',
@@ -41,7 +41,6 @@ const Accordion = ({
         item: {
           border: 'none',
           margin: '0px',
-
         },
         control: {
           padding: '0px',

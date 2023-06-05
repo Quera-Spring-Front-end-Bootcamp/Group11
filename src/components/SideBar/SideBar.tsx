@@ -68,7 +68,7 @@ const SideBar = () => {
                 ),
               },
             ]}
-            labelFW={'600'}
+            labelFW={'bold'}
             labelFS={'16px'}
             labelLH={'25px'}
             detailPadd={'0px'}

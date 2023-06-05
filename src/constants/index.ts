@@ -3,6 +3,8 @@
  * to prevent main files to get complicated we put constants in here
  */
 
+import { RiAccountPinBoxFill } from 'react-icons/ri';
+
 export const workSpaceColors = [
   '#84C6A1',
   '#78C6B0',
@@ -41,4 +43,25 @@ export const themeColor = [
   '#F3C567',
   '#E57A57',
   '#F1A25C',
+];
+
+export const tabValues = [
+  {
+    value: 'نمایش لیستی',
+    id: 'list',
+    text: 'نمایش لیستی',
+    Icon: RiAccountPinBoxFill,
+  },
+  {
+    value: 'نمایش ستونی',
+    id: 'column',
+    text: 'نمایش ستونی',
+    Icon: RiAccountPinBoxFill,
+  },
+  {
+    value: 'تقویم',
+    id: 'calender',
+    text: 'تقویم',
+    Icon: RiAccountPinBoxFill,
+  },
 ];
