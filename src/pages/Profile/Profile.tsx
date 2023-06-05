@@ -1,4 +1,3 @@
-import { Container } from '../../components';
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useOutlet } from 'react-router';
 
@@ -12,18 +11,17 @@ const Profile = () => {
   });
 
   return (
-    <Container>
-      <div className='flex flex-row h-screen'>
-        
-        <div className='bg-red-500  w-[340px] order-1'>{/* SideBar */}</div>
-        {/* Main Section */}
-        <div className='bg-green-500 w-[calc(100%-340px)] order-2'>
-          <div className='pt-[170px] pr-[58px]'>
-            <Outlet />
-          </div>
+    <div className='flex flex-row h-screen w-screen'>
+      <div className='bg-[#0e75dc] h-[100%] w-[23%] order-1'>
+        {/* SideBar */}
+      </div>
+      {/* Main Section */}
+      <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
+        <div className='pt-[15vh] pr-[58px]'>
+          <Outlet />
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
