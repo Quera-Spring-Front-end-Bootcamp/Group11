@@ -117,7 +117,7 @@ const WorkSpaceList = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-[400px] bg-slate-200 h-screen">
+    <div className="flex flex-col gap-2 bg-slate-200">
       <Card shadow="none" padding="xs" radius="md" className="border-2 p-2">
         <TextInput
           placeholder="تسکت چیه عشقم؟"
