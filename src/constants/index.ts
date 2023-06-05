@@ -3,6 +3,10 @@
  * to prevent main files to get complicated we put constants in here
  */
 
+import { BsColumns } from 'react-icons/bs';
+import { FaList } from 'react-icons/fa';
+import { BsCalendarDay } from 'react-icons/bs';
+
 export const workSpaceColors = [
   '#84C6A1',
   '#78C6B0',
@@ -41,4 +45,22 @@ export const themeColor = [
   '#F3C567',
   '#E57A57',
   '#F1A25C',
+];
+
+export const tabValues = [
+  {
+    value: 'TaskList',
+    icon: FaList,
+    text: 'نمایش لیستی',
+  },
+  {
+    value: 'TaskColumn',
+    icon: BsColumns,
+    text: 'نمایش ستونی',
+  },
+  {
+    value: 'TaskCalendar',
+    icon: BsCalendarDay,
+    text: 'تقویم',
+  },
 ];

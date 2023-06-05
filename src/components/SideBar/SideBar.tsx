@@ -1,19 +1,23 @@
+import { FiPlusSquare } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+
 import { Accordion, LogOutButton, MiniProfile, Button } from '../';
 import { WorkSpaceList } from '../WorkSpaceList';
 import { SearchInput } from '../SearchInput';
-
 import LogoType from '../LogoType/LogoType';
-import { FiPlusSquare } from 'react-icons/fi';
+import CreateWorkSpaceModalSlice from '../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
 
 const SideBar = () => {
+  const dispatch = useDispatch();
   return (
-    <div className='flex flex-col justify-between bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] '>
+    <div className='flex flex-col justify-between bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] border-l-[#AAAAAA] border-[0.5px]'>
       <div>
         <div className='mb-[31px] '>
           <LogoType />
         </div>
 
         <div>
+          {/*@ts-ignore*/}
           <Accordion
             inputArray={[
               {
@@ -26,26 +30,18 @@ const SideBar = () => {
                     </div>
                     <div className='mb-[16px]'>
                       <Button
-                        bg={'#D3D3D3'}
-                        c={'#1E1E1E'}
                         fullWidth={true}
-                        leftIcon={<FiPlusSquare size='1.5rem' />}
-                        styles={() => ({
-                          root: {
-                            border: '0',
-                          },
-                          leftIcon: {
-                            marginLeft: '4px',
-                            marginRight: '0',
-                            padding: '4px',
-                          },
-                        })}
+                        c={'#1E1E1E'}
+                        bg={'#D3D3D3'}
+                        icon={FiPlusSquare}
                         sx={{
                           '&:hover': {
-                            backgroundColor: 'gray',
-                            color: '#fff',
+                            backgroundColor: '#D3D3D3cc',
                           },
-                        }}>
+                        }}
+                        onClick={() =>
+                          dispatch(CreateWorkSpaceModalSlice.actions.onOpen())
+                        }>
                         ساختن اسپیس جدید
                       </Button>
                     </div>

@@ -26,7 +26,7 @@ enum STEPS {
 const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
   const [step, setStep] = useState(STEPS.NAME);
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.CreateWorkSpaceModal.open);
+  const open = useSelector((state: any) => state.createWorkSpaceModal.open);
 
   const {
     register, //register function will pass to text inputs

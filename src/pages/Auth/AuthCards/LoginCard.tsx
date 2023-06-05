@@ -43,7 +43,7 @@ const LogInCard = ({}: LogInCardProps) => {
         to='/auth/forgetPassword'>
         رمز عبور را فراموش کرده‌ای؟
       </Link>
-      <Link to='/'>
+      <Link to='/board'>
         <Button
           onClick={() => {
             console.log(getValues()); //demonstration 

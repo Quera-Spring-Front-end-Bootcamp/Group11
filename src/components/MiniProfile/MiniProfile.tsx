@@ -3,7 +3,7 @@ import { Avatar } from '../Avatar';
 const MiniProfile = () => {
   return (
     <div
-      onclick={onclick}
+      // onClick={onclick}
       className='flex justify-center items-center gap-2 w-[fit-content] cursor-pointer'>
       {/* src.alt,color props & placeholder should be from BackEnd */}
       <Avatar

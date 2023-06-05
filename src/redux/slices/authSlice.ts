@@ -13,6 +13,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setPage } = authSlice.actions;
-
-export default authSlice.reducer;
+export default authSlice;

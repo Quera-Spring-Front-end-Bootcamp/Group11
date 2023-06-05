@@ -12,9 +12,21 @@ function App() {
       location={location}
       key={location.pathname}>
       <Route
-        path='/'
-        element={<Board />}
-      />
+        path='/board'
+        element={<Board />}>
+        <Route
+          path='TaskList'
+          element={<div>TaskList</div>}
+        />
+        <Route
+          path='TaskColumn'
+          element={<div>TaskColumn</div>}
+        />
+        <Route
+          path='TaskCalendar'
+          element={<div>TaskCalendar</div>}
+        />
+      </Route>
       <Route
         path='/auth'
         element={<Auth />}>
