@@ -9,7 +9,7 @@ interface ModalProps extends MantineModalProps {
   actionLabel?: string;
   action?: () => void;
   back?: boolean;
-  backAction: () => void;
+  backAction?: () => void;
 }
 
 const Modal = ({
@@ -75,7 +75,7 @@ const Modal = ({
 
         {/*footer section if included */}
         <div>{footer}</div>
-        
+
         {/* action button if included */}
         {action && (
           <Button

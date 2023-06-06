@@ -1,11 +1,18 @@
 import { Button as MantineButton } from '@mantine/core';
 import type { ButtonProps as MantineButtonProps } from '@mantine/core';
+import { IconType } from 'react-icons';
 
 interface ButtonProps extends MantineButtonProps {
   onClick?: () => void;
+  icon?: IconType;
 }
 
-const Button = ({ children, onClick, ...otherProps }: ButtonProps) => {
+const Button = ({
+  children,
+  onClick,
+  icon: Icon,
+  ...otherProps
+}: ButtonProps) => {
   return (
     <MantineButton
       h={'40px'}
@@ -16,11 +23,17 @@ const Button = ({ children, onClick, ...otherProps }: ButtonProps) => {
       fz={'14px'}
       fw={'700'}
       lh={'22px'}
-      sx={{
-        '&:hover': {
-          backgroundColor: '#277576',
+      styles={{
+        root: {
+          '&:hover': {
+            backgroundColor: '#277576',
+          },
+        },
+        inner: {
+          gap: '0.5rem',
         },
       }}
+      leftIcon={Icon && <Icon size={18} />}
       onClick={onClick}
       {...otherProps}>
       {children}

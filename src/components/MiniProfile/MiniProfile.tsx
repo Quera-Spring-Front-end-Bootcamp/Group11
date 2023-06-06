@@ -15,7 +15,6 @@ const MiniProfile = () => {
           radius={'50%'}>
           NM
         </Avatar>
-
         <div className='leading-25 text-[#1E1E1E] text-16 font-medium'>
           {/* user name should be from BackEnd */}
           نیلوفر موجودی

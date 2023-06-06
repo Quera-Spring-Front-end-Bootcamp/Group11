@@ -1,0 +1,40 @@
+th.fc-col-header-cell {
+ border: 0;
+}
+.day-overlay {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  background-color: rgb(13, 155, 100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 5px;
+  color: white;
+}
+.fc-day {
+  cursor: pointer;
+}
+.fc-day:hover .day-overlay {
+  opacity: 1;
+}
+.fc .fc-daygrid-day-number {
+	position: static;
+}
+a.fc-event {
+  text-align: right;
+}
+.mantine-Modal-header {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+.mantine-Modal-close {
+  margin: 1px !important;
+}
+.fc-event-main {
+  padding: 2px 7px 2px 2px;
+  background: #208d8e;
+  border: none;
+}
