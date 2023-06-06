@@ -19,7 +19,6 @@ const Settings = () => {
     },
   });
   const [checked, setChecked] = useState(false);
-  console.log(checked)
   const selectedColor = watch('selectedColor');
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -29,7 +28,7 @@ const Settings = () => {
     });
   };
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data: any) => console.log(data);
 
   return (
     <div className='flex flex-col'>
@@ -47,7 +46,7 @@ const Settings = () => {
           onSubmit={handleSubmit(onSubmit)}>
           <div className='flex flex-row gap-[14px]'>
             {themeColor.map((color) => (
-              <div
+              <div key={color}
                 className={` ${
                   selectedColor === color
                     ? 'text-white scale-[1.4] '
@@ -68,7 +67,7 @@ const Settings = () => {
           </div>
           <div className='mt-[50px]'>
             <Switch
-              onClick={() => setCustomValue('darkMode', checked)}
+              onClick={() => setCustomValue('darkMode', !checked)}
               size='lg'
               checked={checked}
               onChange={(event) => {
@@ -78,12 +77,12 @@ const Settings = () => {
                 checked ? (
                   <BsCheck
                     color={'teal'}
-                    size='1rem'
+                    size='1.1rem'
                   />
                 ) : (
                   <BsX
                     color={'red'}
-                    size='1rem'
+                    size='1.1rem'
                   />
                 )
               }
@@ -94,6 +93,7 @@ const Settings = () => {
               label={'حالت شب'}
               styles={() => ({
                 thumb: {
+                  cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                 },
