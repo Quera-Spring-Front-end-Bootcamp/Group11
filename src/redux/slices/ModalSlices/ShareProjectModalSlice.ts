@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const CreateWorkSpaceModalSlice = createSlice({
-  name: 'CreateWorkSpaceModal',
+export const ShareProjectModalSlice = createSlice({
+  name: 'ShareProjectModalSlice',
   initialState: {
-    open: false,
+    open: true,
   },
   reducers: {
     onOpen: (state: any) => {
@@ -18,6 +18,6 @@ export const CreateWorkSpaceModalSlice = createSlice({
   },
 });
 
-export const { onOpen, onClose, onToggle } = CreateWorkSpaceModalSlice.actions;
+export const { onOpen, onClose, onToggle } = ShareProjectModalSlice.actions;
 
-export default CreateWorkSpaceModalSlice;
+export default ShareProjectModalSlice;

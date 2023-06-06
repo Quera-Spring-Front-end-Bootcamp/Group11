@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, TextInput, Card } from '../index';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FieldValues, useForm } from 'react-hook-form';
 
 interface WorkSpace {
   id: number;
@@ -16,11 +17,18 @@ interface SubWorkSpace {
 const WorkSpaceList = () => {
   const [workSpaces, setWorkSpaces] = useState<WorkSpace[]>([]);
   const [newWorkSpaceTitle, setNewWorkSpaceTitle] = useState('');
-  const [editingWorkSpaceId, setEditingWorkSpaceId] = useState<number | null>(null);
-  const [editingSubWorkSpaceId, setEditingSubWorkSpaceId] = useState<number | null>(null);
+  const [editingWorkSpaceId, setEditingWorkSpaceId] = useState<number | null>(
+    null
+  );
+  const [editingSubWorkSpaceId, setEditingSubWorkSpaceId] = useState<
+    number | null
+  >(null);
   const [editingSubWorkSpaceValue, setEditingSubWorkSpaceValue] = useState('');
 
-  const handleWorkSpaceTitleChange = (event: React.ChangeEvent<HTMLInputElement>, workSpaceId: number) => {
+  const handleWorkSpaceTitleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    workSpaceId: number
+  ) => {
     const updatedWorkSpaces = workSpaces.map((workSpace) => {
       if (workSpace.id === workSpaceId) {
         return { ...workSpace, title: event.target.value };
@@ -65,7 +73,12 @@ const WorkSpaceList = () => {
 
     setWorkSpaces((prevWorkSpaces) =>
       prevWorkSpaces.map((workSpace) =>
-        workSpace.id === workSpaceId ? { ...workSpace, subWorkSpaces: [...workSpace.subWorkSpaces, newSubWorkSpace] } : workSpace
+        workSpace.id === workSpaceId
+          ? {
+              ...workSpace,
+              subWorkSpaces: [...workSpace.subWorkSpaces, newSubWorkSpace],
+            }
+          : workSpace
       )
     );
   };
@@ -78,16 +91,25 @@ const WorkSpaceList = () => {
     setEditingWorkSpaceId(null);
   };
 
-  const handleEditSubWorkSpace = (subWorkSpaceId: number, subWorkSpaceValue: string) => {
+  const handleEditSubWorkSpace = (
+    subWorkSpaceId: number,
+    subWorkSpaceValue: string
+  ) => {
     setEditingSubWorkSpaceId(subWorkSpaceId);
     setEditingSubWorkSpaceValue(subWorkSpaceValue);
   };
 
-  const handleSaveSubWorkSpace = (workSpaceId: number, subWorkSpaceId: number) => {
+  const handleSaveSubWorkSpace = (
+    workSpaceId: number,
+    subWorkSpaceId: number
+  ) => {
     const updatedWorkSpaces = workSpaces.map((workSpace) => {
       if (workSpace.id === workSpaceId) {
-        const updatedSubWorkSpaces = workSpace.subWorkSpaces.map((subWorkSpace) =>
-          subWorkSpace.id === subWorkSpaceId ? { ...subWorkSpace, title: editingSubWorkSpaceValue } : subWorkSpace
+        const updatedSubWorkSpaces = workSpace.subWorkSpaces.map(
+          (subWorkSpace) =>
+            subWorkSpace.id === subWorkSpaceId
+              ? { ...subWorkSpace, title: editingSubWorkSpaceValue }
+              : subWorkSpace
         );
         return { ...workSpace, subWorkSpaces: updatedSubWorkSpaces };
       }
@@ -100,14 +122,21 @@ const WorkSpaceList = () => {
   };
 
   const handleDeleteWorkSpace = (workSpaceId: number) => {
-    const updatedWorkSpaces = workSpaces.filter((workSpace) => workSpace.id !== workSpaceId);
+    const updatedWorkSpaces = workSpaces.filter(
+      (workSpace) => workSpace.id !== workSpaceId
+    );
     setWorkSpaces(updatedWorkSpaces);
   };
 
-  const handleDeleteSubWorkSpace = (workSpaceId: number, subWorkSpaceId: number) => {
+  const handleDeleteSubWorkSpace = (
+    workSpaceId: number,
+    subWorkSpaceId: number
+  ) => {
     const updatedWorkSpaces = workSpaces.map((workSpace) => {
       if (workSpace.id === workSpaceId) {
-        const updatedSubWorkSpaces = workSpace.subWorkSpaces.filter((subWorkSpace) => subWorkSpace.id !== subWorkSpaceId);
+        const updatedSubWorkSpaces = workSpace.subWorkSpaces.filter(
+          (subWorkSpace) => subWorkSpace.id !== subWorkSpaceId
+        );
         return { ...workSpace, subWorkSpaces: updatedSubWorkSpaces };
       }
       return workSpace;
@@ -116,62 +145,114 @@ const WorkSpaceList = () => {
     setWorkSpaces(updatedWorkSpaces);
   };
 
+  const {
+    register, //register function will pass to text inputs
+    handleSubmit, //submit function
+    formState: { errors }, //error for form validation
+  } = useForm<FieldValues>({
+    defaultValues: {
+      taskDesc: '',
+      taskTitleChange: '',
+      subWorkSpaceValue: '',
+    },
+  });
+
   return (
-    <div className="flex flex-col gap-2 bg-slate-200">
-      <Card shadow="none" padding="xs" radius="md" className="border-2 p-2">
+    <div className='flex flex-col gap-2 bg-slate-200'>
+      <Card
+        shadow='none'
+        padding='xs'
+        radius='md'
+        className='border-2 p-2'>
         <TextInput
-          placeholder="تسکت چیه عشقم؟"
+          id='taskDesc'
+          register={register}
+          placeholder='تسکت چیه عشقم؟'
           value={newWorkSpaceTitle}
           onChange={(event) => setNewWorkSpaceTitle(event.target.value)}
           onKeyPress={handleKeyPress}
-          className="mb-5"
+          className='mb-5'
         />
-        <Button variant="filled" onClick={handleCreateWorkSpace}>
+        <Button
+          variant='filled'
+          onClick={handleCreateWorkSpace}>
           تسکو بساز
         </Button>
       </Card>
       {workSpaces.map((workSpace) => (
-        <Card key={workSpace.id} shadow="none" padding="xs" radius="md" className="border-2 flex flex-col gap-2 p-2">
+        <Card
+          key={workSpace.id}
+          shadow='none'
+          padding='xs'
+          radius='md'
+          className='border-2 flex flex-col gap-2 p-2'>
           {editingWorkSpaceId === workSpace.id ? (
             <TextInput
+              id='taskTitleChange'
+              register={register}
               value={workSpace.title}
-              onChange={(event) => handleWorkSpaceTitleChange(event, workSpace.id)}
+              onChange={(event) =>
+                handleWorkSpaceTitleChange(event, workSpace.id)
+              }
               autoFocus
             />
           ) : (
-            <div className="flex items-center justify-between gap-5 bg-green-100 p-2 rounded-md">
-              <h3 className="font-bold text-xl">{workSpace.title}</h3>
-              <div className="flex gap-3">
+            <div className='flex items-center justify-between gap-5 bg-green-100 p-2 rounded-md'>
+              <h3 className='font-bold text-xl'>{workSpace.title}</h3>
+              <div className='flex gap-3'>
                 <FaEdit onClick={() => handleEditWorkSpace(workSpace.id)} />
                 <FaTrash onClick={() => handleDeleteWorkSpace(workSpace.id)} />
-                <FaPlus onClick={() => handleCreateSubWorkSpace(workSpace.id)} />
+                <FaPlus
+                  onClick={() => handleCreateSubWorkSpace(workSpace.id)}
+                />
               </div>
             </div>
           )}
-          <div className="flex flex-col gap-3 mr-5">
+          <div className='flex flex-col gap-3 mr-5'>
             {workSpace.subWorkSpaces.map((subWorkSpace) => (
-              <div key={subWorkSpace.id} className="flex items-center justify-between gap-5 bg-slate-200 p-3 rounded-md">
+              <div
+                key={subWorkSpace.id}
+                className='flex items-center justify-between gap-5 bg-slate-200 p-3 rounded-md'>
                 {editingSubWorkSpaceId === subWorkSpace.id ? (
-                  <div className="flex gap-2">
+                  <div className='flex gap-2'>
                     <TextInput
+                      id='subWorkSpaceValue'
+                      register={register}
                       value={editingSubWorkSpaceValue}
-                      onChange={(event) => setEditingSubWorkSpaceValue(event.target.value)}
+                      onChange={(event) =>
+                        setEditingSubWorkSpaceValue(event.target.value)
+                      }
                       autoFocus
                     />
                     <Button
-                      variant="filled"
-                      size="xs"
-                      onClick={() => handleSaveSubWorkSpace(workSpace.id, subWorkSpace.id)}
-                    >
+                      variant='filled'
+                      size='xs'
+                      onClick={() =>
+                        handleSaveSubWorkSpace(workSpace.id, subWorkSpace.id)
+                      }>
                       ذخیره
                     </Button>
                   </div>
                 ) : (
                   <>
                     {subWorkSpace.title}
-                    <div className="flex gap-3">
-                      <FaEdit onClick={() => handleEditSubWorkSpace(subWorkSpace.id, subWorkSpace.title)} />
-                      <FaTrash onClick={() => handleDeleteSubWorkSpace(workSpace.id, subWorkSpace.id)} />
+                    <div className='flex gap-3'>
+                      <FaEdit
+                        onClick={() =>
+                          handleEditSubWorkSpace(
+                            subWorkSpace.id,
+                            subWorkSpace.title
+                          )
+                        }
+                      />
+                      <FaTrash
+                        onClick={() =>
+                          handleDeleteSubWorkSpace(
+                            workSpace.id,
+                            subWorkSpace.id
+                          )
+                        }
+                      />
                     </div>
                   </>
                 )}
@@ -179,7 +260,10 @@ const WorkSpaceList = () => {
             ))}
           </div>
           {editingWorkSpaceId === workSpace.id && (
-            <Button variant="filled" size="xs" onClick={handleSaveWorkSpace}>
+            <Button
+              variant='filled'
+              size='xs'
+              onClick={handleSaveWorkSpace}>
               ذخیره
             </Button>
           )}

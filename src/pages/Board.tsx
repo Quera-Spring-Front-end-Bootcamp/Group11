@@ -1,8 +1,10 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { Container } from '../components';
-import { CreateWorkSpaceModal } from '../components/Modal';
-import { SideBar } from '../components/SideBar';
+import { CreateWorkSpaceModal, ShareProjectModal } from '../components/Modal';
+import HeaderBoard from '../components/HeaderBoard';
+import SideBar from '../components/SideBar/SideBar';
 
 export interface AuthPageProps {}
 
@@ -10,14 +12,17 @@ const Board: React.FC<AuthPageProps> = ({}) => {
   return (
     <>
       <CreateWorkSpaceModal />
+      <ShareProjectModal />
       <Container>
         <div className='h-screen flex'>
-          <div >{<SideBar/>}</div>
-          <div className='bg-red-300 w-[calc(100%-340px)] flex flex-col'>
-            <div className='h-[170px] bg-sky-600'>{/* <Header/> */}</div>
+          <div>{<SideBar />}</div>
+          <div className='w-[calc(100%-340px)] flex flex-col'>
+            <div className='h-[170px] bg-[#fafbfc] pr-3 pl-6'>
+              <HeaderBoard />
+            </div>
 
-            <div className='h-[calc(100%-170px)] bg-green-400'>
-              {/* <boardElement/> */}
+            <div className='h-[calc(100%-170px)] p-5'>
+              <Outlet />
             </div>
           </div>
         </div>

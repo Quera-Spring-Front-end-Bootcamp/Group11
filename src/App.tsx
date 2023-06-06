@@ -1,20 +1,45 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
 import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
+import { useEffect } from 'react';
+
+import { BASE_URL } from './constants';
 
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    const fetchAuthentication = async () => {
+      const data = await axios.get(BASE_URL);
+      console.log(data);
+    };
+
+    fetchAuthentication();
+  });
 
   return (
     <Routes
       location={location}
       key={location.pathname}>
       <Route
-        path='/'
-        element={<Board />}
-      />
+        path='/board'
+        element={<Board />}>
+        <Route
+          path='TaskList'
+          element={<div>TaskList</div>}
+        />
+        <Route
+          path='TaskColumn'
+          element={<div>TaskColumn</div>}
+        />
+        <Route
+          path='TaskCalendar'
+          element={<div>TaskCalendar</div>}
+        />
+      </Route>
       <Route
         path='/auth'
         element={<Auth />}>
