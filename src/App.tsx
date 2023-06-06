@@ -20,9 +20,7 @@ import {
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Profile from './pages/Profile/Profile';
-import { useEffect } from 'react';
 import { BASE_URL } from './constants';
-
 
 function App() {
   const location = useLocation();
@@ -35,7 +33,7 @@ function App() {
 
     //extract query params from url if exists (only for reset password)
     const queryParams = Object.fromEntries([...searchParams]);
-    console.log(queryParams)
+    console.log(queryParams);
 
     if (queryParams.token) {
       //save token to local storage for accessibility
@@ -56,50 +54,51 @@ function App() {
   return (
     <>
       <Toaster />
-     <Routes
-      location={location}
-      key={location.pathname}>
-      <Route
-        path='/board'
-        element={<Board />}>
+      <Routes
+        location={location}
+        key={location.pathname}>
         <Route
-          path='TaskList'
-          element={<div>TaskList</div>}
-        />
+          path='/board'
+          element={<Board />}>
+          <Route
+            path='TaskList'
+            element={<div>TaskList</div>}
+          />
+          <Route
+            path='TaskColumn'
+            element={<div>TaskColumn</div>}
+          />
+          <Route
+            path='TaskCalendar'
+            element={<div>TaskCalendar</div>}
+          />
+        </Route>
         <Route
-          path='TaskColumn'
-          element={<div>TaskColumn</div>}
-        />
+          path='/auth'
+          element={<Auth />}>
+          <Route
+            path='signUp'
+            element={<SignUpCard />}
+          />
+          <Route
+            path='logIn'
+            element={<LogInCard />}
+          />
+          <Route
+            path='forgetPassword'
+            element={<ForgetPassword />}
+          />
+          <Route
+            path='resetPassword'
+            element={<ResetPassword />}
+          />
+        </Route>
         <Route
-          path='TaskCalendar'
-          element={<div>TaskCalendar</div>}
+          path='/profile'
+          element={<Profile />}
         />
-      </Route>
-      <Route
-        path='/auth'
-        element={<Auth />}>
-        <Route
-          path='signUp'
-          element={<SignUpCard />}
-        />
-        <Route
-          path='logIn'
-          element={<LogInCard />}
-        />
-        <Route
-          path='forgetPassword'
-          element={<ForgetPassword />}
-        />
-        <Route
-          path='resetPassword'
-          element={<ResetPassword />}
-        />
-      </Route>
-      <Route
-        path='/profile'
-        element={<Profile />}
-      />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 
