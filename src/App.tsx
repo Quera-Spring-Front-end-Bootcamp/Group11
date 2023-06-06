@@ -1,11 +1,4 @@
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
-import axios from 'axios';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
@@ -17,37 +10,18 @@ import {
   ResetPassword,
 } from './pages/Auth/AuthCards';
 
-import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Profile from './pages/Profile/Profile';
-import { BASE_URL } from './constants';
+import IndexPage from './pages/Index';
+import { useEffect } from 'react';
 
 function App() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    //remove previous saved reset token if exists
-    localStorage.removeItem('resetToken');
-
-    //extract query params from url if exists (only for reset password)
-    const queryParams = Object.fromEntries([...searchParams]);
-    console.log(queryParams);
-
-    if (queryParams.token) {
-      //save token to local storage for accessibility
-      localStorage.setItem('resetToken', queryParams.token);
-
-      //navigate to reset password page
-      navigate('/auth/resetPassword');
-    } else {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!refreshToken) {
-        navigate('/auth');
-      } else {
-        navigate('/board/TaskList');
-      }
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      navigate('/auth');
     }
   }, []);
 
@@ -55,8 +29,16 @@ function App() {
     <>
       <Toaster />
       <Routes
-        location={location}
-        key={location.pathname}>
+      // location={location}
+      // key={location.pathname}
+      >
+        {['/', '/:queryParams'].map((path) => (
+          <Route
+            key={path}
+            path={path}
+            element={<IndexPage />}
+          />
+        ))}
         <Route
           path='/board'
           element={<Board />}>
