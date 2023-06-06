@@ -4,9 +4,10 @@ import axios from 'axios';
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
 import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
+import Profile from './pages/Profile/Profile';
 import { useEffect } from 'react';
-
 import { BASE_URL } from './constants';
+
 
 function App() {
   const location = useLocation();
@@ -56,6 +57,10 @@ function App() {
           element={<ForgetPassword />}
         />
       </Route>
+      <Route
+        path='/profile'
+        element={<Profile />}
+      />
     </Routes>
   );
 }
