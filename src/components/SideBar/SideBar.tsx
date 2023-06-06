@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { FiPlusSquare } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 

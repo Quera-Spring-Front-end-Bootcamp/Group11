@@ -33,7 +33,8 @@ const Accordion = ({
 
   return (
     <MantineAccordion
-    transitionDuration={500}
+      transitionDuration={200}
+      defaultValue={inputArray[0].AccTitle}
       styles={() => ({
         chevron: {
           marginLeft: '0',
@@ -41,7 +42,6 @@ const Accordion = ({
         item: {
           border: 'none',
           margin: '0px',
-
         },
         control: {
           padding: '0px',
