@@ -17,6 +17,8 @@
   :root {
     --card-height: 65vh;
     --card-width: calc(var(--card-height) / 1.5);
+    scrollbar-gutter: unset;
+
   }
   .card {
     padding: 3px;

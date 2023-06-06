@@ -9,14 +9,20 @@ import axios from 'axios';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
+
 import {
   LogInCard,
   SignUpCard,
   ForgetPassword,
   ResetPassword,
 } from './pages/Auth/AuthCards';
+
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import Profile from './pages/Profile/Profile';
+import { useEffect } from 'react';
+import { BASE_URL } from './constants';
+
 
 function App() {
   const location = useLocation();
@@ -50,47 +56,50 @@ function App() {
   return (
     <>
       <Toaster />
-      <Routes
-        location={location}
-        key={location.pathname}>
+     <Routes
+      location={location}
+      key={location.pathname}>
+      <Route
+        path='/board'
+        element={<Board />}>
         <Route
-          path='/board'
-          element={<Board />}>
-          <Route
-            path='TaskList'
-            element={<div>TaskList</div>}
-          />
-          <Route
-            path='TaskColumn'
-            element={<div>TaskColumn</div>}
-          />
-          <Route
-            path='TaskCalendar'
-            element={<div>TaskCalendar</div>}
-          />
-        </Route>
+          path='TaskList'
+          element={<div>TaskList</div>}
+        />
         <Route
-          path='/auth'
-          element={<Auth />}>
-          <Route
-            path='signUp'
-            element={<SignUpCard />}
-          />
-          <Route
-            path='logIn'
-            element={<LogInCard />}
-          />
-          <Route
-            path='forgetPassword'
-            element={<ForgetPassword />}
-          />
-          <Route
-            path='resetPassword'
-            element={<ResetPassword />}
-          />
-        </Route>
-      </Routes>
-    </>
+          path='TaskColumn'
+          element={<div>TaskColumn</div>}
+        />
+        <Route
+          path='TaskCalendar'
+          element={<div>TaskCalendar</div>}
+        />
+      </Route>
+      <Route
+        path='/auth'
+        element={<Auth />}>
+        <Route
+          path='signUp'
+          element={<SignUpCard />}
+        />
+        <Route
+          path='logIn'
+          element={<LogInCard />}
+        />
+        <Route
+          path='forgetPassword'
+          element={<ForgetPassword />}
+        />
+        <Route
+          path='resetPassword'
+          element={<ResetPassword />}
+        />
+      </Route>
+      <Route
+        path='/profile'
+        element={<Profile />}
+      />
+    </Routes>
   );
 }
 

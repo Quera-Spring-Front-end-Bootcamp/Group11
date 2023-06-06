@@ -3,9 +3,10 @@ import type { AvatarProps as MantineAvatarProps } from '@mantine/core';
 
 interface AvatarProps extends MantineAvatarProps {
   onClick?: () => void;
+  fontSize: string
 }
 
-const Avatar = ({ size, children, onClick, ...otherProps }: AvatarProps) => {
+const Avatar = ({ fontSize, size, children, onClick, ...otherProps }: AvatarProps) => {
   return (
     <MantineAvatar
       styles={() => ({
@@ -14,11 +15,10 @@ const Avatar = ({ size, children, onClick, ...otherProps }: AvatarProps) => {
         },
         placeholder: {
           border: '0',
-          fontSize: ((size =='md')?'12px':'10px'),
+          fontSize: fontSize,
         },
       })}
       size={size}
-      radius={'xl'}
       onClick={onClick}
       {...otherProps}>
       {children}
