@@ -4,11 +4,6 @@ import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
 import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
 import Profile from './pages/Profile/Profile';
-import {
-  AccountInfo,
-  PersonalInfo,
-  Settings,
-} from './pages/Profile/ProfileSection';
 
 function App() {
   const location = useLocation();
@@ -39,20 +34,8 @@ function App() {
       </Route>
       <Route
         path='/profile'
-        element={<Profile />}>
-        <Route
-          path='personalInfo'
-          element={<PersonalInfo />}
-        />
-        <Route
-          path='accountInfo'
-          element={<AccountInfo />}
-        />
-        <Route
-          path='settings'
-          element={<Settings />}
-        />
-      </Route>
+        element={<Profile />}
+      />
     </Routes>
   );
 }
