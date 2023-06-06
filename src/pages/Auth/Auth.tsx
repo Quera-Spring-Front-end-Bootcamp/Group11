@@ -8,7 +8,7 @@ const Auth: React.FC<AuthPageProps> = ({}) => {
   const outlet = useOutlet();
   const navigate = useNavigate();
 
-  //if user enter /auth manually route automatically redirect to login page
+  //if user enter /auth manually automatically redirect to login page
   useEffect(() => {
     if (!outlet) navigate('login');
   });

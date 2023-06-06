@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const ShareProjectModalSlice = createSlice({
   name: 'ShareProjectModalSlice',
   initialState: {
-    open: true,
+    open: false,
   },
   reducers: {
     onOpen: (state: any) => {

@@ -1,5 +1,5 @@
 import { Tabs as MantineTabs, TabsValue } from '@mantine/core';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { tabObject } from '../../util/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ const Tabs = ({ tabsArray }: TabsProps) => {
         defaultValue={selectedTabValue}
         onTabChange={(value) => {
           //push selected tab value to url
-          navigate(`/board/${value}`);
+          // navigate(`/board/${value}`);
 
           //send selected tab to redux
           dispatch(boardSlice.actions.setBoardComponent(value));
@@ -42,15 +42,18 @@ const Tabs = ({ tabsArray }: TabsProps) => {
         }}>
         <MantineTabs.List position='right'>
           {tabsArray.map(({ icon: Icon, value, text }) => (
-            <MantineTabs.Tab
+            <Link
               key={value}
-              value={value}
-              icon={<Icon size={18} />}
-              sx={{
-                color: value === selectedTabValue ? '#208D8E !important' : '',
-              }}>
-              {text}
-            </MantineTabs.Tab>
+              to={`/board/${value}`}>
+              <MantineTabs.Tab
+                value={value}
+                icon={<Icon size={18} />}
+                sx={{
+                  color: value === selectedTabValue ? '#208D8E !important' : '',
+                }}>
+                {text}
+              </MantineTabs.Tab>
+            </Link>
           ))}
         </MantineTabs.List>
       </MantineTabs>

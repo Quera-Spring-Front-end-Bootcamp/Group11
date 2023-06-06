@@ -1,62 +1,96 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import axios from 'axios';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
-import { LogInCard, SignUpCard, ForgetPassword } from './pages/Auth/AuthCards';
+import {
+  LogInCard,
+  SignUpCard,
+  ForgetPassword,
+  ResetPassword,
+} from './pages/Auth/AuthCards';
 import { useEffect } from 'react';
-
-import { BASE_URL } from './constants';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const fetchAuthentication = async () => {
-      const data = await axios.get(BASE_URL);
-      console.log(data);
-    };
+    //remove previous saved reset token if exists
+    localStorage.removeItem('resetToken');
 
-    fetchAuthentication();
-  });
+    //extract query params from url if exists (only for reset password)
+    const queryParams = Object.fromEntries([...searchParams]);
+    console.log(queryParams)
+
+    if (queryParams.token) {
+      //save token to local storage for accessibility
+      localStorage.setItem('resetToken', queryParams.token);
+
+      //navigate to reset password page
+      navigate('/auth/resetPassword');
+    } else {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (!refreshToken) {
+        navigate('/auth');
+      } else {
+        navigate('/board/TaskList');
+      }
+    }
+  }, []);
 
   return (
-    <Routes
-      location={location}
-      key={location.pathname}>
-      <Route
-        path='/board'
-        element={<Board />}>
+    <>
+      <Toaster />
+      <Routes
+        location={location}
+        key={location.pathname}>
         <Route
-          path='TaskList'
-          element={<div>TaskList</div>}
-        />
+          path='/board'
+          element={<Board />}>
+          <Route
+            path='TaskList'
+            element={<div>TaskList</div>}
+          />
+          <Route
+            path='TaskColumn'
+            element={<div>TaskColumn</div>}
+          />
+          <Route
+            path='TaskCalendar'
+            element={<div>TaskCalendar</div>}
+          />
+        </Route>
         <Route
-          path='TaskColumn'
-          element={<div>TaskColumn</div>}
-        />
-        <Route
-          path='TaskCalendar'
-          element={<div>TaskCalendar</div>}
-        />
-      </Route>
-      <Route
-        path='/auth'
-        element={<Auth />}>
-        <Route
-          path='signUp'
-          element={<SignUpCard />}
-        />
-        <Route
-          path='logIn'
-          element={<LogInCard />}
-        />
-        <Route
-          path='forgetPassword'
-          element={<ForgetPassword />}
-        />
-      </Route>
-    </Routes>
+          path='/auth'
+          element={<Auth />}>
+          <Route
+            path='signUp'
+            element={<SignUpCard />}
+          />
+          <Route
+            path='logIn'
+            element={<LogInCard />}
+          />
+          <Route
+            path='forgetPassword'
+            element={<ForgetPassword />}
+          />
+          <Route
+            path='resetPassword'
+            element={<ResetPassword />}
+          />
+        </Route>
+      </Routes>
+    </>
   );
 }
 

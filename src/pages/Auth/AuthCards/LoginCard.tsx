@@ -1,8 +1,9 @@
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 import {
   Card,
@@ -14,10 +15,9 @@ import {
 import { BASE_URL } from '../../../constants';
 import authSlice from '../../../redux/slices/authSlice';
 
-type LogInCardProps = {};
-
-const LogInCard = ({}: LogInCardProps) => {
+const LogInCard = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const {
@@ -34,27 +34,40 @@ const LogInCard = ({}: LogInCardProps) => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
     const { emailOrUsername, password } = data;
+    try {
+      const { data: loginData } = await axios.post(`${BASE_URL}/auth/login`, {
+        emailOrUsername,
+        password,
+      });
 
-    const { data: loginData } = await axios.post(`${BASE_URL}/auth/login`, {
-      emailOrUsername,
-      password,
-    });
+      const {
+        data: {
+          accessToken,
+          refreshToken,
+          toBeSendUserData: { email, settings, username },
+        },
+      } = loginData;
 
-    const {
-      data: {
-        accessToken,
-        refreshToken,
-        toBeSendUserData: { email, settings, username },
-      },
-    } = loginData;
-    
-    //save tokens to local storage
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+      toast.success('خوش آمدید');
 
-    //save user info to redux accessible globally
-    dispatch(authSlice.actions.setUserInfo({ email, settings, username }));
-    setLoading(false);
+      //save tokens to local storage
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+
+      //save user info to redux accessible globally
+      dispatch(authSlice.actions.setUserInfo({ email, settings, username }));
+
+      setLoading(false);
+      navigate('/board');
+    } catch (error: any) {
+      if (error.message === 'Network Error')
+        toast.error(
+          'مشکلی پیش آمده است، لطفا دوباره تلاش کنید یا اتصال اینترنت خود را بررسی نمایید'
+        );
+      if (error.response.status === 401)
+        toast.error('کاربری با مشخصات وارد شده یافت نشد');
+      setLoading(false);
+    }
   };
   return (
     <Card className='flex flex-col'>
