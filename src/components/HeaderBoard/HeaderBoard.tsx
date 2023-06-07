@@ -1,6 +1,6 @@
 import { AiOutlineShareAlt } from 'react-icons/ai';
 
-import ShareProjectModalSlice from '../../redux/slices/ModalSlices/ShareProjectModalSlice';
+import ShareProjectModalSlice from '../../redux/slices/ModalSlices/ShareModalSlice';
 
 import Tabs from './Tabs';
 import { tabValues } from '../../constants';
@@ -9,6 +9,9 @@ import { useDispatch } from 'react-redux';
 
 export default function HeaderBoard() {
   const dispatch = useDispatch();
+  const shareProjectClickHandler = () => {
+    dispatch(ShareProjectModalSlice.actions.onOpen());
+  };
   return (
     <>
       <header className='flex flex-col items-center justify-between h-full border-b-4 border-red-200'>
@@ -33,7 +36,7 @@ export default function HeaderBoard() {
                 gap: '0.5rem',
               },
             }}
-            onClick={() => dispatch(ShareProjectModalSlice.actions.onOpen())}
+            onClick={shareProjectClickHandler}
             icon={AiOutlineShareAlt}>
             اشتراک گذاری
           </Button>

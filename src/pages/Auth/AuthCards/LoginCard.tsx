@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../components';
 import { BASE_URL } from '../../../constants';
-import authSlice from '../../../redux/slices/authSlice';
+import userSlice from '../../../redux/slices/userSlice';
 
 const LogInCard = () => {
   const [loading, setLoading] = useState(false);

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import userUpdate from '../util/userinfoUpdate';
 
 const IndexPage = ({}) => {
   const navigate = useNavigate();
@@ -22,12 +23,13 @@ const IndexPage = ({}) => {
       if (!accessToken) {
         navigate('/auth');
       } else {
+        userUpdate(accessToken);
         navigate('/board');
       }
     }
   }, []);
 
-  return <></>;
+  return <>Loading</>;
 };
 
 export default IndexPage;

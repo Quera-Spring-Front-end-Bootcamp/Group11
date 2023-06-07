@@ -11,7 +11,7 @@ import CreateWorkSpaceModalSlice from '../../redux/slices/ModalSlices/CreateWork
 const SideBar = () => {
   const dispatch = useDispatch();
   return (
-    <div className='flex flex-col justify-between bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] border-l-[#AAAAAA] border-[0.5px]'>
+    <div className='flex flex-col justify-between bg-[#FAFBFC] w-[340px] py-[40px] pr-[50px] pl-[16px] h-[100%] خ border-l-[#AAAAAA] border-[0.5px]'>
       <div>
         <div className='mb-[31px] '>
           <LogoType />
