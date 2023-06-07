@@ -1,33 +1,23 @@
-import { Tabs as MantineTabs, TabsValue } from '@mantine/core';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Tabs as MantineTabs } from '@mantine/core';
+import { Link, useLocation } from 'react-router-dom';
 
 import { tabObject } from '../../util/types';
-import { useDispatch, useSelector } from 'react-redux';
-import boardSlice from '../../redux/slices/BoardSlices/BoardSlice';
+import { useDispatch } from 'react-redux';
 
 export interface TabsProps {
   tabsArray: Array<tabObject>;
 }
 
 const Tabs = ({ tabsArray }: TabsProps) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const selectedTabValue = useSelector(
-    (state: any) => state.board.boardComponent
-  );
+  const { pathname } = useLocation();
+  const selectedTab = pathname.split('/').at(-1);
 
   return (
     <>
       <MantineTabs
-        defaultValue={selectedTabValue}
-        onTabChange={(value) => {
-          //push selected tab value to url
-          // navigate(`/board/${value}`);
-
-          //send selected tab to redux
-          dispatch(boardSlice.actions.setBoardComponent(value));
-        }}
+        defaultValue={selectedTab}
+        // onTabChange={(value) => {}}
         color='cyan'
         styles={{
           tab: {
@@ -49,7 +39,7 @@ const Tabs = ({ tabsArray }: TabsProps) => {
                 value={value}
                 icon={<Icon size={18} />}
                 sx={{
-                  color: value === selectedTabValue ? '#208D8E !important' : '',
+                  color: value === selectedTab ? '#208D8E !important' : '',
                 }}>
                 {text}
               </MantineTabs.Tab>

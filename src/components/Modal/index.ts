@@ -1,3 +1,3 @@
 import { CreateWorkSpaceModal } from './CreateWorkspaceModal';
-import { ShareProjectModal } from './ShareProjectModal';
+import { ShareProjectModal } from './ShareModal';
 export { CreateWorkSpaceModal, ShareProjectModal };

@@ -3,8 +3,30 @@ import { Outlet } from 'react-router-dom';
 import { CreateWorkSpaceModal, ShareProjectModal } from '../components/Modal';
 import HeaderBoard from '../components/HeaderBoard';
 import { BaseSideBar, BoardSideBar } from '../components/SideBar';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { BASE_URL } from '../constants';
+import axios from 'axios';
 
 const Board = () => {
+  const username = useSelector((state: any) => state.user.username);
+
+  useEffect(() => {
+    if (!username) return;
+
+    //fetch user info
+    const fetchUserInfo = async (identifier: string) => {
+      const {
+        data: { data: fetchData },
+      } = await axios.get(`${BASE_URL}/users/${identifier}`);
+
+      return fetchData;
+    };
+    fetchUserInfo(username);
+
+    
+  }, [username]);
+
   return (
     <>
       <CreateWorkSpaceModal />

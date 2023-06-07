@@ -14,6 +14,7 @@ import { Toaster } from 'react-hot-toast';
 import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
+import userUpdate from './util/userinfoUpdate';
 import {
   AccountInfo,
   PersonalInfo,
@@ -27,6 +28,8 @@ function App() {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       navigate('/auth');
+    } else {
+      userUpdate(accessToken);
     }
   }, []);
 

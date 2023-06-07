@@ -7,6 +7,7 @@ interface inputProps extends MantineTextInputProps {
   register: UseFormRegister<FieldValues>;
   required?: boolean;
   errors?: FieldErrors;
+  noBorder?: boolean;
 }
 
 const TextInput = ({
@@ -14,16 +15,18 @@ const TextInput = ({
   required,
   register,
   errors,
+  noBorder,
   ...otherProps
 }: inputProps) => {
   return (
     <MantineTextInput
       styles={() => ({
         input: {
-          border: '1px solid #AAAAAA',
+          border: noBorder ? 'none' : '1px solid #AAAAAA80',
+          backgroundColor: noBorder ? '#F0F1F3' : '',
           textAlign: 'right',
           ':focus': {
-            border: '2px solid gray',
+            border: '1px solid #AAAAAAff',
           },
           height: '40px',
         },
