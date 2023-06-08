@@ -15,8 +15,8 @@ export default function HeaderBoard() {
   };
   return (
     <>
-      <header className='flex flex-col items-center justify-between h-full border-b-4 border-red-200'>
-        <section className='flex justify-between w-full h-[120px] border-b-[0.5px] border-b-[#AAAAAA]'>
+      <header className='flex flex-col items-center justify-between h-full border-b-[0.5px] border-b-[#AAAAAA]'>
+        <section className='flex justify-between w-full h-[60px] border-b-[0.5px] border-b-[#AAAAAA]'>
           <div className='flex items-end gap-5 text-xl'>
             <div className='font-bold mb-[14px]'>پروژه اول</div>
             <Tabs tabsArray={tabValues} />
@@ -42,7 +42,7 @@ export default function HeaderBoard() {
             اشتراک گذاری
           </Button>
         </section>
-        <section className='flex justify-between w-full h-[70px]'></section>
+        <section className='flex justify-between w-full h-[60px]'></section>
       </header>
     </>
   );

@@ -21,10 +21,12 @@ const Board = () => {
   const dispatch = useDispatch();
 
   const loading = useSelector((state: any) => state.board.loading);
-  const state = useSelector((state: any) => state.board);
+
+  const notingSelected = !searchParams.get('projectId');
 
   useEffect(() => {
     const fetchProject = async () => {
+      if (notingSelected) return;
       try {
         const {
           data: { data: projectData },
@@ -78,12 +80,18 @@ const Board = () => {
         </div>
         <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
           <div className='pt-[4vh] pr-[16px]'>
-            <div className='h-[170px] bg-[#fafbfc] pr-3 pl-6'>
+            <div className='h-[120px] bg-[#fafbfc] pr-3 pl-6'>
               <HeaderBoard />
             </div>
 
-            <div className='h-[calc(100%-170px)] p-5'>
-              {loading ? 'LOADING...' : <Outlet />}
+            <div className='h-[calc(100%-120px)] p-5'>
+              {notingSelected ? (
+                'WELCOME...'
+              ) : loading ? (
+                'LOADING...'
+              ) : (
+                <Outlet />
+              )}
             </div>
           </div>
         </div>

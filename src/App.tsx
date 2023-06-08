@@ -21,6 +21,8 @@ import {
   PersonalInfo,
   Settings,
 } from './pages/Profile/ProfileSection';
+import { DragAndDrop } from './components/DragAndDrop';
+import { Calendar } from './components/Calendar';
 
 function App() {
   const navigate = useNavigate();
@@ -57,11 +59,19 @@ function App() {
           />
           <Route
             path='TaskColumn'
-            element={<div>TaskColumn</div>}
+            element={
+              <div>
+                <DragAndDrop />
+              </div>
+            }
           />
           <Route
             path='TaskCalendar'
-            element={<div>TaskCalendar</div>}
+            element={
+              <div>
+                <Calendar />
+              </div>
+            }
           />
         </Route>
         <Route
