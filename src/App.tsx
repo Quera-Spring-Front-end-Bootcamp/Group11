@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
@@ -14,6 +14,11 @@ import { Toaster } from 'react-hot-toast';
 import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
+import {
+  AccountInfo,
+  PersonalInfo,
+  Settings,
+} from './pages/Profile/ProfileSection';
 
 function App() {
   const navigate = useNavigate();
@@ -77,8 +82,24 @@ function App() {
         </Route>
         <Route
           path='/profile'
-          element={<Profile />}
-        />
+          element={<Profile />}>
+          <Route
+            path='personalInfo'
+            element={<PersonalInfo />}
+          />
+          <Route
+            path='accountInfo'
+            element={<AccountInfo />}
+          />
+          <Route
+            path='settings'
+            element={<Settings />}
+          />
+          <Route
+            path='*'
+            element={<Navigate to='personalInfo' />}
+          />
+        </Route>
       </Routes>
     </>
   );
