@@ -1,9 +1,17 @@
 import { Button } from '@mantine/core';
 import { TbLogout } from 'react-icons/tb';
+import { useNavigate } from 'react-router-dom';
 
 const LogOutButton = () => {
+  const navigate = useNavigate();
+  const logOutHandler = () => {
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessToken');
+    navigate('/');
+  };
   return (
     <Button
+      onClick={logOutHandler}
       styles={() => ({
         root: {
           border: '0',

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Container } from '../components';
@@ -6,9 +5,7 @@ import { CreateWorkSpaceModal, ShareProjectModal } from '../components/Modal';
 import HeaderBoard from '../components/HeaderBoard';
 import SideBar from '../components/SideBar/SideBar';
 
-export interface AuthPageProps {}
-
-const Board: React.FC<AuthPageProps> = ({}) => {
+const Board = () => {
   return (
     <>
       <CreateWorkSpaceModal />
