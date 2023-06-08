@@ -22,8 +22,9 @@ const WorkSpaceAccordion = ({
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+
   const onProjectClickHandler = (id: string, name: string) => {
-    dispatch(boardSlice.actions.setProjectName(name));
+    dispatch(boardSlice.actions.setLoading(true));
     navigate({
       pathname: location.pathname,
       search: `?projectId=${id}`,

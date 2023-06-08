@@ -23,8 +23,6 @@ const Board = () => {
   const loading = useSelector((state: any) => state.board.loading);
   const state = useSelector((state: any) => state.board);
 
-  console.log(state);
-
   useEffect(() => {
     const fetchProject = async () => {
       try {
