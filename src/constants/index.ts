@@ -5,7 +5,12 @@
 
 import { BsColumns } from 'react-icons/bs';
 import { FaList } from 'react-icons/fa';
-import { BsCalendarDay } from 'react-icons/bs';
+import {
+  BsCalendarDay,
+  BsPersonExclamation,
+  BsPersonCheck,
+  BsGear,
+} from 'react-icons/bs';
 
 export const workSpaceColors = [
   '#E46161',
@@ -62,6 +67,24 @@ export const tabValues = [
     value: 'TaskCalendar',
     icon: BsCalendarDay,
     text: 'تقویم',
+  },
+];
+
+export const profileSideBarNavItems = [
+  {
+    id: 'personalInfo',
+    title: 'اطلاعات فردی',
+    icon: BsPersonExclamation,
+  },
+  {
+    id: 'accountInfo',
+    title: 'اطلاعات حساب',
+    icon: BsPersonCheck,
+  },
+  {
+    id: 'settings',
+    title: 'تنظیمات',
+    icon: BsGear,
   },
 ];
 

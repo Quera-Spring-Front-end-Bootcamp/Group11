@@ -1,69 +1,62 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HiArrowRight } from 'react-icons/hi';
-import { BsPersonExclamation, BsPersonCheck, BsGear } from 'react-icons/bs';
 import { Button } from '../../../components';
+import { profileSideBarNavItems } from '../../../constants';
+import { useSelector } from 'react-redux';
 
 interface ProfileSideBarProp {
   profileSection: string | undefined;
 }
 const ProfileSideBar = ({ profileSection }: ProfileSideBarProp) => {
-  const listItem = [
-    {
-      id: 'personalInfo',
-      title: 'اطلاعات فردی',
-
-      icon: <BsPersonExclamation size={'2rem'} />,
-    },
-    {
-      id: 'accountInfo',
-      title: 'اطلاعات حساب',
-      icon: <BsPersonCheck size={'2rem'} />,
-    },
-    {
-      id: 'settings',
-      title: 'تنظیمات',
-      icon: <BsGear size={'2rem'} />,
-    },
-  ];
+  const navigate = useNavigate();
+  const selectedProject = useSelector(
+    (state: any) => state.board.selectedProjectId
+  );
+  console.log(selectedProject);
+  const onBackClickHandler = () => {
+    navigate({
+      pathname: '/board/TaskList',
+      search: selectedProject && `?projectId=${selectedProject}`,
+    });
+  };
   return (
     <div className='flex flex-col  w-[100%] h-[100%] mt-[70px]'>
-      <Link to={'/board'}>
-        <Button
-          w={'110px'}
-          radius={'8px'}
-          py={'4px'}
-          fz={'20px'}
-          fw={'500'}
-          leftIcon={<HiArrowRight size={'1.2rem'} />}
-          styles={() => ({
-            root: {
-              '&:hover': {
-                backgroundColor: '#277576',
-              },
+      <Button
+        w={'110px'}
+        radius={'8px'}
+        py={'4px'}
+        fz={'20px'}
+        fw={'500'}
+        onClick={onBackClickHandler}
+        leftIcon={<HiArrowRight size={'1.2rem'} />}
+        styles={() => ({
+          root: {
+            '&:hover': {
+              backgroundColor: '#277576',
             },
-            leftIcon: {
-              marginRight: '0px',
-              marginLeft: '8px',
-            },
-          })}>
-          بازگشت
-        </Button>
-      </Link>
+          },
+          leftIcon: {
+            marginRight: '0px',
+            marginLeft: '8px',
+          },
+        })}>
+        بازگشت
+      </Button>
       <ul className='flex flex-col gap-[36px] mt-[40px]'>
-        {listItem.map((item) => {
+        {profileSideBarNavItems.map(({ id, icon: Icon, title }) => {
           return (
             <li
               className='cursor-pointer'
-              key={item.id}>
-              <Link to={item.id}>
+              key={id}>
+              <Link to={id}>
                 <div
                   className={
-                    'flex flex-row items-center gap-[11px] py-[4px] px-[8px] ' +
-                    (profileSection === item.id && 'bg-[#C5FFFF]')
+                    'flex flex-row items-center gap-[11px] py-1 px-2 rounded-4 ' +
+                    (profileSection === id && 'bg-[#C5FFFF]')
                   }>
-                  {item.icon}
+                  <Icon size='2rem' />
                   <span className='text-[20px] leading-[31px] font-[600]'>
-                    {item.title}
+                    {title}
                   </span>
                 </div>
               </Link>
