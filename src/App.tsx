@@ -15,6 +15,7 @@ import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
 import userUpdate from './util/userinfoUpdate';
+import { ProjectListView } from './components';
 import {
   AccountInfo,
   PersonalInfo,
@@ -52,7 +53,7 @@ function App() {
           element={<Board />}>
           <Route
             path='TaskList'
-            element={<div>TaskList</div>}
+            element={<ProjectListView />}
           />
           <Route
             path='TaskColumn'

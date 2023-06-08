@@ -4,9 +4,10 @@ type ColorInputProps = {
   icon?: IconType;
   width: string;
   height: string;
-  radius: '100%' | '2px';
+  radius: '100%' | '2px' | '4px' | string;
   selected?: boolean;
   onClick?: () => void | undefined;
+  notClickable?: boolean;
 };
 const ColorInput = ({
   bg,
@@ -16,6 +17,7 @@ const ColorInput = ({
   selected = false,
   radius,
   onClick,
+  notClickable,
 }: ColorInputProps) => {
   return (
     <div
@@ -24,9 +26,9 @@ const ColorInput = ({
         height,
         width,
         borderRadius: radius,
+        cursor: notClickable ? 'default' : 'pointer',
       }} //somehow tailwind is not working with template literals in this case
       className={`
-        cursor-pointer
         transition grid
         justify-center
         items-center 

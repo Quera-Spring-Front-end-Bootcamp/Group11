@@ -1,23 +1,34 @@
 import { Tabs as MantineTabs } from '@mantine/core';
-import { Link, useLocation } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 
 import { tabObject } from '../../util/types';
-import { useDispatch } from 'react-redux';
 
 export interface TabsProps {
   tabsArray: Array<tabObject>;
 }
 
 const Tabs = ({ tabsArray }: TabsProps) => {
-  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const selectedTab = pathname.split('/').at(-1);
 
   return (
     <>
       <MantineTabs
         defaultValue={selectedTab}
-        // onTabChange={(value) => {}}
+        onTabChange={(value) =>
+          navigate({
+            pathname: `/board/${value}`,
+            search: `?${searchParams.toString()}`,
+          })
+        }
         color='cyan'
         styles={{
           tab: {
@@ -32,18 +43,16 @@ const Tabs = ({ tabsArray }: TabsProps) => {
         }}>
         <MantineTabs.List position='right'>
           {tabsArray.map(({ icon: Icon, value, text }) => (
-            <Link
+            <MantineTabs.Tab
               key={value}
-              to={`/board/${value}`}>
-              <MantineTabs.Tab
-                value={value}
-                icon={<Icon size={18} />}
-                sx={{
-                  color: value === selectedTab ? '#208D8E !important' : '',
-                }}>
-                {text}
-              </MantineTabs.Tab>
-            </Link>
+              value={value}
+              icon={<Icon size={18} />}
+              sx={{
+                color: value === selectedTab ? '#208D8E !important' : '',
+              }}>
+              {text}
+            </MantineTabs.Tab>
+            // </Link>
           ))}
         </MantineTabs.List>
       </MantineTabs>

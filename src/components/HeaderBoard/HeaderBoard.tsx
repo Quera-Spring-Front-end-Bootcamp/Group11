@@ -6,6 +6,7 @@ import Tabs from './Tabs';
 import { tabValues } from '../../constants';
 import { Button } from '..';
 import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 export default function HeaderBoard() {
   const dispatch = useDispatch();

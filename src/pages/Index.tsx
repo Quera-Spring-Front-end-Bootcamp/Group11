@@ -26,6 +26,7 @@ const IndexPage = ({}) => {
         userUpdate(accessToken);
         navigate('/board');
       }
+      // console.log()
     }
   }, []);
 

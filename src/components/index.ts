@@ -1,3 +1,5 @@
+///board
+import { ProjectListView } from './ProjectListView';
 ///Inputs
 import { Anchor } from './Anchor';
 import { Button } from './Button';
@@ -36,6 +38,8 @@ export {
   MiniProfile,
   LogOutButton,
   NewTaskButton,
-  TaskCard
+  TaskCard,
+  ////
+  ProjectListView
   ////
 };
