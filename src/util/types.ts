@@ -1,3 +1,4 @@
+import { NumberInputStylesParams } from '@mantine/core';
 import { IconType } from 'react-icons';
 
 export interface tabObject {
@@ -26,4 +27,15 @@ export interface Project {
   boards: string[];
   members: string[];
   name: string;
+}
+
+export interface Task {
+  board: string;
+  comments: Array<any>;
+  description: string;
+  label: Array<any>;
+  name: string;
+  position: NumberInputStylesParams;
+  taskAssigns: User[];
+  _id: string;
 }
