@@ -1,4 +1,10 @@
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+  useSearchParams,
+} from 'react-router-dom';
 
 import Auth from './pages/Auth/Auth';
 import Board from './pages/Board';
@@ -26,8 +32,21 @@ import { Calendar } from './components/Calendar';
 
 function App() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
+    const queryParams = Object.fromEntries([...searchParams]);
+
+    //navigate to reset password page and push token to url as query param
+    if (queryParams.token) {
+      navigate({
+        pathname: '/auth/resetPassword',
+        search: `?token=${queryParams.token}`,
+      });
+      return;
+    }
+    
+    ///access token check
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       navigate('/auth');

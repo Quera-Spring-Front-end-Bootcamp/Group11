@@ -13,6 +13,7 @@ import axios from 'axios';
 import userSlice from '../../../redux/slices/userSlice';
 import { toast } from 'react-hot-toast';
 import { Flex } from '@mantine/core';
+import { getAllWorkspacesApi } from '../../../services/workspaceApi';
 
 const SideBar = () => {
   const dispatch = useDispatch();
@@ -22,11 +23,7 @@ const SideBar = () => {
     const fetchWorkSpaces = async () => {
       const {
         data: { data: wsData },
-      } = await axios.get(`${BASE_URL}/workspace/get-all`, {
-        headers: {
-          'x-auth-token': localStorage.getItem('accessToken'),
-        },
-      });
+      } = await getAllWorkspacesApi();
       dispatch(userSlice.actions.setWorkspaces(wsData));
     };
 

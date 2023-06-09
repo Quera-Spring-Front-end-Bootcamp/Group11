@@ -1,19 +1,14 @@
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 
 import { CreateWorkSpaceModal, ShareProjectModal } from '../components/Modal';
 import HeaderBoard from '../components/HeaderBoard';
 import { BaseSideBar, BoardSideBar } from '../components/SideBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { BASE_URL } from '../constants';
-import axios from 'axios';
 import boardSlice from '../redux/slices/BoardSlices/BoardSlice';
 import { toast } from 'react-hot-toast';
+import { getAllProjectBoardsApi } from '../services/boardApi';
+import { getProjectByIdApi } from '../services/projectApi';
 
 const Board = () => {
   const { search: queryParams } = useLocation();
@@ -22,34 +17,26 @@ const Board = () => {
 
   const loading = useSelector((state: any) => state.board.loading);
 
-  const notingSelected = !searchParams.get('projectId');
+  const selectedProject = searchParams.get('projectId');
 
   useEffect(() => {
     const fetchProject = async () => {
-      if (notingSelected) return;
+      if (!selectedProject) return;
+      dispatch(boardSlice.actions.setLoading(true));
       try {
+        //get all boards of selected project
         const {
           data: { data: projectData },
-        } = await axios.get(
-          `${BASE_URL}/board/${searchParams.get('projectId')}`,
-          {
-            headers: {
-              'x-auth-token': localStorage.getItem('accessToken'),
-            },
-          }
-        );
+        } = await getAllProjectBoardsApi(selectedProject);
+
+        //get selected project data
         const {
           data: {
             data: { name: projectName, _id: id },
           },
-        } = await axios.get(
-          `${BASE_URL}/projects/${searchParams.get('projectId')}`,
-          {
-            headers: {
-              'x-auth-token': localStorage.getItem('accessToken'),
-            },
-          }
-        );
+        } = await getProjectByIdApi(selectedProject);
+
+        //save data in redux
         dispatch(
           boardSlice.actions.setSelectedProjectData({
             boardData: projectData,
@@ -85,7 +72,7 @@ const Board = () => {
             </div>
 
             <div className='h-[calc(100%-120px)] p-5'>
-              {notingSelected ? (
+              {!selectedProject ? (
                 'WELCOME...'
               ) : loading ? (
                 'LOADING...'

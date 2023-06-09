@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Button, Card, TextInput, Title } from '../../../components';
 import { FieldValues, useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-import { BASE_URL } from '../../../constants';
 import toast from 'react-hot-toast';
+import { forgetPasswordApi } from '../../../services/authApi';
 
 type ForgetPasswordProps = {};
 
@@ -25,9 +24,7 @@ const ForgetPassword = ({}: ForgetPasswordProps) => {
     const { forgetPasswordEmail } = data;
 
     try {
-      await axios.post(`${BASE_URL}/auth/forget-password`, {
-        email: forgetPasswordEmail,
-      });
+      await forgetPasswordApi(forgetPasswordEmail);
 
       setLoading(false);
       setDone(true);
