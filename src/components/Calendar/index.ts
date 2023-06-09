@@ -1,4 +1,4 @@
 import Calendar from './Calendar';
-import './index.css';
+import './Index.css';
 
 export { Calendar };

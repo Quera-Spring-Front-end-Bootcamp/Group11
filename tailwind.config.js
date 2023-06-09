@@ -8,10 +8,11 @@ export default {
     extend: {
       colors: {
         primary: '#208D8E',
-        darkPrimary : '#277576',
+        darkPrimary: '#277576',
         gray: '#AAAAAA',
       },
       borderRadius: {
+        4: '4px',
         6: '6px',
         20: '20px',
       },
@@ -32,12 +33,12 @@ export default {
         32: '32px',
       },
       padding: {
-        a: '8px 23.5px'
+        a: '8px 23.5px',
       },
       height: {
         40: '40px',
-        48: '48px'
-      }
+        48: '48px',
+      },
     },
   },
   plugins: [
@@ -46,5 +47,10 @@ export default {
   ],
   corePlugins: {
     preflight: false,
+  },
+  variants: {
+    extend: {
+      display: ['group-hover'],
+    },
   },
 };

@@ -14,11 +14,15 @@ import { Toaster } from 'react-hot-toast';
 import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
+import userUpdate from './util/userinfoUpdate';
+import { ProjectListView } from './components';
 import {
   AccountInfo,
   PersonalInfo,
   Settings,
 } from './pages/Profile/ProfileSection';
+import { DragAndDrop } from './components/DragAndDrop';
+import { Calendar } from './components/Calendar';
 
 function App() {
   const navigate = useNavigate();
@@ -27,6 +31,8 @@ function App() {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       navigate('/auth');
+    } else {
+      userUpdate(accessToken);
     }
   }, []);
 
@@ -49,15 +55,23 @@ function App() {
           element={<Board />}>
           <Route
             path='TaskList'
-            element={<div>TaskList</div>}
+            element={<ProjectListView />}
           />
           <Route
             path='TaskColumn'
-            element={<div>TaskColumn</div>}
+            element={
+              <div>
+                <DragAndDrop />
+              </div>
+            }
           />
           <Route
             path='TaskCalendar'
-            element={<div>TaskCalendar</div>}
+            element={
+              <div>
+                <Calendar />
+              </div>
+            }
           />
         </Route>
         <Route

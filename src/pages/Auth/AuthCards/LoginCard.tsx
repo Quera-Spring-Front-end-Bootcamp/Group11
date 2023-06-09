@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../components';
 import { BASE_URL } from '../../../constants';
-import authSlice from '../../../redux/slices/authSlice';
+import userSlice from '../../../redux/slices/userSlice';
 
 const LogInCard = () => {
   const [loading, setLoading] = useState(false);
@@ -44,28 +44,51 @@ const LogInCard = () => {
         data: {
           accessToken,
           refreshToken,
-          toBeSendUserData: { email, settings, username },
+          toBeSendUserData: { _id: id },
         },
       } = loginData;
 
-      toast.success('خوش آمدید');
+      const {
+        data: { data: userData },
+      } = await axios.get(`${BASE_URL}/users/${id}`);
+
+      const {
+        email,
+        profile_url,
+        username,
+        workspaceMember,
+        workspaces,
+        firstname,
+        lastname,
+      } = userData;
 
       //save tokens to local storage
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
       //save user info to redux accessible globally
-      dispatch(authSlice.actions.setUserInfo({ email, settings, username }));
+      dispatch(
+        userSlice.actions.setUserInfoByRequest({
+          email,
+          id,
+          username,
+          workspaces,
+          workspaceMember,
+          firstname,
+          lastname,
+        })
+      );
 
+      toast.success('خوش آمدید');
       setLoading(false);
       navigate('/board');
     } catch (error: any) {
+      console.log(error);
       if (error.message === 'Network Error')
         toast.error(
           'مشکلی پیش آمده است، لطفا دوباره تلاش کنید یا اتصال اینترنت خود را بررسی نمایید'
         );
-      if (error.response.status === 401)
-        toast.error('کاربری با مشخصات وارد شده یافت نشد');
+      toast.error('ورود ناموفق، لطفا دوباره تلاش کنید');
       setLoading(false);
     }
   };

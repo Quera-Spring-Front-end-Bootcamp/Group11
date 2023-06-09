@@ -1,14 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { tabValues } from '../../../constants';
 
 export const boardSlice = createSlice({
-  name: 'borad',
+  name: 'board',
   initialState: {
-    boardComponent: tabValues[0].value,
+    loading: true,
+    selectedProjectName: '',
+    selectedProjectId: '',
+    selectedProjectBoardData: [],
   },
   reducers: {
-    setBoardComponent: (state: any, action) => {
-      state.boardComponent = action.payload;
+    setProjectName: (state: any, action: { payload: string }) => {
+      state.selectedProjectName = action.payload;
+    },
+    setProjectData: (
+      state: any,
+      action: { payload: { id: string; boardData: any } }
+    ) => {
+      state.selectedProjectBoardData = action.payload.boardData;
+      state.selectedProjectId = action.payload.id;
+    },
+    setLoading: (state: any, action: { payload: boolean }) => {
+      state.loading = action.payload;
+    },
+    setSelectedProjectData: (
+      state: any,
+      action: { payload: { name: string; id: string; boardData: any } }
+    ) => {
+      state.selectedProjectBoardData = action.payload.boardData;
+      state.selectedProjectId = action.payload.id;
+      state.selectedProjectName = action.payload.name;
     },
   },
 });

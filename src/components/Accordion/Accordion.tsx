@@ -44,7 +44,7 @@ const Accordion = ({
           margin: '0px',
         },
         control: {
-          padding: '0px',
+          padding: '0',
         },
         content: {
           padding: detailPadd,
