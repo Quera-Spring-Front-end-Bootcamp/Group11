@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Button, Card, TextInput, Title } from '../../../components';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { BASE_URL } from '../../../constants';
-import axios from 'axios';
+
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { resetPasswordApi } from '../../../services/authApi';
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const {
@@ -23,14 +24,11 @@ const ResetPassword = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
     const { newPassword } = data;
+    const { token } = Object.fromEntries([...searchParams]);
 
     try {
-      await axios.post(`${BASE_URL}/auth/reset-password`, {
-        password: newPassword,
-        token: localStorage.getItem('resetToken'),
-      });
+      await resetPasswordApi(newPassword, token);
       toast.success('کلمه عبور با موفقیت تغییر یافت');
-      localStorage.removeItem('resetToken');
       navigate('/auth/login');
     } catch (error: any) {
       console.log(error);

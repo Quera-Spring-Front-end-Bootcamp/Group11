@@ -14,6 +14,7 @@ import {
 } from '../../../components';
 import { BASE_URL } from '../../../constants';
 import userSlice from '../../../redux/slices/userSlice';
+import { loginApi } from '../../../services/authApi';
 
 const LogInCard = () => {
   const [loading, setLoading] = useState(false);
@@ -35,10 +36,7 @@ const LogInCard = () => {
     setLoading(true);
     const { emailOrUsername, password } = data;
     try {
-      const { data: loginData } = await axios.post(`${BASE_URL}/auth/login`, {
-        emailOrUsername,
-        password,
-      });
+      const { data: loginData } = await loginApi(emailOrUsername, password);
 
       const {
         data: {

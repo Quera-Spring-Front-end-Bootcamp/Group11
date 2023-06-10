@@ -11,7 +11,7 @@ interface ShareProjectModalSliceTypes {
 export const ShareProjectModalSlice = createSlice({
   name: 'ShareProjectModalSlice',
   initialState: {
-    open: true,
+    open: false,
     title: '',
     link: '',
     data: [],

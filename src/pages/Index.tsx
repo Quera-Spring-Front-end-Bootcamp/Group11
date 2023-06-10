@@ -6,9 +6,6 @@ const IndexPage = ({}) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   useEffect(() => {
-    //remove previous saved reset token if exists
-    localStorage.removeItem('resetToken');
-
     //extract query params from url if exists (only for reset password)
     const queryParams = Object.fromEntries([...searchParams]);
 
