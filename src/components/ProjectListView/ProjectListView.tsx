@@ -1,6 +1,7 @@
 import { Flex, Text } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { AiOutlineDownCircle } from 'react-icons/ai';
+import BoardOverviewRow from './boardOverview';
 
 const ProjectListView = () => {
   const data = useSelector(
@@ -26,8 +27,12 @@ const ProjectListView = () => {
         direction={'column'}
         gap={'30px'}
         mt={'36px'}>
-        {data.map((board) => (
-          <div key={board.name}>{board.name}</div>
+        {data.map((board: any) => (
+          <BoardOverviewRow
+            tasks={board.tasks}
+            name={board.name}
+            position={board.position - 1}
+          />
         ))}
       </Flex>
     </div>
