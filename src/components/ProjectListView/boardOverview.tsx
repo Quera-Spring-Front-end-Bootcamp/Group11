@@ -80,12 +80,14 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
                     <Avatar
                       alt={user.firstname}
                       fontSize='12px'
+                      style={{
+                        transform: `translate(calc(50% - ${i * 50}%), 0)`,
+                      }}
                       className={`
                         rounded-full
                         shadow-md
                         absolute
                         left-1/2
-                        -translate-x-[(calc(50%-${i * 50}%))]
                       `}
                     />
                   ))

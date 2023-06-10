@@ -29,6 +29,7 @@ import {
 } from './pages/Profile/ProfileSection';
 import { DragAndDrop } from './components/DragAndDrop';
 import { Calendar } from './components/Calendar';
+import { MultipleContainers } from './components/ColumnProjectView/ColumnProjectView';
 
 function App() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function App() {
       });
       return;
     }
-    
+
     ///access token check
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
@@ -80,7 +81,7 @@ function App() {
             path='TaskColumn'
             element={
               <div>
-                <DragAndDrop />
+                <MultipleContainers />
               </div>
             }
           />
