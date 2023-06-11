@@ -166,9 +166,14 @@ export function MultipleContainers({
   vertical = false,
   scrollable,
 }: Props) {
-  const data = useSelector(
-    (state: any) => state.board.selectedProjectBoardData
-  );
+  /**
+   * get necessary data from redux store
+   */
+  const { data, projectName } = useSelector((state: any) => ({
+    data: state.board.selectedProjectBoardData,
+    projectName: state.board.selectedProjectName,
+  }));
+
   const [containers, setContainers] = useState(
     data.map((board: any) => [board.name, board._id])
   );
@@ -428,12 +433,12 @@ export function MultipleContainers({
               <SortableContext
                 items={items[container[1]]}
                 strategy={strategy}>
-                {items[container[1]].map((value: Task, index: number) => {
+                {items[container[1]].map((task: Task, index: number) => {
                   return (
                     <SortableItem
                       disabled={isSortingContainer}
-                      key={value._id}
-                      id={value._id}
+                      key={task._id}
+                      id={task._id}
                       index={index}
                       handle={handle}
                       style={getItemStyles}
@@ -441,6 +446,11 @@ export function MultipleContainers({
                       renderItem={renderItem}
                       containerId={container[1]}
                       getIndex={getIndex}
+                      taskDetail={{
+                        deadLine: 'N/A',
+                        projectName: projectName,
+                        taskTitle: task.name,
+                      }}
                     />
                   );
                 })}
@@ -468,6 +478,9 @@ export function MultipleContainers({
   );
 
   function renderSortableItemDragOverlay(id: string) {
+    const boardId = findContainer(id);
+    const task = items[boardId].find((task: Task) => task._id === id);
+
     return (
       <Item
         value={id}
@@ -484,37 +497,49 @@ export function MultipleContainers({
         wrapperStyle={wrapperStyle({ index: 0 })}
         renderItem={renderItem}
         dragOverlay
+        taskDetail={{
+          deadLine: 'N/A',
+          projectName: projectName,
+          taskTitle: task.name,
+        }}
       />
     );
   }
 
   function renderContainerDragOverlay(containerId: string) {
-    console.log(containerId);
+    const board = containers.find(
+      (container: [string, string]) => container[1] === containerId
+    );
     return (
       <Container
-        label={`${containerId}`}
+        label={`${board[0]}`}
         columns={columns}
         style={{
           height: '100%',
         }}
         shadow
         unstyled={false}>
-        {items[containerId].map((item: Task, index: number) => (
+        {items[containerId].map((task: Task, index: number) => (
           <Item
-            key={item._id}
-            value={item._id}
+            key={task._id}
+            value={task._id}
             handle={handle}
             style={getItemStyles({
               containerId,
               overIndex: -1,
-              index: getIndex(item._id),
-              value: item.name,
+              index: getIndex(task._id),
+              value: task.name,
               isDragging: false,
               isSorting: false,
               isDragOverlay: false,
             })}
             wrapperStyle={wrapperStyle({ index })}
             renderItem={renderItem}
+            taskDetail={{
+              deadLine: 'N/A',
+              projectName: projectName,
+              taskTitle: task.name,
+            }}
           />
         ))}
       </Container>
@@ -550,6 +575,7 @@ interface SortableItemProps {
   getIndex(id: string): number;
   renderItem(): React.ReactElement;
   wrapperStyle({ index }: { index: number }): React.CSSProperties;
+  taskDetail: { projectName: string; taskTitle: string; deadLine: string };
 }
 
 function SortableItem({
@@ -562,6 +588,7 @@ function SortableItem({
   containerId,
   getIndex,
   wrapperStyle,
+  taskDetail,
 }: SortableItemProps) {
   const {
     setNodeRef,
@@ -602,6 +629,7 @@ function SortableItem({
       fadeIn={mountedWhileDragging}
       listeners={listeners}
       renderItem={renderItem}
+      taskDetail={taskDetail}
     />
   );
 }

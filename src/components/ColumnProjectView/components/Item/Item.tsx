@@ -8,7 +8,8 @@ import { Handle, Remove } from './components';
 import styles from './Item.module.scss';
 import { TaskCard } from '../../..';
 
-export interface Props {
+export interface ItemProps {
+  taskDetail?: { projectName: string; taskTitle: string; deadLine: string };
   dragOverlay?: boolean;
   color?: string;
   disabled?: boolean;
@@ -42,7 +43,7 @@ export interface Props {
 }
 
 export const Item = React.memo(
-  React.forwardRef<HTMLLIElement, Props>(
+  React.forwardRef<HTMLLIElement, ItemProps>(
     (
       {
         color,
@@ -63,6 +64,7 @@ export const Item = React.memo(
         transform,
         value,
         wrapperStyle,
+        taskDetail,
         ...props
       },
       ref
@@ -153,7 +155,11 @@ export const Item = React.memo(
                 />
               ) : null}
             </span>
-            <TaskCard />
+            <TaskCard
+              deadLine={taskDetail?.deadLine}
+              projectName={taskDetail?.projectName}
+              taskTitle={taskDetail?.taskTitle}
+            />
           </div>
         </li>
       );
