@@ -66,12 +66,12 @@ const Board = () => {
           </BaseSideBar>
         </div>
         <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
-          <div className='pt-[4vh] pr-[16px]'>
+          <div className=''>
             <div className='h-[120px] bg-[#fafbfc] pr-3 pl-6'>
               <HeaderBoard />
             </div>
 
-            <div className='h-[calc(100%-120px)] p-5'>
+            <div className='h-[calc(100vh-120px)] mx-4 overflow-x-auto'>
               {!selectedProject ? (
                 'WELCOME...'
               ) : loading ? (

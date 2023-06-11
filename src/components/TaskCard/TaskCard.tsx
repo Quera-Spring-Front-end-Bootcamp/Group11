@@ -9,18 +9,20 @@ interface TagProp {
   children: string;
   tagColor: string;
 }
+const Tag = ({ children, tagColor }: TagProp) => {
+  return (
+    <span
+      className={`ml-[12px] text-[10px] font-medium text-[#323232] leading-[15px]
+         py-[2px] px-[4px] h-[19px] rounded-e-[10px] bg-[${tagColor}]`}>
+      {children}
+    </span>
+  );
+};
+
 const TaskCard = () => {
   const [isHover, setIsHover] = useState(false);
   const [isCheckList, setIsCheckList] = useState(true);
-  const Tag = ({ children, tagColor }: TagProp) => {
-    return (
-      <span
-        className={`ml-[12px] text-[10px] font-medium text-[#323232] leading-[15px]
-           py-[2px] px-[4px] h-[19px] rounded-e-[10px] bg-[${tagColor}]`}>
-        {children}
-      </span>
-    );
-  };
+
   const onClick = () => {
     console.log('card');
   };
@@ -38,7 +40,7 @@ const TaskCard = () => {
       }}
       onClick={onClick}
       p={'10px'}
-      w={'250px'}
+      w={'100%'}
       radius={'4px'}
       shadow=' 0px 6px 8px rgba(0, 0, 0, 0.14)'
       className=''>
@@ -84,8 +86,8 @@ const TaskCard = () => {
 
       <div
         className={
-          'flex-row items-center	mt-[20px] p-[0.5px] text-[#323232] justify-between' +
-          (isHover ? ' flex' : ' hidden')
+          'flex-row items-center flex overflow-hidden transition-all text-[#323232] justify-between' +
+          (isHover ? ' h-10' : ' h-0')
         }>
         <FiCheckCircle />
         <BsThreeDots onClick={onClick1} />

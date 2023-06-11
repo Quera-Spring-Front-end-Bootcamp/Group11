@@ -21,7 +21,7 @@ import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
 import userUpdate from './util/userinfoUpdate';
-import { ProjectListView } from './components';
+import { ProjectListView, TaskCard } from './components';
 import {
   AccountInfo,
   PersonalInfo,
@@ -79,11 +79,7 @@ function App() {
           />
           <Route
             path='TaskColumn'
-            element={
-              <div>
-                <MultipleContainers />
-              </div>
-            }
+            element={<MultipleContainers />}
           />
           <Route
             path='TaskCalendar'

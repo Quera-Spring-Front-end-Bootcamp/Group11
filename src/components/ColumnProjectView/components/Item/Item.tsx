@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import type {DraggableSyntheticListeners} from '@dnd-kit/core';
-import type {Transform} from '@dnd-kit/utilities';
+import type { DraggableSyntheticListeners } from '@dnd-kit/core';
+import type { Transform } from '@dnd-kit/utilities';
 
-import {Handle, Remove} from './components';
+import { Handle, Remove } from './components';
 
-import styles from './Item.module.css';
+import styles from './Item.module.scss';
+import { TaskCard } from '../../..';
 
 export interface Props {
   dragOverlay?: boolean;
@@ -122,8 +123,7 @@ export const Item = React.memo(
               '--color': color,
             } as React.CSSProperties
           }
-          ref={ref}
-        >
+          ref={ref}>
           <div
             className={classNames(
               styles.Item,
@@ -134,18 +134,26 @@ export const Item = React.memo(
               color && styles.color
             )}
             style={style}
-            data-cypress="draggable-item"
+            data-cypress='draggable-item'
             {...(!handle ? listeners : undefined)}
             {...props}
-            tabIndex={!handle ? 0 : undefined}
-          >
-            {value}
+            tabIndex={!handle ? 0 : undefined}>
             <span className={styles.Actions}>
               {onRemove ? (
-                <Remove className={styles.Remove} onClick={onRemove} />
+                <Remove
+                  className={styles.Remove}
+                  onClick={onRemove}
+                />
               ) : null}
-              {handle ? <Handle {...handleProps} {...listeners} /> : null}
+              {handle ? (
+                <Handle
+                  className='w-full'
+                  {...handleProps}
+                  {...listeners}
+                />
+              ) : null}
             </span>
+            <TaskCard />
           </div>
         </li>
       );

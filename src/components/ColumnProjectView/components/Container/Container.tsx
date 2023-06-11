@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {Handle, Remove} from '../Item';
 
-import styles from './Container.module.css';
+import styles from './Container.module.scss';
 
 export interface Props {
   children: React.ReactNode;
