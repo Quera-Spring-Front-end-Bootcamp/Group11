@@ -13,7 +13,7 @@ interface WorkSpaceAccordionProps extends workspaceObj {
   i: number;
 }
 const WorkSpaceAccordion = ({
-  _id: id,
+  _id: wsId,
   projects,
   members,
   name,
@@ -25,7 +25,7 @@ const WorkSpaceAccordion = ({
   const onProjectClickHandler = (id: string, name: string) => {
     navigate({
       pathname: location.pathname,
-      search: `?projectId=${id}`,
+      search: `?projectId=${id}&workspaceId=${wsId}`,
     });
   };
   return (
