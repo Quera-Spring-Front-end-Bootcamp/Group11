@@ -35,8 +35,6 @@ const userUpdateByToken = async (token: string) => {
     data: { data: userData },
   } = await axios.get(`${BASE_URL}/users/${id}`);
 
-  console.log(userData);
-
   const {
     email,
     profile_url,

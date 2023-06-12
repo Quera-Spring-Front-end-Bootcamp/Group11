@@ -29,6 +29,7 @@ const ProjectListView = () => {
         mt={'36px'}>
         {data.map((board: any) => (
           <BoardOverviewRow
+            key={board._id}
             tasks={board.tasks}
             name={board.name}
             position={board.position - 1}

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import swapElements from '../../../util/swapElements';
 import { arrayMove } from '@dnd-kit/sortable';
+import { Board, Task } from '../../../util/types';
 
 export const boardSlice = createSlice({
   name: 'board',
@@ -50,6 +51,17 @@ export const boardSlice = createSlice({
         activeBoardIndex,
         overBoardIndex
       );
+    },
+    updateBoardTaskPositions: (
+      state: any,
+      action: {
+        payload: { newData: any; prevData: Array<Board> };
+      }
+    ) => {
+      state.selectedProjectBoardData = action.payload.prevData.map((board) => ({
+        ...board,
+        tasks: action.payload.newData[board._id],
+      }));
     },
   },
 });
