@@ -53,18 +53,18 @@ const ForgetPassword = ({}: ForgetPasswordProps) => {
           </p>
         </>
       ) : (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             id='forgetPasswordEmail'
             register={register}
             label='ایمیل خود را وارد کنید'></TextInput>
           <Button
             loading={loading}
-            onClick={handleSubmit(onSubmit)}
+            type='submit'
             h={'48px'}>
             دریافت ایمیل بازیابی رمزعبور
           </Button>
-        </>
+        </form>
       )}
     </Card>
   );
