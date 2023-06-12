@@ -37,7 +37,8 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { Item, Container, ContainerProps } from './components';
 import { Task } from '../../util/types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import boardSlice from '../../redux/slices/BoardSlices/BoardSlice';
 
 // import { createRange } from '../../utilities';
 
@@ -166,6 +167,7 @@ export function MultipleContainers({
   vertical = false,
   scrollable,
 }: Props) {
+  const dispatch = useDispatch();
   /**
    * get necessary data from redux store
    */
@@ -363,6 +365,13 @@ export function MultipleContainers({
 
             return arrayMove(containers, activeIndex, overIndex);
           });
+
+          dispatch(
+            boardSlice.actions.updateBoardPosition({
+              activeBoard: active.id as string,
+              overBoard: over?.id as string,
+            })
+          );
         }
 
         const activeContainer = findContainer(active.id as string);
