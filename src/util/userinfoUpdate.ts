@@ -12,7 +12,7 @@ function dispatchUserInfo(
   workspaces: Array<string>,
   firstname: string,
   lastname: string,
-  phone: string,
+  phone: string
 ) {
   store.dispatch(
     userSlice.actions.setUserInfoByRequest({

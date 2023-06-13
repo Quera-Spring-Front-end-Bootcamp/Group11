@@ -20,20 +20,33 @@ export const userSlice = createSlice({
       const { page } = action.payload;
       state.page = page;
     },
-    setUserInfo: (
+    setUserAccountInfo: (
       state: any,
       action: {
         payload: {
           username: string;
           email: string;
-          id: string;
         };
       }
     ) => {
-      const { username, email, id } = action.payload;
-      state.id = id;
+      const { username, email } = action.payload;
       state.username = username;
       state.email = email;
+    },
+    setUserPersonaInfo: (
+      state: any,
+      action: {
+        payload: {
+          firstname: string;
+          lastname: string;
+          phone: string;
+        };
+      }
+    ) => {
+      const { firstname, lastname, phone } = action.payload;
+      state.firstname = firstname;
+      state.lastname = lastname;
+      state.phone = phone;
     },
     setUserInfoByRequest: (
       state: any,
