@@ -1,23 +1,44 @@
-import { useForm, FieldValues } from 'react-hook-form';
-
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import { Button, TextInput, PasswordInput, Title } from '../../../components';
+import { useSelector } from 'react-redux';
+import { updateUserInfoApi } from '../../../services/userApi';
+import { toast } from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 
 const AccountInfo = () => {
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const { email, username, id } = useSelector((state: any) => state.user);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setdisabled] = useState(true);
+
+  const handleChange = () => {
+    setdisabled(false);
+  };
+
+  const { register, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: {
-      firstName: '', //from BackEnd
-      lastName: '', //from BackEnd
-      tel: '', //from BackEnd
+      email: email, //from BackEnd
+      password: '', //from BackEnd
+      username: username, //from BackEnd
     },
   });
-  const onSubmit = (data) => console.log(data);
-  console.log(errors);
+  useEffect(() => {
+    setValue('email', email);
+    setValue('username', username);
+  }, [email, setValue, username]);
 
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setLoading(true);
+    const { email, username } = data;
+    try {
+      await updateUserInfoApi(id, { email, username });
+      toast.success('بروز رسانی اطلاعات با موفقیت انجام شد');
+    } catch (error) {
+      console.log(error);
+      toast.error('بروز رسانی اطلاعات با مشکل مواجه شد');
+    }
+    setLoading(false);
+    setdisabled(true);
+  };
   return (
     <div className='flex flex-col'>
       <div>
@@ -33,6 +54,9 @@ const AccountInfo = () => {
           className='flex flex-col'
           onSubmit={handleSubmit(onSubmit)}>
           <TextInput
+            autoComplete='off'
+            onChange={handleChange}
+            placeholder={`current email: ${email}`}
             id='email'
             type='email'
             register={register}
@@ -40,6 +64,7 @@ const AccountInfo = () => {
           />
           <div className='relative'>
             <PasswordInput
+              autoComplete='off'
               id='password'
               register={register}
               label='رمز عبور'
@@ -52,12 +77,17 @@ const AccountInfo = () => {
             </Button>
           </div>
           <TextInput
-            id='userName'
+            autoComplete='off'
+            onChange={handleChange}
+            placeholder={`current username: ${username}`}
+            id='username'
             register={register}
             label='نام کاربری'
             className='mt-[20px]'
           />
           <Button
+            disabled={disabled}
+            loading={loading}
             className='mt-[48px]'
             type='submit'>
             ثبت تغییرات
