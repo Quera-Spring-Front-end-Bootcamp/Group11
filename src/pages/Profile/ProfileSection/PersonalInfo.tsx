@@ -2,17 +2,20 @@ import { Button as MantineBtn } from '@mantine/core';
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 
 import { Button, Avatar, TextInput, Title } from '../../../components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { updateUserInfoApi } from '../../../services/userApi';
 import toast from 'react-hot-toast';
+import userSlice from '../../../redux/slices/userSlice';
 const PersonalInfo = () => {
+  const dispatch = useDispatch();
+
   const { firstname, lastname, phone, id } = useSelector(
     (state: any) => state.user
   );
-  const [avatarText, setAvatarText] = useState(
-    firstname && lastname && `${firstname[0].toUpperCase()} ${lastname[0]}`
-  );
+
+  const avatarText = firstname && lastname && `${firstname[0]} ${lastname[0]}`;
+
   const [loading, setLoading] = useState(false);
   const [disabled, setdisabled] = useState(true);
 
@@ -21,9 +24,9 @@ const PersonalInfo = () => {
   };
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: {
-      firstname: firstname, //from BackEnd
-      lastname: lastname, //from BackEnd
-      phone: phone, //from BackEnd
+      firstname,
+      lastname,
+      phone,
     },
   });
 
@@ -31,7 +34,6 @@ const PersonalInfo = () => {
     setValue('firstname', firstname);
     setValue('lastname', lastname);
     setValue('phone', phone);
-    setAvatarText(firstname && lastname && `${firstname[0]} ${lastname[0]}`);
   }, [firstname, lastname, phone, setValue]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -43,14 +45,17 @@ const PersonalInfo = () => {
         lastname,
         phone,
       });
-      setAvatarText(firstname && lastname && `${firstname[0]} ${lastname[0]}`);
 
+      dispatch(
+        userSlice.actions.setUserPersonaInfo({ firstname, lastname, phone })
+      );
       console.log(apiData);
       toast.success('بروز رسانی اطلاعات با موفقیت انجام شد');
     } catch (error) {
       console.log(error);
       toast.error('بروز رسانی اطلاعات با مشکل مواجه شد');
     }
+
     setLoading(false);
     setdisabled(true);
   };
@@ -110,6 +115,7 @@ const PersonalInfo = () => {
             className='mt-[20px]'
           />
           <TextInput
+            placeholder={`current phone: ${phone}`}
             onChange={handleChange}
             id='phone'
             type='tel'

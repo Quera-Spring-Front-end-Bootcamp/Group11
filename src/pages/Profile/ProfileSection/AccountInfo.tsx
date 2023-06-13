@@ -1,11 +1,14 @@
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import { Button, TextInput, PasswordInput, Title } from '../../../components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUserInfoApi } from '../../../services/userApi';
 import { toast } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
+import userSlice from '../../../redux/slices/userSlice';
 
 const AccountInfo = () => {
+  const dispatch = useDispatch();
+
   const { email, username, id } = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState(false);
   const [disabled, setdisabled] = useState(true);
@@ -16,9 +19,9 @@ const AccountInfo = () => {
 
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: {
-      email: email, //from BackEnd
-      password: '', //from BackEnd
-      username: username, //from BackEnd
+      email,
+      password: '',
+      username,
     },
   });
   useEffect(() => {
@@ -31,6 +34,7 @@ const AccountInfo = () => {
     const { email, username } = data;
     try {
       await updateUserInfoApi(id, { email, username });
+      dispatch(userSlice.actions.setUserAccountInfo({ email, username }));
       toast.success('بروز رسانی اطلاعات با موفقیت انجام شد');
     } catch (error) {
       console.log(error);
@@ -56,7 +60,6 @@ const AccountInfo = () => {
           <TextInput
             autoComplete='off'
             onChange={handleChange}
-            placeholder={`current email: ${email}`}
             id='email'
             type='email'
             register={register}
@@ -79,7 +82,6 @@ const AccountInfo = () => {
           <TextInput
             autoComplete='off'
             onChange={handleChange}
-            placeholder={`current username: ${username}`}
             id='username'
             register={register}
             label='نام کاربری'
