@@ -10,6 +10,7 @@ interface ModalProps extends MantineModalProps {
   action?: () => void;
   back?: boolean;
   backAction?: () => void;
+  loading?: boolean;
 }
 
 const Modal = ({
@@ -20,6 +21,7 @@ const Modal = ({
   back,
   backAction,
   title,
+  loading,
   ...otherProps
 }: ModalProps) => {
   return (
@@ -61,8 +63,8 @@ const Modal = ({
           )}
 
           {/* title and close button */}
-          <MantineModal.Title>{title}</MantineModal.Title>
           <MantineModal.CloseButton />
+          <MantineModal.Title>{title}</MantineModal.Title>
         </MantineModal.Header>
 
         {/*body Section*/}
@@ -80,6 +82,7 @@ const Modal = ({
         {action && (
           <Button
             onClick={action}
+            loading={loading}
             className='w-full'>
             {actionLabel}
           </Button>

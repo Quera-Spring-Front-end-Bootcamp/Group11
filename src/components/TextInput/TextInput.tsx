@@ -1,14 +1,16 @@
+import { identity } from '@fullcalendar/core/internal';
 import { TextInput as MantineTextInput } from '@mantine/core';
 import { TextInputProps as MantineTextInputProps } from '@mantine/core';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
-interface inputProps extends MantineTextInputProps {
+type inputProps = Omit<MantineTextInputProps, 'pattern'> & {
   id: string;
   register: UseFormRegister<FieldValues>;
   required?: boolean;
+  pattern?: RegExp;
   errors?: FieldErrors;
   noBorder?: boolean;
-}
+};
 
 const TextInput = ({
   id,
@@ -16,17 +18,29 @@ const TextInput = ({
   register,
   errors,
   noBorder,
+  pattern,
   ...otherProps
 }: inputProps) => {
+  let haveError: boolean;
+  if (errors) {
+    if (Object.keys(errors).length) {
+      haveError = true;
+    }
+  }
+
   return (
     <MantineTextInput
       styles={() => ({
         input: {
-          border: noBorder ? 'none' : '1px solid #AAAAAA80',
+          border: haveError
+            ? '2px solid red'
+            : noBorder
+            ? 'none'
+            : '1px solid #AAAAAA80',
           backgroundColor: noBorder ? '#F0F1F3' : '',
           textAlign: 'right',
           ':focus': {
-            border: '1px solid #AAAAAAff',
+            border: haveError ? '2px solid red' : '1px solid #AAAAAAff',
           },
           height: '40px',
         },
@@ -39,7 +53,7 @@ const TextInput = ({
         },
       })}
       radius='6px'
-      {...register(id, { required })}
+      {...register(id, { required, pattern })}
       {...otherProps}
     />
   );

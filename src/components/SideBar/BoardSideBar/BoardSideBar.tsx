@@ -2,14 +2,11 @@ import { FiPlusSquare } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Accordion, LogOutButton, MiniProfile, Button } from '../..';
-import { WorkSpaceList } from '../../WorkSpaceList';
 import { SearchInput } from '../../SearchInput';
 import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
 import { WorkSpaceAccordion } from '..';
 import { workspaceObj } from '../../../util/types';
 import { useEffect } from 'react';
-import { BASE_URL } from '../../../constants';
-import axios from 'axios';
 import userSlice from '../../../redux/slices/userSlice';
 import { toast } from 'react-hot-toast';
 import { Flex } from '@mantine/core';

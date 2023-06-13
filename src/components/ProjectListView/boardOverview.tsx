@@ -44,6 +44,7 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
       </Flex>
       {tasks.map((task) => (
         <Flex
+          key={task._id}
           justify='space-between'
           align='center'
           my='20px'
@@ -78,6 +79,7 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
                 {task.taskAssigns.length ? (
                   task.taskAssigns.map((user: User, i: number) => (
                     <Avatar
+                      key={user._id}
                       alt={user.firstname}
                       fontSize='12px'
                       style={{
