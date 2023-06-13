@@ -47,17 +47,18 @@ const ResetPassword = () => {
   return (
     <Card className='flex flex-col gap-5 min-w-[460px]'>
       <Title className='text-center'>فراموشی رمز عبور</Title>
-
-      <TextInput
-        id='newPassword'
-        register={register}
-        label='رمز جدید'></TextInput>
-      <Button
-        loading={loading}
-        onClick={handleSubmit(onSubmit)}
-        h={'48px'}>
-        تغییر رمز
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextInput
+          id='newPassword'
+          register={register}
+          label='رمز جدید'></TextInput>
+        <Button
+          loading={loading}
+          type='submit'
+          h={'48px'}>
+          تغییر رمز
+        </Button>
+      </form>
     </Card>
   );
 };

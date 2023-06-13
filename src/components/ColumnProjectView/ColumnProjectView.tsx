@@ -33,13 +33,16 @@ import {
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-// import {coordinateGetter as multipleContainersCoordinateGetter} from './multipleContainersKeyboardCoordinates';
 
 import { Item, Container, ContainerProps } from './components';
 import { Task } from '../../util/types';
-import { useSelector } from 'react-redux';
-
-// import { createRange } from '../../utilities';
+import { useDispatch, useSelector } from 'react-redux';
+import boardSlice from '../../redux/slices/BoardSlices/BoardSlice';
+import { changeBoardPositionApi } from '../../services/boardApi';
+import {
+  changeTaskBoardApi,
+  changeTaskPositionApi,
+} from '../../services/taskApi';
 
 export default {
   title: 'Presets/Sortable/Multiple Containers',
@@ -139,16 +142,11 @@ interface Props {
   handle?: boolean;
   renderItem?: any;
   strategy?: SortingStrategy;
-  modifiers?: Modifiers;
-  minimal?: boolean;
-  trashable?: boolean;
-  scrollable?: boolean;
   vertical?: boolean;
 }
 
 export const TRASH_ID = 'void';
 const PLACEHOLDER_ID = 'placeholder';
-const empty: Task[] = [];
 
 export function MultipleContainers({
   adjustScale = false,
@@ -159,13 +157,11 @@ export function MultipleContainers({
   // coordinateGetter = multipleContainersCoordinateGetter,
   getItemStyles = () => ({}),
   wrapperStyle = () => ({}),
-  minimal = false,
-  modifiers,
   renderItem,
   strategy = verticalListSortingStrategy,
   vertical = false,
-  scrollable,
 }: Props) {
+  const dispatch = useDispatch();
   /**
    * get necessary data from redux store
    */
@@ -351,7 +347,7 @@ export function MultipleContainers({
           });
         }
       }}
-      onDragEnd={({ active, over }) => {
+      onDragEnd={async ({ active, over }) => {
         if (active.id in items && over?.id) {
           setContainers((containers: Array<[string, string]>) => {
             const activeIndex = containers.findIndex(
@@ -363,6 +359,17 @@ export function MultipleContainers({
 
             return arrayMove(containers, activeIndex, overIndex);
           });
+
+          const overBoardIndexNum =
+            data.findIndex((board: any) => board._id === over?.id) + 1;
+
+          dispatch(
+            boardSlice.actions.updateBoardPosition({
+              activeBoard: active.id as string,
+              overBoard: over?.id as string,
+            })
+          );
+          changeBoardPositionApi(active.id as string, overBoardIndexNum);
         }
 
         const activeContainer = findContainer(active.id as string);
@@ -400,12 +407,33 @@ export function MultipleContainers({
             }));
           }
         }
+        if (!(active.id in items)) {
+          console.log(active.id);
+          //update task board in DB
+          await changeTaskBoardApi(active.id as string, overContainer);
+
+          //save reArranged tasks data to redux
+          dispatch(
+            boardSlice.actions.updateBoardTaskPositions({
+              newData: items,
+              prevData: data,
+            })
+          );
+
+          //update task position in db
+          // const position = items[overContainer].findIndex(
+          //   (task: Task) => task._id === over?.id
+          // );
+          // console.log(items);
+          // await changeTaskPositionApi(active.id as string, position + 1).then(
+          //   (data) => console.log(data)
+          // );
+        }
 
         setActiveId(null);
       }}
       cancelDrop={cancelDrop}
-      onDragCancel={() => setActiveId(null)}
-      modifiers={modifiers}>
+      onDragCancel={() => setActiveId(null)}>
       <div
         style={{
           display: 'inline-grid',
@@ -424,12 +452,10 @@ export function MultipleContainers({
             <DroppableContainer
               key={container[1]}
               id={container[1]}
-              label={minimal ? undefined : `${container[0]}`}
+              label={`${container[0]}`}
               columns={columns}
               items={items[container[1]]}
-              scrollable={scrollable}
-              style={containerStyle}
-              unstyled={minimal}>
+              style={containerStyle}>
               <SortableContext
                 items={items[container[1]]}
                 strategy={strategy}>

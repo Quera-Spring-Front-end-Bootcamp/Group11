@@ -8,6 +8,8 @@ import { workSpaceColors } from '../../../constants';
 import { RxValueNone } from 'react-icons/rx';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { Avatar } from '@mantine/core';
+import { createWorkSpaceApi } from '../../../services/workspaceApi';
+import { toast } from 'react-hot-toast';
 
 interface CreateWorkSpaceModalProps {
   children?: React.ReactNode;
@@ -24,9 +26,10 @@ enum STEPS {
 }
 
 const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
-  const [step, setStep] = useState(STEPS.NAME);
   const dispatch = useDispatch();
+  const [step, setStep] = useState(STEPS.NAME);
   const open = useSelector((state: any) => state.createWorkSpaceModal.open);
+  const [loading, setLoading] = useState(false);
 
   const {
     register, //register function will pass to text inputs
@@ -61,6 +64,9 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
     body = (
       <>
         <TextInput
+          required
+          errors={errors}
+          pattern={/^.{4,}$/}
           id='workSpaceName'
           register={register}
           label='نام ورک‌اسپیس'
@@ -162,11 +168,19 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
   }, [step]);
 
   //submit form value
-  const onSubmit = () => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.OVERVIEW) return onNext(); //if not on last Step simply go next step
+    setLoading(true);
+    const { workSpaceName } = data;
 
-    ///submit functionality here for last step
-    console.log(getValues());
+    try {
+      await createWorkSpaceApi({ name: workSpaceName });
+      toast.success('ورک‌اسپیس با موفقیت ایجاد شد');
+      dispatch(onClose());
+    } catch (error) {
+      console.log(error);
+      toast.error('ساخت ورک‌اسپیس با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
+    }
   };
 
   return (
@@ -177,9 +191,10 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
       body={body}
       footer={footer}
       actionLabel={actionLabel}
-      action={onSubmit}
+      action={handleSubmit(onSubmit)}
       back={haveback}
       backAction={onBack}
+      loading={loading}
     />
   );
 };

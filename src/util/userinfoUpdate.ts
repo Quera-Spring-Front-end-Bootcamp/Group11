@@ -12,7 +12,8 @@ function dispatchUserInfo(
   workspaces: Array<string>,
   firstname: string,
   lastname: string,
-  phone: string
+  phone: string,
+  settings: Array<any>
 ) {
   store.dispatch(
     userSlice.actions.setUserInfoByRequest({
@@ -24,6 +25,7 @@ function dispatchUserInfo(
       firstname,
       lastname,
       phone,
+      settings,
     })
   );
 }
@@ -44,6 +46,7 @@ const userUpdateByToken = async (token: string) => {
     firstname,
     lastname,
     phone,
+    settings,
   } = userData;
 
   dispatchUserInfo(
@@ -54,7 +57,8 @@ const userUpdateByToken = async (token: string) => {
     workspaces,
     firstname,
     lastname,
-    phone
+    phone,
+    settings
   );
 };
 

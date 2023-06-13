@@ -54,7 +54,7 @@ export const userSlice = createSlice({
         payload: {
           username: string;
           email: string;
-          settings?: string;
+          settings?: Array<any>;
           id: string;
           workspaces: Array<string>;
           workspaceMember: Array<string>;

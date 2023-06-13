@@ -64,36 +64,37 @@ const SignUpCard = ({}: SignUpCardProps) => {
   return (
     <Card className='flex flex-col'>
       <Title>ثبت‌نام در کوئرا تسک منیجر</Title>
-      <TextInput
-        id='fullName'
-        register={register}
-        className='mt-[29px]'
-        label='نام کامل'
-      />
-      <TextInput
-        id='email'
-        register={register}
-        className='mt-[20px]'
-        label='ایمیل'
-      />
-      <PasswordInput
-        id='password'
-        register={register}
-        className='mt-[20px]'
-        label='رمزعبور'
-      />
-      <Checkbox
-        className='mt-[20px]'
-        label='قوانین و مقررات را می‌پذیرم.'
-      />
-      <Button
-        loading={loading}
-        // onClick={() => handleSubmit(onSubmit)}
-        onClick={handleSubmit(onSubmit)}
-        className='mt-[20px]'
-        h={'48px'}>
-        ثبت‌نام
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextInput
+          id='fullName'
+          register={register}
+          className='mt-[29px]'
+          label='نام کامل'
+        />
+        <TextInput
+          id='email'
+          register={register}
+          className='mt-[20px]'
+          label='ایمیل'
+        />
+        <PasswordInput
+          id='password'
+          register={register}
+          className='mt-[20px]'
+          label='رمزعبور'
+        />
+        <Checkbox
+          className='mt-[20px]'
+          label='قوانین و مقررات را می‌پذیرم.'
+        />
+        <Button
+          loading={loading}
+          type='submit'
+          className='mt-[20px]'
+          h={'48px'}>
+          ثبت‌نام
+        </Button>
+      </form>
     </Card>
   );
 };

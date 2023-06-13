@@ -39,3 +39,11 @@ export interface Task {
   taskAssigns: User[];
   _id: string;
 }
+
+export interface Board {
+  name: string;
+  position: number;
+  project: string;
+  tasks: Task[];
+  _id: string;
+}

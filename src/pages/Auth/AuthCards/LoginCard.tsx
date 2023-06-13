@@ -95,33 +95,33 @@ const LogInCard = () => {
   return (
     <Card className='flex flex-col'>
       <Title>به کوئرا تسک منیجر خوش برگشتی :)</Title>
-      <TextInput
-        id='emailOrUsername'
-        register={register}
-        className='mt-[29px]'
-        label='ایمیل یا نام کاربری'></TextInput>
-      <PasswordInput
-        id='password'
-        register={register}
-        className='mt-[20px]'
-        label='رمزعبور'></PasswordInput>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextInput
+          id='emailOrUsername'
+          register={register}
+          className='mt-[29px]'
+          label='ایمیل یا نام کاربری'></TextInput>
+        <PasswordInput
+          id='password'
+          register={register}
+          className='mt-[20px]'
+          label='رمزعبور'></PasswordInput>
 
-      <Link
-        className='text-primary text-12 mt-[8px] font-semibold leading-19 self-start'
-        to='/auth/forgetPassword'>
-        رمز عبور را فراموش کرده‌ای؟
-      </Link>
-      <Link
-        to='/board'
-        className='mt-[32px]'>
+        <Link
+          className='text-primary text-12 mt-[8px] font-semibold leading-19 self-start'
+          to='/auth/forgetPassword'>
+          رمز عبور را فراموش کرده‌ای؟
+        </Link>
+
         <Button
           loading={loading}
-          onClick={handleSubmit(onSubmit)}
+          type='submit'
           h={'48px'}
-          w={'100%'}>
+          w={'100%'}
+          mt='32px'>
           ورود
         </Button>
-      </Link>
+      </form>
 
       <div className='flex items-center justify-center mt-[20.5px]'>
         <div className='font-normal text-16 leading-24 ml-[7px]'>

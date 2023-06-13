@@ -4,4 +4,8 @@ const getAllProjectBoardsApi = async (projectId: string) => {
   return apiCall.get(`/board/${projectId}`);
 };
 
-export { getAllProjectBoardsApi };
+const changeBoardPositionApi = async (boardId: string, position: number) => {
+  return apiCall.put(`/board/${boardId}/position/${position}`);
+};
+
+export { getAllProjectBoardsApi, changeBoardPositionApi };
