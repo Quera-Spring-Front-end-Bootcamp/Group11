@@ -408,6 +408,7 @@ export function MultipleContainers({
           }
         }
         if (!(active.id in items)) {
+          console.log(active.id);
           //update task board in DB
           await changeTaskBoardApi(active.id as string, overContainer);
 
@@ -420,9 +421,9 @@ export function MultipleContainers({
           );
 
           //update task position in db
-          const position = items[overContainer].findIndex(
-            (task: Task) => task._id === over?.id
-          );
+          // const position = items[overContainer].findIndex(
+          //   (task: Task) => task._id === over?.id
+          // );
           // console.log(items);
           // await changeTaskPositionApi(active.id as string, position + 1).then(
           //   (data) => console.log(data)
