@@ -13,6 +13,7 @@ export const userSlice = createSlice({
     workspaces: [],
     workspaceMember: [],
     allWorkspaces: [],
+    phone: '',
   },
   reducers: {
     setPage: (state: any, action) => {
@@ -46,6 +47,7 @@ export const userSlice = createSlice({
           workspaceMember: Array<string>;
           firstname: string;
           lastname: string;
+          phone: string;
         };
       }
     ) => {
@@ -58,6 +60,7 @@ export const userSlice = createSlice({
         workspaceMember,
         firstname,
         lastname,
+        phone,
       } = action.payload;
 
       state.id = id;
@@ -68,6 +71,7 @@ export const userSlice = createSlice({
       state.workspaceMember = workspaceMember;
       state.firstname = firstname;
       state.lastname = lastname;
+      state.phone = phone;
     },
     setWorkspaces: (state: any, action: { payload: Array<workspaceObj> }) => {
       state.allWorkspaces = action.payload;
