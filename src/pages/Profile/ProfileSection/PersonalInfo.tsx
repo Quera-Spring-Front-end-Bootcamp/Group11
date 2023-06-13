@@ -1,24 +1,64 @@
 import { Button as MantineBtn } from '@mantine/core';
-import { useForm, FieldValues } from 'react-hook-form';
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 
 import { Button, Avatar, TextInput, Title } from '../../../components';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { updateUserInfoApi } from '../../../services/userApi';
+import toast from 'react-hot-toast';
+import userSlice from '../../../redux/slices/userSlice';
 const PersonalInfo = () => {
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const dispatch = useDispatch();
+
+  const { firstname, lastname, phone, id } = useSelector(
+    (state: any) => state.user
+  );
+
+  const avatarText = firstname && lastname && `${firstname[0]} ${lastname[0]}`;
+
+  const [loading, setLoading] = useState(false);
+  const [disabled, setdisabled] = useState(true);
+
+  const handleChange = () => {
+    setdisabled(false);
+  };
+  const { register, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: {
-      firstName: '', //from BackEnd
-      lastName: '', //from BackEnd
-      tel: '', //from BackEnd
+      firstname,
+      lastname,
+      phone,
     },
   });
-  const onSubmit = (data) => console.log(data);
-  console.log(errors);
 
+  useEffect(() => {
+    setValue('firstname', firstname);
+    setValue('lastname', lastname);
+    setValue('phone', phone);
+  }, [firstname, lastname, phone, setValue]);
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { firstname, lastname, phone } = data;
+    setLoading(true);
+    try {
+      const { data: apiData } = await updateUserInfoApi(id, {
+        firstname,
+        lastname,
+        phone,
+      });
+
+      dispatch(
+        userSlice.actions.setUserPersonaInfo({ firstname, lastname, phone })
+      );
+      console.log(apiData);
+      toast.success('بروز رسانی اطلاعات با موفقیت انجام شد');
+    } catch (error) {
+      console.log(error);
+      toast.error('بروز رسانی اطلاعات با مشکل مواجه شد');
+    }
+
+    setLoading(false);
+    setdisabled(true);
+  };
   return (
     <div className='flex flex-col'>
       <div>
@@ -37,7 +77,7 @@ const PersonalInfo = () => {
             className='p-0 m-0'
             size={'100px'}
             radius={'50%'}>
-            NM {/* from BackEnd */}
+            {avatarText}
           </Avatar>
         </div>
         <div className='flex flex-col mr-[16px]'>
@@ -62,24 +102,30 @@ const PersonalInfo = () => {
           className='flex flex-col '
           onSubmit={handleSubmit(onSubmit)}>
           <TextInput
-            id='firstName'
+            onChange={handleChange}
+            id='firstname'
             register={register}
             label='نام'
           />
           <TextInput
-            id='lastName'
+            onChange={handleChange}
+            id='lastname'
             register={register}
             label='نام خانوادگی'
             className='mt-[20px]'
           />
           <TextInput
-            id='tel'
+            placeholder={`current phone: ${phone}`}
+            onChange={handleChange}
+            id='phone'
             type='tel'
             register={register}
             label='شماره موبایل'
             className='mt-[20px]'
           />
           <Button
+            loading={loading}
+            disabled={disabled}
             className='mt-[48px]'
             type='submit'>
             ثبت تغییرات

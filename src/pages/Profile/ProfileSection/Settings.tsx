@@ -1,24 +1,24 @@
 import { Switch } from '@mantine/core';
-import { useForm, FieldValues } from 'react-hook-form';
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import { themeColor } from '../../../constants';
 import { Button, Title, ColorInput } from '../../../components';
 import { useState } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { BsCheck, BsX } from 'react-icons/bs';
+import toast from 'react-hot-toast';
 const Settings = () => {
-  const {
-    handleSubmit,
-    getValues,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const { handleSubmit, watch, setValue } = useForm<FieldValues>({
     defaultValues: {
-      selectedColor: '',
-      darkMode: false, //from BackEnd
+      selectedColor: localStorage.getItem('theme'),
+      darkMode: localStorage.getItem('darkMode'),
     },
   });
-  const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setdisabled] = useState(true);
+  const darModeStorage = localStorage.getItem('darkMode');
+  const [checked, setChecked] = useState(
+    darModeStorage && JSON.parse(darModeStorage)
+  );
   const selectedColor = watch('selectedColor');
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -27,9 +27,19 @@ const Settings = () => {
       shouldValidate: true,
     });
   };
+  const handleChange = () => {
+    setdisabled(false);
+  };
 
-  const onSubmit = (data: any) => console.log(data);
-
+  const onSubmit: SubmitHandler<FieldValues> = () => {
+    setLoading(true);
+    localStorage.setItem('theme', selectedColor);
+    localStorage.setItem('darkMode', `${checked}`);
+    setCustomValue('selectedColor', localStorage.getItem('theme'));
+    setLoading(false);
+    setdisabled(true);
+    toast.success('بروز رسانی اطلاعات با موفقیت انجام شد');
+  };
   return (
     <div className='flex flex-col'>
       <div>
@@ -46,7 +56,8 @@ const Settings = () => {
           onSubmit={handleSubmit(onSubmit)}>
           <div className='flex flex-row gap-[14px]'>
             {themeColor.map((color) => (
-              <div key={color}
+              <div
+                key={color}
                 className={` ${
                   selectedColor === color
                     ? 'text-white scale-[1.4] '
@@ -60,18 +71,23 @@ const Settings = () => {
                   radius='100%'
                   selected={selectedColor === color}
                   icon={selectedColor === color ? AiOutlineCheck : null}
-                  onClick={() => setCustomValue('selectedColor', color)}
+                  onClick={() => {
+                    setCustomValue('selectedColor', color);
+                    handleChange();
+                  }}
                 />
               </div>
             ))}
           </div>
           <div className='mt-[50px]'>
             <Switch
+              id='darkMode'
               onClick={() => setCustomValue('darkMode', !checked)}
               size='lg'
               checked={checked}
               onChange={(event) => {
                 setChecked(event.currentTarget.checked);
+                handleChange();
               }}
               thumbIcon={
                 checked ? (
@@ -104,6 +120,8 @@ const Settings = () => {
             />
           </div>
           <Button
+            disabled={disabled}
+            loading={loading}
             className='mt-[48px]'
             type='submit'>
             ثبت تغییرات

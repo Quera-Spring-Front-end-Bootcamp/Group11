@@ -12,6 +12,7 @@ function dispatchUserInfo(
   workspaces: Array<string>,
   firstname: string,
   lastname: string,
+  phone: string,
   settings: Array<any>
 ) {
   store.dispatch(
@@ -23,6 +24,7 @@ function dispatchUserInfo(
       workspaces,
       firstname,
       lastname,
+      phone,
       settings,
     })
   );
@@ -43,6 +45,7 @@ const userUpdateByToken = async (token: string) => {
     workspaces,
     firstname,
     lastname,
+    phone,
     settings,
   } = userData;
 
@@ -54,6 +57,7 @@ const userUpdateByToken = async (token: string) => {
     workspaces,
     firstname,
     lastname,
+    phone,
     settings
   );
 };
