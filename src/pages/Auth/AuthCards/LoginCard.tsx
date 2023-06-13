@@ -58,6 +58,7 @@ const LogInCard = () => {
         workspaces,
         firstname,
         lastname,
+        phone
       } = userData;
 
       //save tokens to local storage
@@ -74,6 +75,7 @@ const LogInCard = () => {
           workspaceMember,
           firstname,
           lastname,
+          phone
         })
       );
 
