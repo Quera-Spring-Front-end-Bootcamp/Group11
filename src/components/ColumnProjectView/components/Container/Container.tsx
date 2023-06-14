@@ -1,7 +1,7 @@
-import React, {forwardRef} from 'react';
+import React, { forwardRef } from 'react';
 import classNames from 'classnames';
 
-import {Handle, Remove} from '../Item';
+import { Handle } from '../Item';
 
 import styles from './Container.module.scss';
 
@@ -63,8 +63,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
           shadow && styles.shadow
         )}
         onClick={onClick}
-        tabIndex={onClick ? 0 : undefined}
-      >
+        tabIndex={onClick ? 0 : undefined}>
         {label ? (
           <div className={styles.Header}>
             {label}

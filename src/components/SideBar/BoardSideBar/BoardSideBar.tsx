@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Accordion, LogOutButton, MiniProfile, Button } from '../..';
 import { SearchInput } from '../../SearchInput';
-import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
+import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateWorkSpaceModalSlice';
 import { WorkSpaceAccordion } from '..';
 import { workspaceObj } from '../../../util/types';
 import { useEffect } from 'react';
@@ -64,7 +64,7 @@ const SideBar = () => {
                   </div>
                   <div
                     dir='ltr'
-                    className='h-[300px] overflow-auto pr-[10px] scrollbar scrollbar-w-[5px] scrollbar-track-zinc-300 scrollbar-thumb-zinc-400 scrollbar-track-rounded-3xl scrollbar-thumb-rounded-3xl'>
+                    className='h-[300px] overflow-auto pr-[10px] scrollbar scrollbar-w-[5px] scrollbar-track-zinc-300 scrollbar-thumb-zinc-400 scrollbar-track-rounded-3xl scrollbar-thumb-rounded-3xl scrollbar-hide relative'>
                     <div dir='rtl'>
                       <Flex
                         direction='column'

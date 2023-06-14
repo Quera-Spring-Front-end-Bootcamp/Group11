@@ -456,3 +456,13 @@ body,
   width: 100%;
   height: 100%;
 }
+
+/* for hiding scrollbar if needed as tailwind doesn't support this out of the box */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

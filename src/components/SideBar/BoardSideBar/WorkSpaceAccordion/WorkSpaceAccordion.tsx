@@ -1,13 +1,10 @@
 import { Flex, Text } from '@mantine/core';
-import { Button } from '../../';
-import { ColorInput } from '../..';
-import { workSpaceColors } from '../../../constants';
-import { useEffect } from 'react';
-import { User, workspaceObj } from '../../../util/types';
+import { ColorInput, WorkSpaceMenu } from '../../..';
+import { workSpaceColors } from '../../../../constants';
+import { useState } from 'react';
+import { workspaceObj } from '../../../../util/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import boardSlice from '../../../redux/slices/BoardSlices/BoardSlice';
 
 interface WorkSpaceAccordionProps extends workspaceObj {
   i: number;
@@ -28,10 +25,13 @@ const WorkSpaceAccordion = ({
       search: `?projectId=${id}&workspaceId=${wsId}`,
     });
   };
+  const [showMenu, setShowMenu] = useState<boolean>(false);
   return (
     <div>
-      <Flex className='w-full flex items-center justify-between font-semibold group cursor-pointer '>
-        <Flex gap='8px'>
+      <Flex className='w-full flex items-center justify-between font-semibold group cursor-pointer'>
+        <Flex
+          gap='8px'
+          className='w-full'>
           <ColorInput
             height='20px'
             width='20px'
@@ -41,19 +41,18 @@ const WorkSpaceAccordion = ({
               workSpaceColors[i] ? workSpaceColors[i] : workSpaceColors[i + 1]
             }
           />
-
           <Text fz='16px'>{name}</Text>
+          <WorkSpaceMenu
+            open={showMenu}
+            setOpen={setShowMenu}
+            wsId={wsId}
+          />
         </Flex>
-
-        <Button
-          p={0}
-          h={'auto'}
-          variant='subtle'
-          bg={'transparent'}
-          c={'#323232'}
-          className='hidden group-hover:block hover:bg-transparent'>
-          <BsThreeDots size={16} />
-        </Button>
+        <div
+          onClick={() => setShowMenu(true)}
+          className='hidden group-hover:block hover:bg-transparent hover:scale-125 transition'>
+          <BsThreeDots size={18} />
+        </div>
       </Flex>
       {projects.map((proj) => (
         <Text

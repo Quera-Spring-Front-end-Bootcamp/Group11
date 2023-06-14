@@ -1,5 +1,7 @@
 ///board
 import { ProjectListView } from './ProjectListView';
+///menus
+import { WorkSpaceMenu } from './Menu';
 ///Inputs
 import { Anchor } from './Anchor';
 import { Button } from './Button';
@@ -40,6 +42,7 @@ export {
   NewTaskButton,
   TaskCard,
   ////
-  ProjectListView
+  ProjectListView,
   ////
+  WorkSpaceMenu
 };

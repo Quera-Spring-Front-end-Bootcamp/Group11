@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 import type { Transform } from '@dnd-kit/utilities';
 
-import { Handle, Remove } from './components';
+import { Handle } from './components';
 
 import styles from './Item.module.scss';
 import { TaskCard } from '../../..';
@@ -36,9 +36,9 @@ export interface ItemProps {
     listeners: DraggableSyntheticListeners;
     ref: React.Ref<HTMLElement>;
     style: React.CSSProperties | undefined;
-    transform: Props['transform'];
-    transition: Props['transition'];
-    value: Props['value'];
+    transform: ItemProps['transform'];
+    transition: ItemProps['transition'];
+    value: ItemProps['value'];
   }): React.ReactElement;
 }
 
@@ -141,12 +141,6 @@ export const Item = React.memo(
             {...props}
             tabIndex={!handle ? 0 : undefined}>
             <span className={styles.Actions}>
-              {onRemove ? (
-                <Remove
-                  className={styles.Remove}
-                  onClick={onRemove}
-                />
-              ) : null}
               {handle ? (
                 <Handle
                   className='w-full'

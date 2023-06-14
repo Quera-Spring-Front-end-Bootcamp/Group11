@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from '../Modal';
-import { onClose } from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
+import { Modal } from '../../Modal';
+import { onClose } from '../../../../redux/slices/ModalSlices/CreateModalSlices/CreateWorkSpaceModalSlice';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useMemo, useState } from 'react';
-import { TextInput, ColorInput } from '../..';
-import { workSpaceColors } from '../../../constants';
+import { TextInput, ColorInput } from '../../..';
+import { workSpaceColors } from '../../../../constants';
 import { RxValueNone } from 'react-icons/rx';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { Avatar } from '@mantine/core';
-import { createWorkSpaceApi } from '../../../services/workspaceApi';
+import { createWorkSpaceApi } from '../../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
 
 interface CreateWorkSpaceModalProps {

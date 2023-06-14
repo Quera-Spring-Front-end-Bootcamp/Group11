@@ -408,7 +408,6 @@ export function MultipleContainers({
           }
         }
         if (!(active.id in items)) {
-          console.log(active.id);
           //update task board in DB
           await changeTaskBoardApi(active.id as string, overContainer);
 
