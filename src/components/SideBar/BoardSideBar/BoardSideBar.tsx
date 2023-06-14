@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Accordion, LogOutButton, MiniProfile, Button } from '../..';
 import { SearchInput } from '../../SearchInput';
-import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateWorkSpaceModalSlice';
+import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateWorkSpaceModalSlice';
 import { WorkSpaceAccordion } from '..';
 import { workspaceObj } from '../../../util/types';
 import { useEffect } from 'react';

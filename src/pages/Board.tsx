@@ -1,6 +1,10 @@
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 
-import { CreateWorkSpaceModal, ShareProjectModal } from '../components/Modal';
+import {
+  CreateProjectModal,
+  CreateWorkSpaceModal,
+  ShareProjectModal,
+} from '../components/Modal';
 import HeaderBoard from '../components/HeaderBoard';
 import { BaseSideBar, BoardSideBar } from '../components/SideBar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,6 +63,7 @@ const Board = () => {
     <>
       <CreateWorkSpaceModal />
       <ShareProjectModal />
+      <CreateProjectModal />
       <div className='flex flex-row h-screen w-screen'>
         <div className='bg-[#FAFBFC] h-[100%] w-[23%] order-1'>
           <BaseSideBar>

@@ -1,6 +1,6 @@
 import {
   Menu as MantineMenu,
-  MenuProps as MantinrMenuProps,
+  MenuProps as MantineMenuProps,
 } from '@mantine/core';
 import OutsideClickHandler from 'react-outside-click-handler';
 
@@ -10,13 +10,24 @@ import { FiEdit } from 'react-icons/fi';
 import { IoColorPaletteOutline } from 'react-icons/io5';
 
 import { Button } from '..';
+import { useDispatch } from 'react-redux';
+import {
+  onOpen,
+  setWorkSpaceId,
+} from '../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
 
-interface MenuProps extends MantinrMenuProps {
+interface MenuProps extends MantineMenuProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   wsId: string;
 }
 export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
+  const dispatch = useDispatch();
+
+  const onCreateClickHandler = () => {
+    dispatch(onOpen());
+    dispatch(setWorkSpaceId({ wsId }));
+  };
   return (
     <OutsideClickHandler
       onOutsideClick={() => {
@@ -42,7 +53,9 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
           },
         }}>
         <MantineMenu.Dropdown>
-          <MantineMenu.Item icon={<AiOutlinePlus size={22} />}>
+          <MantineMenu.Item
+            onClick={onCreateClickHandler}
+            icon={<AiOutlinePlus size={22} />}>
             ساختن پروژه جدید
           </MantineMenu.Item>
           <MantineMenu.Item icon={<FiEdit size={22} />}>

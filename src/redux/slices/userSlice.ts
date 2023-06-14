@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { workspaceObj } from '../../util/types';
+import { Board, Project, workspaceObj } from '../../util/types';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -71,6 +71,29 @@ export const userSlice = createSlice({
     },
     setWorkspaces: (state: any, action: { payload: Array<workspaceObj> }) => {
       state.allWorkspaces = action.payload;
+    },
+    addCreatedProjectToWorkspace: (
+      state: any,
+      action: {
+        payload: {
+          wsId: string;
+          createdProject: Project;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { prevWorkspacesData, createdProject, wsId } = action.payload;
+      const updatedWorkspaces = prevWorkspacesData.map((ws: workspaceObj) => {
+        if (ws._id === wsId)
+          return {
+            ...ws,
+            projects: [...ws.projects, { ...createdProject, boards: [] }],
+          };
+
+        return ws;
+      });
+
+      state.allWorkspaces = updatedWorkspaces;
     },
   },
 });

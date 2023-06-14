@@ -1,3 +1,4 @@
-import { CreateWorkSpaceModal } from './CreateWorkspaceModal';
+import { CreateWorkSpaceModal } from './CreateModal/CreateWorkspaceModal';
 import { ShareProjectModal } from './ShareModal';
-export { CreateWorkSpaceModal, ShareProjectModal };
+import { CreateProjectModal } from './CreateModal';
+export { CreateWorkSpaceModal, ShareProjectModal, CreateProjectModal };
