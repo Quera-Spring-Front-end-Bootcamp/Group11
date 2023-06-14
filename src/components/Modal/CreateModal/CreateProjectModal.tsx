@@ -4,9 +4,7 @@ import { useState } from 'react';
 
 import { toast } from 'react-hot-toast';
 import CreateModal from './CreateModal';
-import CreateProjectModalSlice, {
-  onClose,
-} from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
+import { onClose } from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
 import { createProjectApi } from '../../../services/projectApi';
 import userSlice from '../../../redux/slices/userSlice';
 

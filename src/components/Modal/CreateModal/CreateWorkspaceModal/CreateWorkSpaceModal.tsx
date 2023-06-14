@@ -10,6 +10,7 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import { Avatar } from '@mantine/core';
 import { createWorkSpaceApi } from '../../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
+import userSlice from '../../../../redux/slices/userSlice';
 
 interface CreateWorkSpaceModalProps {
   children?: React.ReactNode;
@@ -26,10 +27,14 @@ enum STEPS {
 }
 
 const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
-  const dispatch = useDispatch();
   const [step, setStep] = useState(STEPS.NAME);
-  const open = useSelector((state: any) => state.createWorkSpaceModal.open);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const open = useSelector((state: any) => state.createWorkSpaceModal.open);
+  const prevWorkspacesData = useSelector(
+    (state: any) => state.user.allWorkspaces
+  );
 
   const {
     register, //register function will pass to text inputs
@@ -44,7 +49,6 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
       selectedWorkSpaceColor: '#76BC86',
     },
   });
-
   const selectedWorkSpaceColor = watch('selectedWorkSpaceColor');
 
   const setCustomValue = (id: string, value: any) => {
@@ -172,14 +176,24 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
     if (step !== STEPS.OVERVIEW) return onNext(); //if not on last Step simply go next step
     setLoading(true);
     const { workSpaceName } = data;
-
     try {
-      await createWorkSpaceApi({ name: workSpaceName });
-      toast.success('ورک‌اسپیس با موفقیت ایجاد شد');
+      const {
+        data: { data: createdWorkspace },
+      } = await createWorkSpaceApi({ name: workSpaceName });
+
+      dispatch(
+        userSlice.actions.addCreatedWorkspace({
+          createdWorkspace,
+          prevWorkspacesData,
+        })
+      );
       dispatch(onClose());
+      toast.success('ورک‌اسپیس با موفقیت ایجاد شد');
+      setLoading(false);
     } catch (error) {
       console.log(error);
       toast.error('ساخت ورک‌اسپیس با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
+      setLoading(false);
     }
   };
 
