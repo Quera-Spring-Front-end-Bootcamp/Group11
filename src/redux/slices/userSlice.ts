@@ -72,6 +72,18 @@ export const userSlice = createSlice({
     setWorkspaces: (state: any, action: { payload: Array<workspaceObj> }) => {
       state.allWorkspaces = action.payload;
     },
+    addCreatedWorkspace: (
+      state: any,
+      action: {
+        payload: {
+          createdWorkspace: workspaceObj;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { prevWorkspacesData, createdWorkspace } = action.payload;
+      state.allWorkspaces = [...prevWorkspacesData, createdWorkspace];
+    },
     addCreatedProjectToWorkspace: (
       state: any,
       action: {
@@ -83,7 +95,7 @@ export const userSlice = createSlice({
       }
     ) => {
       const { prevWorkspacesData, createdProject, wsId } = action.payload;
-      const updatedWorkspaces = prevWorkspacesData.map((ws: workspaceObj) => {
+      state.allWorkspaces = prevWorkspacesData.map((ws: workspaceObj) => {
         if (ws._id === wsId)
           return {
             ...ws,
@@ -92,8 +104,6 @@ export const userSlice = createSlice({
 
         return ws;
       });
-
-      state.allWorkspaces = updatedWorkspaces;
     },
   },
 });
