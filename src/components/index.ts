@@ -21,6 +21,7 @@ import { NewTaskButton } from './NewTaskButton';
 import { Container } from './Container';
 import { Accordion } from './Accordion';
 import { TaskCard } from './TaskCard';
+import { ClickOutsideWrapper } from './ClickOutsideWrapper';
 
 export {
   Container,
@@ -41,8 +42,9 @@ export {
   LogOutButton,
   NewTaskButton,
   TaskCard,
+  ClickOutsideWrapper,
   ////
   ProjectListView,
   ////
-  WorkSpaceMenu
+  WorkSpaceMenu,
 };

@@ -33,66 +33,51 @@ const SideBar = () => {
   }, []);
 
   return (
-    <div className='flex flex-col justify-between mt-[31px] bg-[#FAFBFC] w-[100%] h-[100%] border-l-[#AAAAAA] '>
+    <div className='flex flex-col justify-between mt-[31px] bg-[#FAFBFC] w-[100%] h-[calc(100%-40px)] border-l-[#AAAAAA] '>
       <div>
-        <Accordion
-          inputArray={[
-            {
-              id: 1,
-              AccTitle: 'ورک اسپیس‌ها',
-              AccDetail: (
-                <div>
-                  <div className='mb-[13px]'>
-                    <SearchInput />
-                  </div>
-                  <div className='mb-[16px]'>
-                    <Button
-                      fullWidth={true}
-                      c={'#1E1E1E'}
-                      bg={'#D3D3D3'}
-                      icon={FiPlusSquare}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: '#D3D3D3cc',
-                        },
-                      }}
-                      onClick={() =>
-                        dispatch(CreateWorkSpaceModalSlice.actions.onOpen())
-                      }>
-                      ساختن اسپیس جدید
-                    </Button>
-                  </div>
-                  <div
-                    dir='ltr'
-                    className='h-[300px] overflow-auto pr-[10px] scrollbar scrollbar-w-[5px] scrollbar-track-zinc-300 scrollbar-thumb-zinc-400 scrollbar-track-rounded-3xl scrollbar-thumb-rounded-3xl scrollbar-hide relative'>
-                    <div dir='rtl'>
-                      <Flex
-                        direction='column'
-                        gap='30px'>
-                        {workspaces.map((ws: workspaceObj, i: number) => (
-                          <WorkSpaceAccordion
-                            key={ws._id}
-                            i={i}
-                            _id={ws._id}
-                            members={ws.members}
-                            projects={ws.projects}
-                            name={ws.name}
-                          />
-                        ))}
-                      </Flex>
-                    </div>
-                  </div>
-                </div>
-              ),
-            },
-          ]}
-          labelFW={'600'}
-          labelFS={'16px'}
-          labelLH={'25px'}
-          detailPadd={'0px'}
-          detailMarg={'13px 0 0 0'}
-        />
+        <div>
+          <div className=''>
+            <SearchInput />
+          </div>
+          <div className='mb-[16px]'>
+            <Button
+              fullWidth={true}
+              c={'#1E1E1E'}
+              bg={'#D3D3D3'}
+              icon={FiPlusSquare}
+              sx={{
+                '&:hover': {
+                  backgroundColor: '#D3D3D3cc',
+                },
+              }}
+              onClick={() =>
+                dispatch(CreateWorkSpaceModalSlice.actions.onOpen())
+              }>
+              ساختن اسپیس جدید
+            </Button>
+          </div>
+          {/* <div
+            dir='ltr'
+            className='h-[300px] overflow-auto pr-[10px] scrollbar scrollbar-w-[5px] scrollbar-track-zinc-300 scrollbar-thumb-zinc-400 scrollbar-track-rounded-3xl scrollbar-thumb-rounded-3xl scrollbar-hide relative'>
+            <div dir='rtl'>as</div>
+          </div> */}
+        </div>
       </div>
+      <Flex
+        direction='column'
+        gap='30px'
+        className='h-full overflow-y-auto scrollbar-hide'>
+        {workspaces.map((ws: workspaceObj, i: number) => (
+          <WorkSpaceAccordion
+            key={ws._id}
+            i={i}
+            _id={ws._id}
+            members={ws.members}
+            projects={ws.projects}
+            name={ws.name}
+          />
+        ))}
+      </Flex>
 
       <div className='mt-[20px]'>
         <div className='mb-[20px]'>

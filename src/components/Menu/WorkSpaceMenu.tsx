@@ -9,7 +9,7 @@ import { AiOutlinePlus, AiOutlineShareAlt } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { IoColorPaletteOutline } from 'react-icons/io5';
 
-import { Button } from '..';
+import { Button, ClickOutsideWrapper } from '..';
 import { useDispatch } from 'react-redux';
 import {
   onOpen,
@@ -29,7 +29,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
     dispatch(setWorkSpaceId({ wsId }));
   };
   return (
-    <OutsideClickHandler
+    <ClickOutsideWrapper
       onOutsideClick={() => {
         setOpen(false);
       }}>
@@ -79,6 +79,6 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
           </Button>
         </MantineMenu.Dropdown>
       </MantineMenu>
-    </OutsideClickHandler>
+    </ClickOutsideWrapper>
   );
 };

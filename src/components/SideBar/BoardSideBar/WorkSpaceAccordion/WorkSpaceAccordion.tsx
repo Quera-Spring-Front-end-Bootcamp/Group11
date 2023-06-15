@@ -42,11 +42,13 @@ const WorkSpaceAccordion = ({
             }
           />
           <Text fz='16px'>{name}</Text>
-          <WorkSpaceMenu
-            open={showMenu}
-            setOpen={setShowMenu}
-            wsId={wsId}
-          />
+          {showMenu && (
+            <WorkSpaceMenu
+              open={showMenu}
+              setOpen={setShowMenu}
+              wsId={wsId}
+            />
+          )}
         </Flex>
         <div
           onClick={() => setShowMenu(true)}
