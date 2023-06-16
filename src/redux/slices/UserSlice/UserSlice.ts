@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Board, Project, workspaceObj } from '../../util/types';
+import { Board, Project, workspaceObj } from '../../../util/types';
 
 export const userSlice = createSlice({
   name: 'user',

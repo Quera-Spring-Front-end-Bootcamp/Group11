@@ -5,20 +5,10 @@ import ShareModalSlice from '../../../redux/slices/ModalSlices/ShareModalSlices/
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button, TextInput } from '../..';
 import { LinkCopy } from '.';
-import { workspaceObj } from '../../../util/types';
-import { useSearchParams } from 'react-router-dom';
 
 const ShareProjectModal = () => {
-  const [URLSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const open = useSelector((state: any) => state.ShareProjectModal.open);
-  const projectData = useSelector((state: any) => {
-    const ws = state.user.allWorkspaces.find(
-      (ws: workspaceObj) => ws._id === URLSearchParams.get('workspaceId')
-    );
-    // cons
-  });
-  console.log(projectData);
 
   const {
     register, //register function will pass to text inputs
@@ -65,7 +55,7 @@ const ShareProjectModal = () => {
     <Modal
       opened={open}
       onClose={() => dispatch(ShareModalSlice.actions.onClose())}
-      title={'به اشتراک گذاری پروژه'}
+      title={'title'}
       body={body}
       // footer={footer}
       // actionLabel={actionLabel}

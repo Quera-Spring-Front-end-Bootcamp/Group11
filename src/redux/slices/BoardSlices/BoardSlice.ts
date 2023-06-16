@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Board, Task } from '../../../util/types';
 
-export const boardSlice = createSlice({
+export const BoardSlice = createSlice({
   name: 'board',
   initialState: {
     loading: true,
@@ -78,4 +78,4 @@ export const boardSlice = createSlice({
   },
 });
 
-export default boardSlice;
+export default BoardSlice;

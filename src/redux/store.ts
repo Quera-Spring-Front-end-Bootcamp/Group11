@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userSlice from './slices/userSlice';
 ////
-import CreateWorkSpaceModalSlice from './slices/ModalSlices/CreateModalSlices/CreateWorkSpaceModalSlice';
-import ShareProjectModalSlice from './slices/ModalSlices/ShareModalSlice';
-////
-import BoardSlice from './slices/BoardSlices/BoardSlice';
-import CreateTaskModalSlice from './slices/ModalSlices/CreateModalSlices/CreateTaskModalSlice';
-import CreateProjectModalSlice from './slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
+import {
+  userSlice,
+  ShareProjectModalSlice,
+  CreateWorkSpaceModalSlice,
+  CreateTaskModalSlice,
+  CreateProjectModalSlice,
+  BoardSlice,
+} from './slices';
 
 export default configureStore({
   reducer: {

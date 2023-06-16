@@ -1,6 +1,6 @@
 import { AiOutlineShareAlt } from 'react-icons/ai';
 
-import ShareProjectModalSlice from '../../redux/slices/ModalSlices/ShareModalSlice';
+import ShareProjectModalSlice from '../../redux/slices/ModalSlices/ShareModalSlices/ShareProjectModalSlice';
 
 import Tabs from './Tabs';
 import { tabValues } from '../../constants';

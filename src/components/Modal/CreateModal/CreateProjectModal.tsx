@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import CreateModal from './CreateModal';
 import { onClose } from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
 import { createProjectApi } from '../../../services/projectApi';
-import userSlice from '../../../redux/slices/userSlice';
+import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 
 const CreateProjectModal = () => {
   const dispatch = useDispatch();

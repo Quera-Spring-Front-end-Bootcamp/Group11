@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../components';
 import { BASE_URL } from '../../../constants';
-import userSlice from '../../../redux/slices/userSlice';
+import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { loginApi } from '../../../services/authApi';
 
 const LogInCard = () => {

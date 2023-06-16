@@ -76,7 +76,7 @@ const Board = () => {
               <HeaderBoard />
             </div>
 
-            <div className='h-[calc(100vh-120px)] mx-4 overflow-x-auto'>
+            <div className='h-[calc(100vh-170px)] mx-4 overflow-x-auto'>
               {!selectedProject ? (
                 'WELCOME...'
               ) : loading ? (

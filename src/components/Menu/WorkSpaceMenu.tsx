@@ -24,7 +24,7 @@ import {
 } from '../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
 import toast from 'react-hot-toast';
 import { updateWorkspaceApi } from '../../services/workspaceApi';
-import userSlice from '../../redux/slices/userSlice';
+import userSlice from '../../redux/slices/UserSlice/UserSlice';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;

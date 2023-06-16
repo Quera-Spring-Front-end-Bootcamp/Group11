@@ -7,7 +7,7 @@ import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateM
 import { WorkSpaceAccordion } from '..';
 import { workspaceObj } from '../../../util/types';
 import { useEffect, useState } from 'react';
-import userSlice from '../../../redux/slices/userSlice';
+import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { toast } from 'react-hot-toast';
 import { Flex, Text } from '@mantine/core';
 import { getAllWorkspacesApi } from '../../../services/workspaceApi';

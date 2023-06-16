@@ -2,10 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface ShareProjectModalSliceTypes {
   open: boolean;
-  title: string;
-  link: string;
-  data: any;
-  loading: boolean;
 }
 
 export const ShareProjectModalSlice = createSlice({
@@ -27,17 +23,17 @@ export const ShareProjectModalSlice = createSlice({
     onToggle: (state: ShareProjectModalSliceTypes) => {
       state.open = !state.open;
     },
-    setInfo: (
-      state: ShareProjectModalSliceTypes,
-      action: { payload: { title: string; link: string; data: any } }
-    ) => {
-      const {
-        payload: { data, link, title },
-      } = action;
-      state.data = data;
-      state.link = link;
-      state.title = title;
-    },
+    // setInfo: (
+    //   state: ShareProjectModalSliceTypes,
+    //   action: { payload: { title: string; link: string; data: any } }
+    // ) => {
+    //   const {
+    //     payload: { data, link, title },
+    //   } = action;
+    //   state.data = data;
+    //   state.link = link;
+    //   state.title = title;
+    // },
   },
 });
 

@@ -10,7 +10,7 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import { Avatar } from '@mantine/core';
 import { createWorkSpaceApi } from '../../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
-import userSlice from '../../../../redux/slices/userSlice';
+import userSlice from '../../../../redux/slices/UserSlice/UserSlice';
 
 interface CreateWorkSpaceModalProps {
   children?: React.ReactNode;

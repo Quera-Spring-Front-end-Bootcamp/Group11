@@ -22,4 +22,6 @@ export const CreateTaskModalSlice = createSlice({
   },
 });
 
+export const { onOpen, onClose, onToggle } = CreateTaskModalSlice.actions;
+
 export default CreateTaskModalSlice;
