@@ -71,8 +71,8 @@ const Board = () => {
           </BaseSideBar>
         </div>
         <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
-          <div className=''>
-            <div className='h-[120px] bg-[#fafbfc] pr-3 pl-6'>
+          <div>
+            <div className='h-[170px] bg-[#fafbfc] pr-3 pl-6'>
               <HeaderBoard />
             </div>
 

@@ -3,7 +3,7 @@ import type { ButtonProps as MantineButtonProps } from '@mantine/core';
 import { IconType } from 'react-icons';
 
 interface ButtonProps extends MantineButtonProps {
-  onClick?: () => void;
+  onClick?: (e: MouseEvent | any) => void;
   icon?: IconType;
 }
 

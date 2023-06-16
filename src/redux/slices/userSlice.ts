@@ -122,6 +122,28 @@ export const userSlice = createSlice({
         return ws;
       });
     },
+    updateWorkspaceName: (
+      state: any,
+      action: {
+        payload: {
+          wsId: string;
+          updatedWorkspace: workspaceObj;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { prevWorkspacesData, updatedWorkspace } = action.payload;
+      console.log(updatedWorkspace);
+      console.log(prevWorkspacesData);
+
+      state.allWorkspaces = prevWorkspacesData.map((ws) => {
+        if (ws._id === updatedWorkspace._id) {
+          return { ...ws, name: updatedWorkspace.name };
+        }
+        ///
+        return ws;
+      });
+    },
   },
 });
 

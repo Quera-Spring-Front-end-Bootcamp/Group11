@@ -58,7 +58,7 @@ const LogInCard = () => {
         workspaces,
         firstname,
         lastname,
-        phone
+        phone,
       } = userData;
 
       //save tokens to local storage
@@ -75,7 +75,7 @@ const LogInCard = () => {
           workspaceMember,
           firstname,
           lastname,
-          phone
+          phone,
         })
       );
 
@@ -94,7 +94,7 @@ const LogInCard = () => {
   };
   return (
     <Card className='flex flex-col'>
-      <Title>به کوئرا تسک منیجر خوش برگشتی :)</Title>
+      <Title>به کوئرا تسک منیجر خوش برگشتی</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           id='emailOrUsername'

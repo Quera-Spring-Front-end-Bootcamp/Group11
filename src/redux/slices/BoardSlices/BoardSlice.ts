@@ -64,6 +64,17 @@ export const boardSlice = createSlice({
         })
       );
     },
+    addCreatedBoard: (
+      state: any,
+      action: {
+        payload: { newBoard: any; prevData: Array<Board> };
+      }
+    ) => {
+      state.selectedProjectBoardData = [
+        ...action.payload.prevData,
+        action.payload.newBoard,
+      ];
+    },
   },
 });
 

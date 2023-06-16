@@ -1,20 +1,30 @@
+import { useState } from 'react';
 import {
+  Flex,
   Menu as MantineMenu,
   MenuProps as MantineMenuProps,
 } from '@mantine/core';
-import OutsideClickHandler from 'react-outside-click-handler';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { BsLink45Deg, BsTrash3 } from 'react-icons/bs';
-import { AiOutlinePlus, AiOutlineShareAlt } from 'react-icons/ai';
+import {
+  AiOutlineCheck,
+  AiOutlinePlus,
+  AiOutlineShareAlt,
+} from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { IoColorPaletteOutline } from 'react-icons/io5';
+import { RxCross2 } from 'react-icons/rx';
 
-import { Button, ClickOutsideWrapper } from '..';
-import { useDispatch } from 'react-redux';
+import { Button, ClickOutsideWrapper, TextInput } from '..';
 import {
   onOpen,
   setWorkSpaceId,
 } from '../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
+import toast from 'react-hot-toast';
+import { updateWorkspaceApi } from '../../services/workspaceApi';
+import userSlice from '../../redux/slices/userSlice';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -22,12 +32,63 @@ interface MenuProps extends MantineMenuProps {
   wsId: string;
 }
 export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
+  const [editingName, setEditingName] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const currentUserId = useSelector((state: any) => state.user.username);
+  const prevWorkspacesData = useSelector(
+    (state: any) => state.user.allWorkspaces
+  );
   const dispatch = useDispatch();
 
   const onCreateClickHandler = () => {
     dispatch(onOpen());
     dispatch(setWorkSpaceId({ wsId }));
+    setOpen(false);
   };
+
+  const {
+    register, //register function will pass to text inputs
+    handleSubmit, //submit function
+    setValue,
+    formState: { errors }, //error for form validation
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: '',
+    },
+  });
+
+  const onSubmitNewName: SubmitHandler<FieldValues> = async (data) => {
+    const { name } = data;
+    setLoading(true);
+
+    try {
+      const {
+        data: { data: updatedWorkspace },
+      } = await updateWorkspaceApi(wsId, {
+        image: 'url',
+        name,
+        usernameOrId: currentUserId,
+      });
+
+      dispatch(
+        userSlice.actions.updateWorkspaceName({
+          wsId,
+          updatedWorkspace,
+          prevWorkspacesData,
+        })
+      );
+
+      toast.success('نام ورک‌اسپیس با موفقیت تغییر یافت');
+
+      setValue('name', '');
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error('ساخت پروژه با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
+      setLoading(false);
+    }
+  };
+
   return (
     <ClickOutsideWrapper
       onOutsideClick={() => {
@@ -36,10 +97,11 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
       <MantineMenu
         shadow='sm'
         opened={open}
-        onChange={setOpen}
+        // onChange={setOpen}
         styles={{
           dropdown: {
             padding: '14px !important',
+            maxWidth: '240px',
           },
           item: {
             padding: 4,
@@ -58,8 +120,46 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
             icon={<AiOutlinePlus size={22} />}>
             ساختن پروژه جدید
           </MantineMenu.Item>
-          <MantineMenu.Item icon={<FiEdit size={22} />}>
-            ویرایش نام ورک‌اسپیس
+          <MantineMenu.Item
+            onClick={() => {
+              setEditingName(true);
+              setOpen(true);
+            }}
+            icon={!editingName && <FiEdit size={22} />}>
+            {editingName ? (
+              <Flex
+                gap='2px'
+                direction={'row'}>
+                <TextInput
+                  // h='20px'
+                  id='name'
+                  register={register}
+                />
+                <Button
+                  onClick={handleSubmit(onSubmitNewName)}
+                  p={0}
+                  loading={loading}
+                  icon={AiOutlineCheck}
+                />
+                <Button
+                  onClick={(e: MouseEvent) => {
+                    e.stopPropagation();
+                    setEditingName(false);
+                  }}
+                  p={0}
+                  bg='red'
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'red',
+                    },
+                  }}
+                  // h='100%'
+                  icon={RxCross2}
+                />
+              </Flex>
+            ) : (
+              ' ویرایش نام ورک‌اسپیس'
+            )}
           </MantineMenu.Item>
           <MantineMenu.Item icon={<IoColorPaletteOutline size={22} />}>
             ویرایش رنگ

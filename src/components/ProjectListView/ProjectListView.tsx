@@ -12,11 +12,9 @@ const ProjectListView = () => {
   );
 
   return (
-    <div className='w-full h-full overflow-auto'>
-      <Flex
-        align='center'
-        gap={11}>
-        <AiOutlineDownCircle size={24} />
+    <div className='w-full h-full overflow-auto pt-[35px]'>
+      <Flex gap={11}>
+        <AiOutlineDownCircle size={26} />
         <Text
           fz='20px'
           fw='bold'>
