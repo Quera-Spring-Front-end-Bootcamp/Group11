@@ -23,7 +23,6 @@ const WorkSpaceAccordion = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [URLSearchParams] = useSearchParams();
-  console.log(URLSearchParams.get('projectId'));
 
   const onProjectClickHandler = (id: string, name: string) => {
     navigate({

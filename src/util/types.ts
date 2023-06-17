@@ -25,9 +25,14 @@ export interface User {
 export interface Project {
   _id: string;
   boards: string[];
-  members: string[];
+  members: Member[];
   name: string;
 }
+
+export type Member = {
+  user: User;
+  role: 'member' | 'owner';
+};
 
 export interface Task {
   board: string;

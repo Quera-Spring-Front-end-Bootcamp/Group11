@@ -11,6 +11,8 @@ const ProjectListView = () => {
     (state: any) => state.board.selectedProjectName
   );
 
+  console.log(data);
+
   return (
     <div className='w-full h-full overflow-auto pt-[35px]'>
       <Flex gap={11}>
