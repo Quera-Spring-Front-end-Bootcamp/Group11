@@ -1,5 +1,8 @@
 import { userSlice } from './UserSlice';
-import { ShareProjectModalSlice } from './ModalSlices/ShareModalSlices';
+import {
+  ShareProjectModalSlice,
+  ShareWorkspaceModalSlice,
+} from './ModalSlices/ShareModalSlices';
 
 import {
   CreateProjectModalSlice,
@@ -16,6 +19,7 @@ export {
   CreateProjectModalSlice,
   CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
+  ShareWorkspaceModalSlice,
   ///
   BoardSlice,
 };

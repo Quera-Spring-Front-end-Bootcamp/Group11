@@ -8,10 +8,6 @@ export const ShareProjectModalSlice = createSlice({
   name: 'ShareProjectModalSlice',
   initialState: {
     open: false,
-    title: '',
-    link: '',
-    data: [],
-    loading: true,
   },
   reducers: {
     onOpen: (state: ShareProjectModalSliceTypes) => {
@@ -23,17 +19,6 @@ export const ShareProjectModalSlice = createSlice({
     onToggle: (state: ShareProjectModalSliceTypes) => {
       state.open = !state.open;
     },
-    // setInfo: (
-    //   state: ShareProjectModalSliceTypes,
-    //   action: { payload: { title: string; link: string; data: any } }
-    // ) => {
-    //   const {
-    //     payload: { data, link, title },
-    //   } = action;
-    //   state.data = data;
-    //   state.link = link;
-    //   state.title = title;
-    // },
   },
 });
 

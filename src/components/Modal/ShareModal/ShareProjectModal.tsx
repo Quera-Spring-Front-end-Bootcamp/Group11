@@ -1,39 +1,40 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex, Text } from '@mantine/core';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+
+import { ShareProjectModalSlice } from '../../../redux/slices';
 import { Modal } from '../Modal';
-import ShareModalSlice from '../../../redux/slices/ModalSlices/ShareModalSlices/ShareProjectModalSlice';
-import { FieldValues, useForm } from 'react-hook-form';
 import { Button, TextInput } from '../..';
 import { LinkCopy } from '.';
 import { Member, Project, User, workspaceObj } from '../../../util/types';
-import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getProjectByIdApi } from '../../../services/projectApi';
+import {
+  getProjectByIdApi,
+  shareProjectApi,
+} from '../../../services/projectApi';
 import MemberRow from './MemberRow';
 
 const ShareProjectModal = () => {
   const [data, setData] = useState<Project>();
+  const [loading, setLoading] = useState(false);
   const [URLSearchParams] = useSearchParams();
   const selectedWs = URLSearchParams.get('workspaceId');
   const selectedProject = URLSearchParams.get('projectId');
   const dispatch = useDispatch();
   const open = useSelector((state: any) => state.ShareProjectModal.open);
   const currentId = useSelector((state: any) => state.user.id);
-  // const projectData = useSelector((state: any) => {
-  //   const ws = state.user.allWorkspaces.find(
-  //     (ws: workspaceObj) => ws._id === selectedWs
-  //   );
-  //   return ws?.projects.find((proj: Project) => proj._id === selectedProject);
-  // });
+
+  //to fetch data and updated modal state
+  const fetchProjectData = async () => {
+    const {
+      data: { data },
+    } = await getProjectByIdApi(selectedProject!);
+    setData(data);
+  };
 
   useEffect(() => {
-    const fetchProjectData = async () => {
-      const {
-        data: { data },
-      } = await getProjectByIdApi(selectedProject!);
-      setData(data);
-    };
-
     fetchProjectData();
   }, [selectedProject, selectedWs]);
 
@@ -41,11 +42,31 @@ const ShareProjectModal = () => {
     register, //register function will pass to text inputs
     handleSubmit, //submit function
     formState: { errors }, //error for form validation
+    setValue,
   } = useForm<FieldValues>({
     defaultValues: {
-      invitationEmail: '',
+      username: '',
     },
   });
+
+  //submit form value
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setLoading(true);
+    const { username } = data;
+    try {
+      await shareProjectApi(selectedProject!, username);
+
+      await fetchProjectData();
+      setValue('username', '');
+      toast.success('کاربر مورد نظر با موفقیت به پروژه اضافه شد');
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      if (error.response.status === 404)
+        return toast.error('کاربر مورد نظر یافت نشد');
+      toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید');
+    }
+  };
 
   const members = data?.members;
 
@@ -57,16 +78,18 @@ const ShareProjectModal = () => {
         mb='20px'>
         <div className='relative '>
           <TextInput
-            type='email'
-            id='invitationEmail'
+            id='username'
             register={register}
             className='w-full mt-[20px]'
-            placeholder='دعوت با ایمیل'
+            placeholder='دعوت با نام کاربری'
             noBorder
+            errors={errors}
           />
           <Button
             p='10px 30px'
             radius='8px 0 0 8px'
+            onClick={handleSubmit(onSubmit)}
+            loading={loading}
             className='absolute -left-1 bottom-0'>
             ارسال
           </Button>
@@ -102,12 +125,12 @@ const ShareProjectModal = () => {
   return (
     <Modal
       opened={open}
-      onClose={() => dispatch(ShareModalSlice.actions.onClose())}
+      onClose={() => dispatch(ShareProjectModalSlice.actions.onClose())}
       title={'به اشتراک گذاری پروژه'}
       body={body}
-      // footer={footer}
+      // action={handleSubmit(onSubmit)}
       // actionLabel={actionLabel}
-      // action={onSubmit}
+      // footer={footer}
     />
   );
 };

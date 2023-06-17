@@ -19,9 +19,10 @@ import { RxCross2 } from 'react-icons/rx';
 
 import { Button, ClickOutsideWrapper, TextInput } from '..';
 import {
-  onOpen,
-  setWorkSpaceId,
-} from '../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
+  CreateProjectModalSlice,
+  ShareWorkspaceModalSlice,
+} from '../../redux/slices';
+
 import toast from 'react-hot-toast';
 import { updateWorkspaceApi } from '../../services/workspaceApi';
 import userSlice from '../../redux/slices/UserSlice/UserSlice';
@@ -41,8 +42,8 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const dispatch = useDispatch();
 
   const onCreateClickHandler = () => {
-    dispatch(onOpen());
-    dispatch(setWorkSpaceId({ wsId }));
+    dispatch(CreateProjectModalSlice.actions.onOpen());
+    dispatch(CreateProjectModalSlice.actions.setWorkSpaceId({ wsId }));
     setOpen(false);
   };
 
@@ -87,6 +88,11 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
       toast.error('ساخت پروژه با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
       setLoading(false);
     }
+  };
+
+  const onShareClickHandler = () => {
+    dispatch(ShareWorkspaceModalSlice.actions.onOpen());
+    dispatch(ShareWorkspaceModalSlice.actions.setWs({ wsId }));
   };
 
   return (
@@ -174,7 +180,8 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
           </MantineMenu.Item>
           <Button
             icon={AiOutlineShareAlt}
-            className='w-full'>
+            className='w-full'
+            onClick={onShareClickHandler}>
             اشتراک گذاری
           </Button>
         </MantineMenu.Dropdown>
