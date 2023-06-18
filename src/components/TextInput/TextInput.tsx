@@ -1,4 +1,3 @@
-import { identity } from '@fullcalendar/core/internal';
 import { TextInput as MantineTextInput } from '@mantine/core';
 import { TextInputProps as MantineTextInputProps } from '@mantine/core';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';

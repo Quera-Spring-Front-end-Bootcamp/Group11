@@ -15,6 +15,8 @@ import { toast } from 'react-hot-toast';
 import { getAllProjectBoardsApi } from '../services/boardApi';
 import { getProjectByIdApi } from '../services/projectApi';
 import { storeStateTypes } from '../util/types';
+import { Loader } from '@mantine/core';
+import LogoType from '../components/LogoType/LogoType';
 
 const Board = () => {
   const { search: queryParams } = useLocation();
@@ -61,6 +63,21 @@ const Board = () => {
     fetchProject();
   }, [queryParams]);
 
+  const loadingState = (
+    <div className='w-full h-full grid justify-center items-center'>
+      <Loader
+        color='cyan'
+        size='xl'
+        variant='oval'
+      />
+    </div>
+  );
+  const welcomeState = (
+    <div className='w-full h-full grid justify-center items-center'>
+      <LogoType text='به کوئرا تسک منیجر خوش آمدید' />
+    </div>
+  );
+
   return (
     <>
       <CreateWorkSpaceModal />
@@ -74,21 +91,20 @@ const Board = () => {
           </BaseSideBar>
         </div>
         <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
-          <div>
-            <div className='h-[170px] bg-[#fafbfc] pr-3 pl-6'>
-              <HeaderBoard />
-            </div>
-
-            <div className='h-[calc(100vh-170px)] mx-4 overflow-x-auto'>
-              {!selectedProject ? (
-                'WELCOME...'
-              ) : loading ? (
-                'LOADING...'
-              ) : (
+          {!selectedProject ? (
+            welcomeState
+          ) : loading ? (
+            loadingState
+          ) : (
+            <div>
+              <div className='h-[170px] bg-[#fafbfc] pr-3 pl-6'>
+                <HeaderBoard />
+              </div>
+              <div className='h-[calc(100vh-170px)] mx-4 overflow-x-auto'>
                 <Outlet />
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
