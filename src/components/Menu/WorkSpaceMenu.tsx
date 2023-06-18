@@ -13,19 +13,49 @@ import {
   AiOutlinePlus,
   AiOutlineShareAlt,
 } from 'react-icons/ai';
+import { IconType } from 'react-icons';
+import toast from 'react-hot-toast';
 import { FiEdit } from 'react-icons/fi';
 import { IoColorPaletteOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
 
+import { userSlice } from '../../redux/slices/';
 import { Button, ClickOutsideWrapper, TextInput } from '..';
 import {
   CreateProjectModalSlice,
   ShareWorkspaceModalSlice,
 } from '../../redux/slices';
 
-import toast from 'react-hot-toast';
-import { updateWorkspaceApi } from '../../services/workspaceApi';
-import userSlice from '../../redux/slices/UserSlice/UserSlice';
+import {
+  deleteWorkspaceApi,
+  updateWorkspaceApi,
+} from '../../services/workspaceApi';
+
+interface IConfirmationButton {
+  onClick: (e: MouseEvent) => void;
+  bg: string;
+  icon: IconType;
+}
+export const ConfirmationButton = ({
+  onClick,
+  bg,
+  icon,
+}: IConfirmationButton) => {
+  return (
+    <Button
+      onClick={onClick}
+      w='50%'
+      h='22px'
+      bg={bg}
+      sx={{
+        '&:hover': {
+          backgroundColor: bg,
+        },
+      }}
+      icon={icon}
+    />
+  );
+};
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -35,10 +65,13 @@ interface MenuProps extends MantineMenuProps {
 export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const [editingName, setEditingName] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const currentUserId = useSelector((state: any) => state.user.username);
   const prevWorkspacesData = useSelector(
     (state: any) => state.user.allWorkspaces
   );
+
   const dispatch = useDispatch();
 
   const onCreateClickHandler = () => {
@@ -93,6 +126,25 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const onShareClickHandler = () => {
     dispatch(ShareWorkspaceModalSlice.actions.onOpen());
     dispatch(ShareWorkspaceModalSlice.actions.setWs({ wsId }));
+    setOpen(false);
+  };
+
+  const onDeleteClickHandler = async (e: MouseEvent) => {
+    e.stopPropagation();
+    setDeleteLoading(true);
+
+    try {
+      await deleteWorkspaceApi(wsId);
+
+      dispatch(userSlice.actions.deleteWorkspace({ wsId, prevWorkspacesData }));
+      toast.success('ورک اسپیس مورد نظر با موفقیت حذف گردید');
+      setOpen(false);
+      setDeleteLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error('عملیات با مشکل مواجه شد، لطفا مجددا تلاش فرمایید');
+      setDeleteLoading(false);
+    }
   };
 
   return (
@@ -103,7 +155,6 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
       <MantineMenu
         shadow='sm'
         opened={open}
-        // onChange={setOpen}
         styles={{
           dropdown: {
             padding: '14px !important',
@@ -129,7 +180,6 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
           <MantineMenu.Item
             onClick={() => {
               setEditingName(true);
-              setOpen(true);
             }}
             icon={!editingName && <FiEdit size={22} />}>
             {editingName ? (
@@ -174,9 +224,28 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
             کپی لینک
           </MantineMenu.Item>
           <MantineMenu.Item
+            onClick={() => setDeleting(true)}
             c='red'
             icon={<BsTrash3 size={22} />}>
-            حذف
+            {deleting ? (
+              <Flex gap='5px'>
+                <ConfirmationButton
+                  bg='red'
+                  icon={AiOutlineCheck}
+                  onClick={onDeleteClickHandler}
+                />
+                <ConfirmationButton
+                  onClick={(e: MouseEvent) => {
+                    e.stopPropagation();
+                    setDeleting(false);
+                  }}
+                  bg='#00000060'
+                  icon={RxCross2}
+                />
+              </Flex>
+            ) : (
+              'حذف'
+            )}
           </MantineMenu.Item>
           <Button
             icon={AiOutlineShareAlt}

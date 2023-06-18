@@ -9,6 +9,7 @@ import {
   BsFillCaretUpFill,
 } from 'react-icons/bs';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { ConfirmationModal } from '../../../Modal';
 
 interface WorkSpaceAccordionProps extends workspaceObj {
   i: number;
@@ -35,18 +36,6 @@ const WorkSpaceAccordion = ({
   return (
     <div>
       <Flex className='w-full flex items-center justify-between font-semibold group cursor-pointer'>
-        {/* {projects.length ? (
-          <BsFillCaretDownFill
-            onClick={() => {
-              setOpen(!open);
-            }}
-            className={`
-
-              transition-all
-              ${open ? 'rotate-180' : 'rotate-0'}
-              `}
-          />
-        ) : null} */}
         <Flex
           gap='8px'
           className='w-full'>

@@ -2,9 +2,7 @@ import { useOutlet, useNavigate, Outlet } from 'react-router-dom';
 import { Header } from '../../components';
 import { useEffect } from 'react';
 
-export interface AuthPageProps {}
-
-const Auth: React.FC<AuthPageProps> = ({}) => {
+const Auth = () => {
   const outlet = useOutlet();
   const navigate = useNavigate();
 

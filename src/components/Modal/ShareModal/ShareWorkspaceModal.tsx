@@ -66,7 +66,7 @@ const ShareWorkspaceModal = () => {
   let members: Array<{ user: User }> = [];
 
   if (data?.members) {
-    members = [{ user: data.user! }, ...data?.members];
+    members = [{ user: data.user! }, ...data.members];
   }
 
   const memberRow = members.map((member: { user: User }, i) => (

@@ -11,16 +11,9 @@ import { Avatar } from '@mantine/core';
 import { createWorkSpaceApi } from '../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
 
-interface CreateWorkSpaceModalProps {
-  children?: React.ReactNode;
-  title?: string;
-  modalBody?: React.ReactNode;
-  modalFooter?: React.ReactNode;
-}
-
-const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
+const CreateTaskModal = () => {
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.createModal.open);
+  const open = useSelector((state: any) => state.CreateTaskModal.open);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -33,12 +26,8 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
     },
   });
 
-  let title;
-  let body;
-  let footer;
-
-  title = 'ساختن ورک‌اسپیس جدید';
-  body = (
+  const title = 'ساختن تسک جدید';
+  const body = (
     <>
       <TextInput
         required
@@ -57,12 +46,10 @@ const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
       onClose={() => dispatch(onClose())}
       title={title}
       body={body}
-      footer={footer}
-      actionLabel={actionLabel}
-      action={handleSubmit(onSubmit)}
+      actionLabel={''}
       loading={loading}
     />
   );
 };
 
-export default CreateWorkSpaceModal;
+export default CreateTaskModal;

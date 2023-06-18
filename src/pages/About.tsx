@@ -2,15 +2,13 @@ import { RiLoginBoxLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/logo.jpg';
 
-export interface AuthPageProps {}
-
-const About: React.FC<AuthPageProps> = ({}) => {
+const About = () => {
   const members = [
-    { name: "مهدی ترکمان" },
-    { name: "ابوالفضل امیدوار" },
-    { name: "سعید فیروزی" },
-    { name: "امیرحسین حبیب نژاد" },
-    { name: "پارسا محمودزاده"}
+    { name: 'مهدی ترکمان' },
+    { name: 'ابوالفضل امیدوار' },
+    { name: 'سعید فیروزی' },
+    { name: 'امیرحسین حبیب نژاد' },
+    { name: 'پارسا محمودزاده' },
   ];
 
   return (
@@ -33,8 +31,10 @@ const About: React.FC<AuthPageProps> = ({}) => {
         <div className='flex flex-col gap-3 font-bold'>
           <div className='font-normal'>اعضا:</div>
           {members.map((member, index) => (
-            <div key={index} className="flex justify-center w-full p-4 my-2 bg-white rounded-lg">
-              <span className="font-bold">{member.name}</span>
+            <div
+              key={index}
+              className='flex justify-center w-full p-4 my-2 bg-white rounded-lg'>
+              <span className='font-bold'>{member.name}</span>
             </div>
           ))}
         </div>

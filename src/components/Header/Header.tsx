@@ -2,8 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '../../components';
 import LogoType from '../LogoType/LogoType';
 
-type HeaderProps = {};
-const Header = ({}: HeaderProps) => {
+const Header = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/auth/login';
 

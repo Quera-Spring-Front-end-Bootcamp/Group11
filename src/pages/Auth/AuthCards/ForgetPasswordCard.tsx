@@ -4,9 +4,7 @@ import { FieldValues, useForm, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { forgetPasswordApi } from '../../../services/authApi';
 
-type ForgetPasswordProps = {};
-
-const ForgetPassword = ({}: ForgetPasswordProps) => {
+const ForgetPassword = () => {
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const {

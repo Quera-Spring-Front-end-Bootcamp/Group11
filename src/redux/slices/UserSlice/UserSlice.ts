@@ -133,9 +133,6 @@ export const userSlice = createSlice({
       }
     ) => {
       const { prevWorkspacesData, updatedWorkspace } = action.payload;
-      console.log(updatedWorkspace);
-      console.log(prevWorkspacesData);
-
       state.allWorkspaces = prevWorkspacesData.map((ws) => {
         if (ws._id === updatedWorkspace._id) {
           return { ...ws, name: updatedWorkspace.name };
@@ -143,6 +140,18 @@ export const userSlice = createSlice({
         ///
         return ws;
       });
+    },
+    deleteWorkspace: (
+      state: any,
+      action: {
+        payload: {
+          wsId: string;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { wsId, prevWorkspacesData } = action.payload;
+      state.allWorkspaces = prevWorkspacesData.filter((ws) => ws._id !== wsId);
     },
   },
 });

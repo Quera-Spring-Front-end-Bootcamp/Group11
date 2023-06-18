@@ -13,9 +13,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type SignUpCardProps = {};
-
-const SignUpCard = ({}: SignUpCardProps) => {
+const SignUpCard = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

@@ -12,13 +12,6 @@ import { createWorkSpaceApi } from '../../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
 import userSlice from '../../../../redux/slices/UserSlice/UserSlice';
 
-interface CreateWorkSpaceModalProps {
-  children?: React.ReactNode;
-  title?: string;
-  modalBody?: React.ReactNode;
-  modalFooter?: React.ReactNode;
-}
-
 //enumerate modal steps
 enum STEPS {
   NAME = 0,
@@ -26,7 +19,7 @@ enum STEPS {
   OVERVIEW = 2,
 }
 
-const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
+const CreateWorkSpaceModal = () => {
   const [step, setStep] = useState(STEPS.NAME);
   const [loading, setLoading] = useState(false);
 
