@@ -1,7 +1,7 @@
 import { Tabs as MantineTabs } from '@mantine/core';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { tabObject } from '../../util/types';
+import { tabObject } from '../../../util/types';
 
 export interface TabsProps {
   tabsArray: Array<tabObject>;

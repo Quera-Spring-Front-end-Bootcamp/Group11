@@ -2,22 +2,26 @@ import { AiOutlineShareAlt } from 'react-icons/ai';
 
 import ShareProjectModalSlice from '../../redux/slices/ModalSlices/ShareModalSlices/ShareProjectModalSlice';
 
-import Tabs from './Tabs';
+import { Tabs, Filter } from './Components/';
 import { tabValues } from '../../constants';
 import { Button } from '..';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { storeStateTypes } from '../../util/types';
 
 export default function HeaderBoard() {
   const dispatch = useDispatch();
   const shareProjectClickHandler = () => {
     dispatch(ShareProjectModalSlice.actions.onOpen());
   };
+  const selectedProject = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectName
+  );
   return (
     <>
       <header className='flex flex-col items-center justify-between h-full border-b-[0.5px] border-b-[#AAAAAA]'>
         <section className='flex justify-between w-full h-[100px] border-b-[0.5px] border-b-[#AAAAAA]'>
           <div className='flex items-end gap-5 text-xl'>
-            <div className='font-bold mb-[14px]'>پروژه اول</div>
+            <div className='font-bold mb-[14px]'>{selectedProject}</div>
             <Tabs tabsArray={tabValues} />
           </div>
           <Button
@@ -41,7 +45,9 @@ export default function HeaderBoard() {
             اشتراک گذاری
           </Button>
         </section>
-        <section className='flex justify-between w-full h-[60px]'></section>
+        <section className='flex justify-between w-full h-[70px]'>
+          <Filter />
+        </section>
       </header>
     </>
   );
