@@ -191,9 +191,10 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
                 gap='2px'
                 direction={'row'}>
                 <TextInput
-                  // h='20px'
                   id='name'
                   register={register}
+                  errors={errors}
+                  required
                 />
                 <Button
                   onClick={handleSubmit(onSubmitNewName)}
@@ -237,7 +238,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
                   bg='red'
                   icon={AiOutlineCheck}
                   onClick={onDeleteClickHandler}
-                  loading={true}
+                  loading={deleteLoading}
                 />
                 <ConfirmationButton
                   onClick={(e: MouseEvent) => {

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { arrayMove } from '@dnd-kit/sortable';
-import { Board } from '../../../util/types';
+import { Board, Task } from '../../../util/types';
 
 export type BoardSliceTypes = {
   loading: boolean;
@@ -58,19 +58,19 @@ export const BoardSlice = createSlice({
         overBoardIndex
       );
     },
-    // updateBoardTaskPositions: (
-    //   state: BoardSliceTypes,
-    //   action: {
-    //     payload: { newData: any; prevData: Array<Board> };
-    //   }
-    // ) => {
-    //   state.selectedProjectBoardData = action.payload.prevData.map(
-    //     (board: Board) => ({
-    //       ...board,
-    //       tasks: action.payload.newData[board._id],
-    //     })
-    //   );
-    // },
+    updateBoardTaskPositions: (
+      state: BoardSliceTypes,
+      action: {
+        payload: { newData: Record<string, Task[]>; prevData: Array<Board> };
+      }
+    ) => {
+      state.selectedProjectBoardData = action.payload.prevData.map(
+        (board: Board) => ({
+          ...board,
+          tasks: action.payload.newData[board._id],
+        })
+      );
+    },
     // addCreatedBoard: (
     //   state: BoardSliceTypes,
     //   action: {

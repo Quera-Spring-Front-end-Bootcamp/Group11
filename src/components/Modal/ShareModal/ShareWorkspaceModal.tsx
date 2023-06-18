@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -24,12 +24,12 @@ const ShareWorkspaceModal = () => {
   const currentId = useSelector((state: storeStateTypes) => state.user.id);
 
   //to fetch data and updated modal state
-  const fetchWorkspaceData = async () => {
+  const fetchWorkspaceData = useCallback(async () => {
     const {
       data: { data },
-    } = await getWorkspacesByIdApi(selectedWs!);
+    } = await getWorkspacesByIdApi(selectedWs);
     setData(data);
-  };
+  }, [selectedWs]);
 
   useEffect(() => {
     fetchWorkspaceData();
@@ -66,8 +66,8 @@ const ShareWorkspaceModal = () => {
 
   let members: Array<{ user: User }> = [];
 
-  if (data?.members) {
-    members = [{ user: data.user! }, ...data.members];
+  if (data?.members && data.user) {
+    members = [{ user: data.user }, ...data.members];
   }
 
   const memberRow = members.map((member: { user: User }, i) => (

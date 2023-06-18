@@ -7,11 +7,10 @@ import {
   Title,
   Checkbox,
 } from '../../../components';
-import { BASE_URL } from '../../../constants';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { registerUserApi } from '../../../services/authApi';
 
 const SignUpCard = () => {
   const [loading, setLoading] = useState(false);
@@ -34,13 +33,14 @@ const SignUpCard = () => {
 
     const { fullName, email, password } = data;
     try {
-      await axios.post(`${BASE_URL}/auth/register`, {
-        username: email.split('@')[0],
+      await registerUserApi({
         email,
         password,
+        username: email.split('@')[0],
         firstname: fullName.split(' ')[0],
         lastname: fullName.split(' ')[1],
       });
+
       toast.success('ثبت‌نام با موفقیت انجام شد، می‌توانید وارد شوید');
 
       navigate('/auth/login');
@@ -65,18 +65,24 @@ const SignUpCard = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           id='fullName'
+          errors={errors}
+          required
           register={register}
           className='mt-[29px]'
           label='نام کامل'
         />
         <TextInput
           id='email'
+          errors={errors}
+          required
           register={register}
           className='mt-[20px]'
           label='ایمیل'
         />
         <PasswordInput
           id='password'
+          required
+          errors={errors}
           register={register}
           className='mt-[20px]'
           label='رمزعبور'

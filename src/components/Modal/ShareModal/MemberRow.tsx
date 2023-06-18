@@ -1,8 +1,5 @@
 import { Avatar, Flex, Text } from '@mantine/core';
 import { Button } from '../..';
-import { FiLink } from 'react-icons/fi';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 interface LinkCopyProps {
   currentUserId: string;
   userId: string;

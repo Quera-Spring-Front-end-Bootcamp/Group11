@@ -1,7 +1,7 @@
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
@@ -76,6 +76,7 @@ const LogInCard = () => {
           firstname,
           lastname,
           phone,
+          profile_url,
         })
       );
 
@@ -99,11 +100,15 @@ const LogInCard = () => {
         <TextInput
           id='emailOrUsername'
           register={register}
+          errors={errors}
+          required
           className='mt-[29px]'
           label='ایمیل یا نام کاربری'></TextInput>
         <PasswordInput
           id='password'
           register={register}
+          errors={errors}
+          required
           className='mt-[20px]'
           label='رمزعبور'></PasswordInput>
 

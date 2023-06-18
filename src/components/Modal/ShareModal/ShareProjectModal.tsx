@@ -50,10 +50,13 @@ const ShareProjectModal = () => {
 
   //submit form value
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (!selectedProject) return;
+
     setLoading(true);
     const { username } = data;
+    
     try {
-      await shareProjectApi(selectedProject!, username);
+      await shareProjectApi(selectedProject, username);
 
       await fetchProjectData();
       setValue('username', '');

@@ -23,13 +23,13 @@ const ClickOutsideWrapper = ({
 
     document.addEventListener(
       'mouseup',
-      handleClickOutside as any as EventListener
+      handleClickOutside as unknown as EventListener
     );
 
     return () => {
       document.removeEventListener(
         'mouseup',
-        handleClickOutside as any as EventListener
+        handleClickOutside as unknown as EventListener
       );
     };
   }, [onOutsideClick]);

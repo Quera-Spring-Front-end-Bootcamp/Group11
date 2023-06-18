@@ -9,7 +9,6 @@ import {
   BsFillCaretUpFill,
 } from 'react-icons/bs';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ConfirmationModal } from '../../../Modal';
 
 interface WorkSpaceAccordionProps extends workspaceObj {
   i: number;
@@ -17,7 +16,6 @@ interface WorkSpaceAccordionProps extends workspaceObj {
 const WorkSpaceAccordion = ({
   _id: wsId,
   projects,
-  members,
   name,
   i,
 }: WorkSpaceAccordionProps) => {
@@ -25,7 +23,7 @@ const WorkSpaceAccordion = ({
   const location = useLocation();
   const [URLSearchParams] = useSearchParams();
 
-  const onProjectClickHandler = (id: string, name: string) => {
+  const onProjectClickHandler = (id: string) => {
     navigate({
       pathname: location.pathname,
       search: `?projectId=${id}&workspaceId=${wsId}`,
@@ -81,7 +79,7 @@ const WorkSpaceAccordion = ({
         `}>
         {projects.map((proj) => (
           <Text
-            onClick={() => onProjectClickHandler(proj._id, proj.name)}
+            onClick={() => onProjectClickHandler(proj._id)}
             key={proj._id}
             className={`
               cursor-pointer
