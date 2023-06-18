@@ -11,6 +11,7 @@ import { Avatar } from '@mantine/core';
 import { createWorkSpaceApi } from '../../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
 import userSlice from '../../../../redux/slices/UserSlice/UserSlice';
+import { storeStateTypes } from '../../../../util/types';
 
 //enumerate modal steps
 enum STEPS {
@@ -24,9 +25,11 @@ const CreateWorkSpaceModal = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.createWorkSpaceModal.open);
+  const open = useSelector(
+    (state: storeStateTypes) => state.createWorkSpaceModal.open
+  );
   const prevWorkspacesData = useSelector(
-    (state: any) => state.user.allWorkspaces
+    (state: storeStateTypes) => state.user.allWorkspaces
   );
 
   const {

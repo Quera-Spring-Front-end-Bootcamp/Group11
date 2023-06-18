@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface ShareProjectModalSliceTypes {
+export type ShareProjectModalSliceTypes = {
   open: boolean;
-}
+};
 
 export const ShareProjectModalSlice = createSlice({
   name: 'ShareProjectModalSlice',

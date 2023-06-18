@@ -2,16 +2,13 @@ import { Flex, Text } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { AiOutlineDownCircle } from 'react-icons/ai';
 import BoardOverviewRow from './boardOverview';
+import { storeStateTypes } from '../../util/types';
 
 const ProjectListView = () => {
-  const data = useSelector(
-    (state: any) => state.board.selectedProjectBoardData
-  );
-  const projectName = useSelector(
-    (state: any) => state.board.selectedProjectName
-  );
-
-  console.log(data);
+  const { data, projectName } = useSelector((state: storeStateTypes) => ({
+    data: state.board.selectedProjectBoardData,
+    projectName: state.board.selectedProjectName,
+  }));
 
   return (
     <div className='w-full h-full overflow-auto pt-[35px]'>

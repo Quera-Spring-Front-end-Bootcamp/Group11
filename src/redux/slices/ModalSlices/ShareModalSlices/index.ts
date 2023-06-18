@@ -1,4 +1,9 @@
-import ShareProjectModalSlice from './ShareProjectModalSlice';
-import ShareWorkspaceModalSlice from './ShareWorkspaceModalSlice';
+import ShareProjectModalSlice, {
+  ShareProjectModalSliceTypes,
+} from './ShareProjectModalSlice';
+import ShareWorkspaceModalSlice, {
+  ShareWorkspaceModalSliceTypes,
+} from './ShareWorkspaceModalSlice';
 
 export { ShareProjectModalSlice, ShareWorkspaceModalSlice };
+export type { ShareProjectModalSliceTypes, ShareWorkspaceModalSliceTypes };

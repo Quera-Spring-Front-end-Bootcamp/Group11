@@ -1,3 +1,5 @@
-import BoardSlice from './BoardSlice';
+import BoardSlice, { BoardSliceTypes } from './BoardSlice';
 
 export { BoardSlice };
+
+export type { BoardSliceTypes };

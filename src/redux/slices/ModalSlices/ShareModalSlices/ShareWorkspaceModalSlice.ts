@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface ShareWorkspaceModalSliceTypes {
+export type ShareWorkspaceModalSliceTypes = {
   open: boolean;
   wsId: string;
-}
+};
 
 export const ShareWorkspaceModalSlice = createSlice({
   name: 'ShareWorkspaceModalSlice',

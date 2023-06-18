@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { LogOutButton, MiniProfile, Button } from '../..';
 import { SearchInput } from '../../SearchInput';
-import CreateWorkSpaceModalSlice from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateWorkSpaceModalSlice';
+import { CreateWorkSpaceModalSlice } from '../../../redux/slices';
 import { WorkSpaceAccordion } from '..';
-import { workspaceObj } from '../../../util/types';
+import { storeStateTypes, workspaceObj } from '../../../util/types';
 import { useEffect, useState } from 'react';
 import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { toast } from 'react-hot-toast';
@@ -17,7 +17,9 @@ import { BsSearch, BsFillCaretDownFill } from 'react-icons/bs';
 const SideBar = () => {
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
-  const workspaces = useSelector((state: any) => state.user.allWorkspaces);
+  const workspaces = useSelector(
+    (state: storeStateTypes) => state.user.allWorkspaces
+  );
 
   useEffect(() => {
     const fetchWorkSpaces = async () => {

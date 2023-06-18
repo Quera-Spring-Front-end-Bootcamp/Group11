@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 import { ShareWorkspaceModalSlice } from '../../../redux/slices';
 import { ShareModalParent } from '.';
-import { User, workspaceObj } from '../../../util/types';
+import { User, storeStateTypes, workspaceObj } from '../../../util/types';
 import MemberRow from './MemberRow';
 import {
   addMemberToWorkspaceApi,
@@ -16,11 +16,12 @@ const ShareWorkspaceModal = () => {
   const [data, setData] = useState<workspaceObj>();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.ShareWorkspaceModal.open);
-  const selectedWs = useSelector(
-    (state: any) => state.ShareWorkspaceModal.wsId
-  );
-  const currentId = useSelector((state: any) => state.user.id);
+  const { open, selectedWs } = useSelector((state: storeStateTypes) => ({
+    open: state.ShareWorkspaceModal.open,
+    selectedWs: state.ShareWorkspaceModal.wsId,
+  }));
+
+  const currentId = useSelector((state: storeStateTypes) => state.user.id);
 
   //to fetch data and updated modal state
   const fetchWorkspaceData = async () => {

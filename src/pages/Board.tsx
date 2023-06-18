@@ -14,13 +14,14 @@ import boardSlice from '../redux/slices/BoardSlices/BoardSlice';
 import { toast } from 'react-hot-toast';
 import { getAllProjectBoardsApi } from '../services/boardApi';
 import { getProjectByIdApi } from '../services/projectApi';
+import { storeStateTypes } from '../util/types';
 
 const Board = () => {
   const { search: queryParams } = useLocation();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
-  const loading = useSelector((state: any) => state.board.loading);
+  const loading = useSelector((state: storeStateTypes) => state.board.loading);
 
   const selectedProject = searchParams.get('projectId');
 

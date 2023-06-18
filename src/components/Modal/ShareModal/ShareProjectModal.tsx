@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 import { ShareProjectModalSlice } from '../../../redux/slices';
 import { ShareModalParent } from '.';
-import { Member, Project } from '../../../util/types';
+import { Member, Project, storeStateTypes } from '../../../util/types';
 import {
   getProjectByIdApi,
   shareProjectApi,
@@ -20,8 +20,10 @@ const ShareProjectModal = () => {
   const selectedWs = URLSearchParams.get('workspaceId');
   const selectedProject = URLSearchParams.get('projectId');
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.ShareProjectModal.open);
-  const currentId = useSelector((state: any) => state.user.id);
+  const open = useSelector(
+    (state: storeStateTypes) => state.ShareProjectModal.open
+  );
+  const currentId = useSelector((state: storeStateTypes) => state.user.id);
 
   //to fetch data and updated modal state
   const fetchProjectData = async () => {

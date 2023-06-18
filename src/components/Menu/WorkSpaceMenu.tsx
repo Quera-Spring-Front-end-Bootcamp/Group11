@@ -30,16 +30,19 @@ import {
   deleteWorkspaceApi,
   updateWorkspaceApi,
 } from '../../services/workspaceApi';
+import { storeStateTypes } from '../../util/types';
 
 interface IConfirmationButton {
   onClick: (e: MouseEvent) => void;
   bg: string;
   icon: IconType;
+  loading?: boolean;
 }
 export const ConfirmationButton = ({
   onClick,
   bg,
   icon,
+  loading,
 }: IConfirmationButton) => {
   return (
     <Button
@@ -53,6 +56,7 @@ export const ConfirmationButton = ({
         },
       }}
       icon={icon}
+      loading={loading}
     />
   );
 };
@@ -67,9 +71,9 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const currentUserId = useSelector((state: any) => state.user.username);
+  const currentUserId = useSelector((state: storeStateTypes) => state.user.id);
   const prevWorkspacesData = useSelector(
-    (state: any) => state.user.allWorkspaces
+    (state: storeStateTypes) => state.user.allWorkspaces
   );
 
   const dispatch = useDispatch();
@@ -233,6 +237,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
                   bg='red'
                   icon={AiOutlineCheck}
                   onClick={onDeleteClickHandler}
+                  loading={true}
                 />
                 <ConfirmationButton
                   onClick={(e: MouseEvent) => {

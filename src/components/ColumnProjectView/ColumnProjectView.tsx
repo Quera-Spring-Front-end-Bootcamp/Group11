@@ -35,13 +35,13 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 import { Item, Container, ContainerProps } from './components';
-import { Task } from '../../util/types';
+import { Task, storeStateTypes } from '../../util/types';
 import { useDispatch, useSelector } from 'react-redux';
 import boardSlice from '../../redux/slices/BoardSlices/BoardSlice';
 import { changeBoardPositionApi } from '../../services/boardApi';
 import {
   changeTaskBoardApi,
-  changeTaskPositionApi,
+  // changeTaskPositionApi,
 } from '../../services/taskApi';
 
 export default {
@@ -165,7 +165,7 @@ export function MultipleContainers({
   /**
    * get necessary data from redux store
    */
-  const { data, projectName } = useSelector((state: any) => ({
+  const { data, projectName } = useSelector((state: storeStateTypes) => ({
     data: state.board.selectedProjectBoardData,
     projectName: state.board.selectedProjectName,
   }));

@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react';
 import { updateUserInfoApi } from '../../../services/userApi';
 import toast from 'react-hot-toast';
 import userSlice from '../../../redux/slices/UserSlice/UserSlice';
+import { storeStateTypes } from '../../../util/types';
 const PersonalInfo = () => {
   const dispatch = useDispatch();
 
   const { firstname, lastname, phone, id } = useSelector(
-    (state: any) => state.user
+    (state: storeStateTypes) => state.user
   );
 
   const avatarText = firstname && lastname && `${firstname[0]} ${lastname[0]}`;

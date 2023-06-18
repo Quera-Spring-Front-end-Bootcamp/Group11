@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface CreateProjectModalSliceTypes {
+export type CreateProjectModalSliceTypes = {
   open: boolean;
   wsId: string;
-}
+};
 
 export const CreateProjectModalSlice = createSlice({
   name: 'CreateProjectModalSlice',
