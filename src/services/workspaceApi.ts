@@ -3,7 +3,7 @@ import apiCall from './axios/instance';
 const getAllWorkspacesApi = async () => {
   return apiCall.get(`/workspace/get-all`);
 };
-const getAllWorkspacesByIdApi = async (wsId: string) => {
+const getWorkspacesByIdApi = async (wsId: string) => {
   return apiCall.get(`/workspace/${wsId}`);
 };
 const createWorkSpaceApi = async (body: { name: string }) => {
@@ -19,9 +19,13 @@ const updateWorkspaceApi = async (
 ) => {
   return apiCall.patch(`/workspace/${id}`, body);
 };
+const addMemberToWorkspaceApi = async (username: string, wsId: string) => {
+  return apiCall.put(`/workspace/${wsId}/members/${username}`);
+};
 export {
   getAllWorkspacesApi,
   createWorkSpaceApi,
   updateWorkspaceApi,
-  getAllWorkspacesByIdApi,
+  getWorkspacesByIdApi,
+  addMemberToWorkspaceApi,
 };

@@ -11,7 +11,7 @@ export interface workspaceObj {
   members: Array<{ user: User }>;
   name: string;
   projects: Array<Project>;
-  user?: string;
+  user?: User;
   _id: string;
 }
 export interface User {

@@ -1,15 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Flex, Text } from '@mantine/core';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { ShareProjectModalSlice } from '../../../redux/slices';
-import { Modal } from '../Modal';
-import { Button, TextInput } from '../..';
-import { LinkCopy } from '.';
-import { Member, Project, User, workspaceObj } from '../../../util/types';
+import { ShareModalParent } from '.';
+import { Member, Project } from '../../../util/types';
 import {
   getProjectByIdApi,
   shareProjectApi,
@@ -68,69 +65,29 @@ const ShareProjectModal = () => {
     }
   };
 
-  const members = data?.members;
-
-  const body = (
-    <>
-      <Flex
-        direction='column'
-        gap='30px'
-        mb='20px'>
-        <div className='relative '>
-          <TextInput
-            id='username'
-            register={register}
-            className='w-full mt-[20px]'
-            placeholder='دعوت با نام کاربری'
-            noBorder
-            errors={errors}
-          />
-          <Button
-            p='10px 30px'
-            radius='8px 0 0 8px'
-            onClick={handleSubmit(onSubmit)}
-            loading={loading}
-            className='absolute -left-1 bottom-0'>
-            ارسال
-          </Button>
-        </div>
-        <LinkCopy link='link' />
-        <Text
-          fz='14px'
-          c='#7D828C
-'
-          ta='right'>
-          اشتراک گذاشته شده با
-        </Text>
-      </Flex>
-      <Flex
-        direction='column'
-        gap='12px'>
-        {members?.map((member: Member) => (
-          <MemberRow
-            key={member.user._id}
-            currentUserId={currentId}
-            email={member.user.email}
-            firstname={member.user.firstname}
-            lastname={member.user.lastname}
-            role={member.role}
-            userId={member.user._id}
-            username={member.user.username}
-          />
-        ))}
-      </Flex>
-    </>
-  );
+  const membersRow = data?.members?.map((member: Member) => (
+    <MemberRow
+      key={member.user._id}
+      currentUserId={currentId}
+      email={member.user.email}
+      firstname={member.user.firstname}
+      lastname={member.user.lastname}
+      role={member.role}
+      userId={member.user._id}
+      username={member.user.username}
+    />
+  ));
 
   return (
-    <Modal
-      opened={open}
+    <ShareModalParent
+      memberRow={membersRow}
+      open={open}
       onClose={() => dispatch(ShareProjectModalSlice.actions.onClose())}
-      title={'به اشتراک گذاری پروژه'}
-      body={body}
-      // action={handleSubmit(onSubmit)}
-      // actionLabel={actionLabel}
-      // footer={footer}
+      registerForm={register}
+      formId='username'
+      errorForm={errors}
+      loading={loading}
+      submit={handleSubmit(onSubmit)}
     />
   );
 };

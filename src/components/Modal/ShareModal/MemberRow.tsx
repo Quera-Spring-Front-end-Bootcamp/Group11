@@ -6,9 +6,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 interface LinkCopyProps {
   currentUserId: string;
   userId: string;
-  role: string;
-  firstname: string;
-  lastname: string;
+  role?: string;
+  firstname?: string;
+  lastname?: string;
   username: string;
   email: string;
 }
@@ -22,12 +22,17 @@ const MemberRow = ({
   username,
   email,
 }: LinkCopyProps) => {
-  const name =
-    firstname && lastname
-      ? `${firstname} ${lastname}`
-      : username
-      ? username
-      : email;
+  let name: string;
+  if (currentUserId === userId) {
+    name = 'من';
+  } else {
+    name =
+      firstname && lastname
+        ? `${firstname} ${lastname}`
+        : username
+        ? username
+        : email;
+  }
 
   return (
     <Flex
