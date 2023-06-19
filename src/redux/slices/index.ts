@@ -7,6 +7,11 @@ import {
 } from './ModalSlices/ShareModalSlices';
 
 import {
+  NewTaskModalSlice,
+  NewTaskModalSliceTypes,
+} from './ModalSlices/NewTaskModalSlice/NewTaskModalSlice';
+
+import {
   CreateProjectModalSlice,
   CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
@@ -20,6 +25,7 @@ import { BoardSlice, BoardSliceTypes } from './BoardSlices';
 export {
   userSlice,
   ///
+  NewTaskModalSlice,
   ShareProjectModalSlice,
   CreateProjectModalSlice,
   CreateTaskModalSlice,
@@ -30,6 +36,7 @@ export {
 };
 
 export type {
+  NewTaskModalSliceTypes,
   userSliceTypes,
   ShareProjectModalSliceTypes,
   ShareWorkspaceModalSliceTypes,

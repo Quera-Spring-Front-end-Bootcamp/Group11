@@ -8,6 +8,7 @@ import {
   CreateProjectModalSlice,
   BoardSlice,
   ShareWorkspaceModalSlice,
+  NewTaskModalSlice
 } from './slices';
 
 export default configureStore({
