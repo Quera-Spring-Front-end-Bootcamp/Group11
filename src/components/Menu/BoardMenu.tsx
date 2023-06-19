@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Flex,
+  Loader,
   Menu as MantineMenu,
   MenuProps as MantineMenuProps,
 } from '@mantine/core';
@@ -13,14 +14,16 @@ import {
   AiOutlinePlus,
   AiOutlineShareAlt,
 } from 'react-icons/ai';
+import { IconType } from 'react-icons';
 import toast from 'react-hot-toast';
 import { FiEdit } from 'react-icons/fi';
 import { IoColorPaletteOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
 
-import { Button, ClickOutsideWrapper, TextInput } from '..';
 import { ConfirmationButton } from './Components';
-import { userSlice } from '../../redux/slices/';
+
+import { BoardSlice } from '../../redux/slices/';
+import { Button, ClickOutsideWrapper, TextInput } from '..';
 import {
   CreateProjectModalSlice,
   ShareWorkspaceModalSlice,
@@ -31,29 +34,30 @@ import {
   updateWorkspaceApi,
 } from '../../services/workspaceApi';
 import { storeStateTypes } from '../../util/types';
+import { deleteBoardApi, renameBoardApi } from '../../services/boardApi';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  wsId: string;
+  boardId: string;
 }
-export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
-  const [editingName, setEditingName] = useState(false);
+export const BoardMenu = ({ open, setOpen, boardId }: MenuProps) => {
   const [loading, setLoading] = useState(false);
+  const [editingName, setEditingName] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const currentUserId = useSelector((state: storeStateTypes) => state.user.id);
-  const prevWorkspacesData = useSelector(
-    (state: storeStateTypes) => state.user.allWorkspaces
-  );
 
+  const prevBoardData = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectBoardData
+  );
   const dispatch = useDispatch();
 
-  const onCreateClickHandler = () => {
-    dispatch(CreateProjectModalSlice.actions.onOpen());
-    dispatch(CreateProjectModalSlice.actions.setWorkSpaceId({ wsId }));
-    setOpen(false);
-  };
+  // const onCreateClickHandler = () => {
+  //   dispatch(CreateProjectModalSlice.actions.onOpen());
+  //   dispatch(CreateProjectModalSlice.actions.setWorkSpaceId({ wsId }));
+  //   setOpen(false);
+  // };
 
   const {
     register, //register function will pass to text inputs
@@ -69,26 +73,16 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const onSubmitNewName: SubmitHandler<FieldValues> = async (data) => {
     const { name } = data;
     setLoading(true);
-
     try {
-      const {
-        data: { data: updatedWorkspace },
-      } = await updateWorkspaceApi(wsId, {
-        image: 'url',
-        name,
-        usernameOrId: currentUserId,
-      });
-
+      await renameBoardApi(boardId, name);
       dispatch(
-        userSlice.actions.updateWorkspaceName({
-          wsId,
-          updatedWorkspace,
-          prevWorkspacesData,
+        BoardSlice.actions.renameBoard({
+          boardId,
+          newName: name,
+          prevBoardData,
         })
       );
-
-      toast.success('نام ورک‌اسپیس با موفقیت تغییر یافت');
-
+      toast.success('نام ستون مورد نظر با موفقیت تغییر یافت');
       setValue('name', '');
       setLoading(false);
     } catch (error) {
@@ -98,21 +92,22 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
     }
   };
 
-  const onShareClickHandler = () => {
-    dispatch(ShareWorkspaceModalSlice.actions.onOpen());
-    dispatch(ShareWorkspaceModalSlice.actions.setWs({ wsId }));
-    setOpen(false);
-  };
+  // const onShareClickHandler = () => {
+  //   dispatch(ShareWorkspaceModalSlice.actions.onOpen());
+  //   dispatch(ShareWorkspaceModalSlice.actions.setWs({ wsId }));
+  //   setOpen(false);
+  // };
 
   const onDeleteClickHandler = async (e: MouseEvent) => {
     e.stopPropagation();
     setDeleteLoading(true);
 
     try {
-      await deleteWorkspaceApi(wsId);
+      await deleteBoardApi(boardId);
 
-      dispatch(userSlice.actions.deleteWorkspace({ wsId, prevWorkspacesData }));
-      toast.success('ورک اسپیس مورد نظر با موفقیت حذف گردید');
+      dispatch(BoardSlice.actions.removeBoard({ boardId, prevBoardData }));
+
+      toast.success('ستون مورد نظر با موفقیت حذف گردید');
       setOpen(false);
       setDeleteLoading(false);
     } catch (error) {
@@ -125,6 +120,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const onCancelDeleteHandler = (e: MouseEvent) => {
     e.stopPropagation();
     setDeleting(false);
+    // navigate(0)
   };
 
   return (
@@ -137,7 +133,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
         opened={open}
         styles={{
           dropdown: {
-            padding: '14px !important',
+            padding: '12px !important',
             maxWidth: '240px',
           },
           item: {
@@ -152,11 +148,13 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
           },
         }}>
         <MantineMenu.Dropdown>
-          <MantineMenu.Item
-            onClick={onCreateClickHandler}
-            icon={<AiOutlinePlus size={22} />}>
-            ساختن پروژه جدید
-          </MantineMenu.Item>
+          {/* <MantineMenu.Item
+            onClick={() => {
+              setEditingName(true);
+            }}
+            icon={!editingName && <FiEdit size={22} />}>
+            ویرایش نام سطون
+          </MantineMenu.Item> */}
           <MantineMenu.Item
             onClick={() => {
               setEditingName(true);
@@ -165,17 +163,33 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
             {editingName ? (
               <Flex
                 gap='2px'
-                direction={'row'}>
+                direction={'row'}
+                align={'center'}>
                 <TextInput
                   id='name'
                   register={register}
                   errors={errors}
                   required
                 />
-                <Button
+                <ConfirmationButton
+                  onClick={handleSubmit(onSubmitNewName) as any}
+                  bg='green'
+                  fullHeight
+                  icon={AiOutlineCheck}
+                />
+                <ConfirmationButton
+                  onClick={(e: MouseEvent) => {
+                    e.stopPropagation();
+                    setEditingName(false);
+                  }}
+                  bg='gray'
+                  fullHeight
+                  icon={RxCross2}
+                />
+                {/* <Button
                   onClick={handleSubmit(onSubmitNewName)}
                   p={0}
-                  loading={loading}
+                  // loading={loading}
                   icon={AiOutlineCheck}
                 />
                 <Button
@@ -192,18 +206,20 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
                   }}
                   // h='100%'
                   icon={RxCross2}
-                />
+                /> */}
               </Flex>
             ) : (
               ' ویرایش نام ورک‌اسپیس'
             )}
           </MantineMenu.Item>
+          <MantineMenu.Item icon={<AiOutlinePlus size={22} />}>
+            افزودن تسک
+          </MantineMenu.Item>
+
           <MantineMenu.Item icon={<IoColorPaletteOutline size={22} />}>
-            ویرایش رنگ
+            آرشیو تمام تسک‌ها
           </MantineMenu.Item>
-          <MantineMenu.Item icon={<BsLink45Deg size={22} />}>
-            کپی لینک
-          </MantineMenu.Item>
+
           <MantineMenu.Item
             onClick={() => setDeleting(true)}
             c='red'
@@ -225,15 +241,9 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
                 />
               </Flex>
             ) : (
-              'حذف'
+              'حذف ستون'
             )}
           </MantineMenu.Item>
-          <Button
-            icon={AiOutlineShareAlt}
-            className='w-full'
-            onClick={onShareClickHandler}>
-            اشتراک گذاری
-          </Button>
         </MantineMenu.Dropdown>
       </MantineMenu>
     </ClickOutsideWrapper>
