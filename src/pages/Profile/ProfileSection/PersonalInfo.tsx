@@ -3,11 +3,12 @@ import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 
 import { Button, Avatar, TextInput, Title } from '../../../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { updateUserInfoApi } from '../../../services/userApi';
 import toast from 'react-hot-toast';
 import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { storeStateTypes } from '../../../util/types';
+import axios from 'axios';
 const PersonalInfo = () => {
   const dispatch = useDispatch();
 
@@ -60,6 +61,25 @@ const PersonalInfo = () => {
     setLoading(false);
     setdisabled(true);
   };
+  const uploadImage = async (filesInput: ChangeEvent<HTMLInputElement>) => {
+    if (!filesInput.target.files) return;
+
+    const file = filesInput.target.files[0];
+
+    const imageData = {
+      file,
+      upload_preset: 'gqxu362e',
+    };
+
+    console.log(imageData);
+
+    const resp = await axios.post(
+      'https://api.cloudinary.com/v1_1/dcn5dnfrd/image/upload',
+      imageData
+    );
+
+    console.log(resp);
+  };
   return (
     <div className='flex flex-col'>
       <div>
@@ -81,18 +101,15 @@ const PersonalInfo = () => {
             {avatarText}
           </Avatar>
         </div>
-        <div className='flex flex-col mr-[16px]'>
-          <MantineBtn
-            color={'cyan'}
-            p={'10px'}
-            variant='outline'
-            h={'50px'}
-            radius={'8px'}
-            fz={'20px'}
-            fw={'500'}
-            lh={'31px'}>
+        <div className='flex flex-col mr-[16px] items-center'>
+          <label className='text-[20px] p-2 h-12 border border-[#15aabf] rounded-[8px] font-semibold text-[#15aabf] hover:bg-[#15abbf0f] cursor-pointer'>
+            <input
+              className='hidden'
+              type='file'
+              onChange={(e) => uploadImage(e)}
+            />
             ویرایش تصویر پروفایل
-          </MantineBtn>
+          </label>
           <div className='mt-[12px] text-[#8A8989] font-normal text-12 leading-19'>
             این تصویر برای عموم قابل نمایش است.
           </div>

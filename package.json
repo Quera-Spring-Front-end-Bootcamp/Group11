@@ -26,6 +26,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
+    "cloudinary-react": "^1.8.1",
     "fullcalendar": "^6.1.8",
     "jwt-decode": "^3.1.2",
     "moment-jalaali": "^0.10.0",

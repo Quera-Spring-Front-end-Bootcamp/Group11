@@ -42,7 +42,6 @@ const TextInput = ({
           ':focus': {
             border: haveError ? '2px solid red' : '1px solid #AAAAAAff',
           },
-          height: '40px',
         },
         label: {
           width: '100%',
