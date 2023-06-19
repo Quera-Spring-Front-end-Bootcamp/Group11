@@ -21,13 +21,12 @@ import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
 import userUpdate from './util/userinfoUpdate';
-import { ProjectListView, TaskCard } from './components';
+import { ProjectListView } from './components';
 import {
   AccountInfo,
   PersonalInfo,
   Settings,
 } from './pages/Profile/ProfileSection';
-import { DragAndDrop } from './components/DragAndDrop';
 import { Calendar } from './components/Calendar';
 import { MultipleContainers } from './components/ColumnProjectView/ColumnProjectView';
 

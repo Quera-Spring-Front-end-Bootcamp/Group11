@@ -1,41 +1,39 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { ShareProjectModalSlice } from '../../../redux/slices';
+import { ShareWorkspaceModalSlice } from '../../../redux/slices';
 import { ShareModalParent } from '.';
-import { Member, Project, storeStateTypes } from '../../../util/types';
-import {
-  getProjectByIdApi,
-  shareProjectApi,
-} from '../../../services/projectApi';
+import { User, storeStateTypes, workspaceObj } from '../../../util/types';
 import MemberRow from './MemberRow';
+import {
+  addMemberToWorkspaceApi,
+  getWorkspacesByIdApi,
+} from '../../../services/workspaceApi';
 
-const ShareProjectModal = () => {
-  const [data, setData] = useState<Project>();
+const ShareWorkspaceModal = () => {
+  const [data, setData] = useState<workspaceObj>();
   const [loading, setLoading] = useState(false);
-  const [URLSearchParams] = useSearchParams();
-  const selectedWs = URLSearchParams.get('workspaceId');
-  const selectedProject = URLSearchParams.get('projectId');
   const dispatch = useDispatch();
-  const open = useSelector(
-    (state: storeStateTypes) => state.ShareProjectModal.open
-  );
+  const { open, selectedWs } = useSelector((state: storeStateTypes) => ({
+    open: state.ShareWorkspaceModal.open,
+    selectedWs: state.ShareWorkspaceModal.wsId,
+  }));
+
   const currentId = useSelector((state: storeStateTypes) => state.user.id);
 
   //to fetch data and updated modal state
-  const fetchProjectData = async () => {
+  const fetchWorkspaceData = useCallback(async () => {
     const {
       data: { data },
-    } = await getProjectByIdApi(selectedProject!);
+    } = await getWorkspacesByIdApi(selectedWs);
     setData(data);
-  };
+  }, [selectedWs]);
 
   useEffect(() => {
-    fetchProjectData();
-  }, [selectedProject, selectedWs]);
+    fetchWorkspaceData();
+  }, [selectedWs]);
 
   const {
     register, //register function will pass to text inputs
@@ -48,17 +46,13 @@ const ShareProjectModal = () => {
     },
   });
 
-  //submit form value
+  // submit form value
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (!selectedProject) return;
-
     setLoading(true);
     const { username } = data;
-    
     try {
-      await shareProjectApi(selectedProject, username);
-
-      await fetchProjectData();
+      await addMemberToWorkspaceApi(username, selectedWs);
+      await fetchWorkspaceData();
       setValue('username', '');
       toast.success('کاربر مورد نظر با موفقیت به پروژه اضافه شد');
       setLoading(false);
@@ -70,24 +64,28 @@ const ShareProjectModal = () => {
     }
   };
 
-  const membersRow = data?.members?.map((member: Member) => (
+  let members: Array<{ user: User }> = [];
+
+  if (data?.members && data.user) {
+    members = [{ user: data.user }, ...data.members];
+  }
+
+  const memberRow = members.map((member: { user: User }, i) => (
     <MemberRow
       key={member.user._id}
-      currentUserId={currentId}
-      email={member.user.email}
-      firstname={member.user.firstname}
-      lastname={member.user.lastname}
-      role={member.role}
-      userId={member.user._id}
       username={member.user.username}
+      email={member.user.email}
+      currentUserId={currentId}
+      role={i === 0 ? 'owner' : 'member'}
+      userId={member.user._id}
     />
   ));
 
   return (
     <ShareModalParent
-      memberRow={membersRow}
+      memberRow={memberRow}
       open={open}
-      onClose={() => dispatch(ShareProjectModalSlice.actions.onClose())}
+      onClose={() => dispatch(ShareWorkspaceModalSlice.actions.onClose())}
       registerForm={register}
       formId='username'
       errorForm={errors}
@@ -97,4 +95,4 @@ const ShareProjectModal = () => {
   );
 };
 
-export default ShareProjectModal;
+export default ShareWorkspaceModal;

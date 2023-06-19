@@ -1,5 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Board, Project, workspaceObj } from '../../util/types';
+import { Project, workspaceObj } from '../../../util/types';
+
+export type userSliceTypes = {
+  id: string;
+  username: string;
+  email: string;
+  settings: string[];
+  firstname: string;
+  lastname: string;
+  allWorkspaces: workspaceObj[];
+  phone: string;
+  profile_url: string;
+};
 
 export const userSlice = createSlice({
   name: 'user',
@@ -10,18 +22,13 @@ export const userSlice = createSlice({
     settings: [],
     firstname: '',
     lastname: '',
-    workspaces: [],
-    workspaceMember: [],
     allWorkspaces: [],
     phone: '',
+    profile_url: '',
   },
   reducers: {
-    setPage: (state: any, action) => {
-      const { page } = action.payload;
-      state.page = page;
-    },
     setUserAccountInfo: (
-      state: any,
+      state: userSliceTypes,
       action: {
         payload: {
           username: string;
@@ -34,7 +41,7 @@ export const userSlice = createSlice({
       state.email = email;
     },
     setUserPersonaInfo: (
-      state: any,
+      state: userSliceTypes,
       action: {
         payload: {
           firstname: string;
@@ -49,48 +56,54 @@ export const userSlice = createSlice({
       state.phone = phone;
     },
     setUserInfoByRequest: (
-      state: any,
+      state: userSliceTypes,
       action: {
         payload: {
           username: string;
           email: string;
-          settings?: Array<any>;
+          settings?: string[];
           id: string;
           workspaces: Array<string>;
           workspaceMember: Array<string>;
           firstname: string;
           lastname: string;
           phone: string;
+          profile_url: string;
         };
       }
     ) => {
       const {
         username,
         email,
-        settings,
         id,
-        workspaces,
-        workspaceMember,
+        // settings,
+        // workspaces,
+        // workspaceMember,
         firstname,
         lastname,
         phone,
+        profile_url,
       } = action.payload;
 
       state.id = id;
       state.username = username;
       state.email = email;
-      state.settings = settings;
-      state.workspaces = workspaces;
-      state.workspaceMember = workspaceMember;
+      // state.settings = settings;
+      // state.workspaces = workspaces;
+      // state.workspaceMember = workspaceMember;
       state.firstname = firstname;
       state.lastname = lastname;
       state.phone = phone;
+      state.profile_url = profile_url;
     },
-    setWorkspaces: (state: any, action: { payload: Array<workspaceObj> }) => {
+    setWorkspaces: (
+      state: userSliceTypes,
+      action: { payload: Array<workspaceObj> }
+    ) => {
       state.allWorkspaces = action.payload;
     },
     addCreatedWorkspace: (
-      state: any,
+      state: userSliceTypes,
       action: {
         payload: {
           createdWorkspace: workspaceObj;
@@ -102,7 +115,7 @@ export const userSlice = createSlice({
       state.allWorkspaces = [...prevWorkspacesData, createdWorkspace];
     },
     addCreatedProjectToWorkspace: (
-      state: any,
+      state: userSliceTypes,
       action: {
         payload: {
           wsId: string;
@@ -121,6 +134,37 @@ export const userSlice = createSlice({
 
         return ws;
       });
+    },
+    updateWorkspaceName: (
+      state: userSliceTypes,
+      action: {
+        payload: {
+          wsId: string;
+          updatedWorkspace: workspaceObj;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { prevWorkspacesData, updatedWorkspace } = action.payload;
+      state.allWorkspaces = prevWorkspacesData.map((ws) => {
+        if (ws._id === updatedWorkspace._id) {
+          return { ...ws, name: updatedWorkspace.name };
+        }
+        ///
+        return ws;
+      });
+    },
+    deleteWorkspace: (
+      state: userSliceTypes,
+      action: {
+        payload: {
+          wsId: string;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { wsId, prevWorkspacesData } = action.payload;
+      state.allWorkspaces = prevWorkspacesData.filter((ws) => ws._id !== wsId);
     },
   },
 });

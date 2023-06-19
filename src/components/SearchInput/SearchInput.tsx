@@ -9,8 +9,10 @@ import { FieldValues, useForm } from 'react-hook-form';
 //   name: string;
 //   task: string;
 // }
-
-const SearchInput: React.FC = () => {
+type SearchInputProps = {
+  pholder: string;
+};
+const SearchInput = ({ pholder = 'جست و جو ...' }: SearchInputProps) => {
   // const tasks = [
   // 	{ id: 1, name: 'Mahdi Torkaman', task: 'done some task 1' },
   // 	{ id: 2, name: 'Abolfazl', task: 'task number 2' },
@@ -41,8 +43,9 @@ const SearchInput: React.FC = () => {
           id='searchValue'
           register={register}
           value={searchTerm}
+          noBorder
           onChange={handleChange}
-          placeholder='جست و جو ...'
+          placeholder={pholder}
           styles={{
             input: {
               textAlign: 'right',

@@ -1,7 +1,7 @@
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../components';
 import { BASE_URL } from '../../../constants';
-import userSlice from '../../../redux/slices/userSlice';
+import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { loginApi } from '../../../services/authApi';
 
 const LogInCard = () => {
@@ -58,7 +58,7 @@ const LogInCard = () => {
         workspaces,
         firstname,
         lastname,
-        phone
+        phone,
       } = userData;
 
       //save tokens to local storage
@@ -75,7 +75,8 @@ const LogInCard = () => {
           workspaceMember,
           firstname,
           lastname,
-          phone
+          phone,
+          profile_url,
         })
       );
 
@@ -94,16 +95,20 @@ const LogInCard = () => {
   };
   return (
     <Card className='flex flex-col'>
-      <Title>به کوئرا تسک منیجر خوش برگشتی :)</Title>
+      <Title>به کوئرا تسک منیجر خوش برگشتی</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           id='emailOrUsername'
           register={register}
+          errors={errors}
+          required
           className='mt-[29px]'
           label='ایمیل یا نام کاربری'></TextInput>
         <PasswordInput
           id='password'
           register={register}
+          errors={errors}
+          required
           className='mt-[20px]'
           label='رمزعبور'></PasswordInput>
 

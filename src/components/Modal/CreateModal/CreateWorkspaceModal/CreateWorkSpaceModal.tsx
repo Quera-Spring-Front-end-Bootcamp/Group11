@@ -10,14 +10,8 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import { Avatar } from '@mantine/core';
 import { createWorkSpaceApi } from '../../../../services/workspaceApi';
 import { toast } from 'react-hot-toast';
-import userSlice from '../../../../redux/slices/userSlice';
-
-interface CreateWorkSpaceModalProps {
-  children?: React.ReactNode;
-  title?: string;
-  modalBody?: React.ReactNode;
-  modalFooter?: React.ReactNode;
-}
+import userSlice from '../../../../redux/slices/UserSlice/UserSlice';
+import { storeStateTypes } from '../../../../util/types';
 
 //enumerate modal steps
 enum STEPS {
@@ -26,14 +20,16 @@ enum STEPS {
   OVERVIEW = 2,
 }
 
-const CreateWorkSpaceModal = ({}: CreateWorkSpaceModalProps) => {
+const CreateWorkSpaceModal = () => {
   const [step, setStep] = useState(STEPS.NAME);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.createWorkSpaceModal.open);
+  const open = useSelector(
+    (state: storeStateTypes) => state.createWorkSpaceModal.open
+  );
   const prevWorkspacesData = useSelector(
-    (state: any) => state.user.allWorkspaces
+    (state: storeStateTypes) => state.user.allWorkspaces
   );
 
   const {

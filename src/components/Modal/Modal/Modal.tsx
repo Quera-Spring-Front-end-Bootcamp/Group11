@@ -11,6 +11,7 @@ interface ModalProps extends MantineModalProps {
   back?: boolean;
   backAction?: () => void;
   loading?: boolean;
+  width?: string;
 }
 
 const Modal = ({
@@ -22,19 +23,19 @@ const Modal = ({
   backAction,
   title,
   loading,
+  width,
   ...otherProps
 }: ModalProps) => {
   return (
     <>
       <MantineModal
         radius='md'
+        size={width ? width : '500px'}
         styles={() => ({
           root: {
             position: 'relative',
           },
-          content: {
-            padding: '0px 16px 12px 16px',
-          },
+          content: { width: '470px', padding: '0px 16px 12px 16px' },
           body: {
             paddingTop: 0,
           },

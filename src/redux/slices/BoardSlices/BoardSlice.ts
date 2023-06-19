@@ -2,7 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Board, Task } from '../../../util/types';
 
-export const boardSlice = createSlice({
+export type BoardSliceTypes = {
+  loading: boolean;
+  selectedProjectName: string;
+  selectedProjectId: string;
+  selectedProjectBoardData: Board[];
+};
+
+export const BoardSlice = createSlice({
   name: 'board',
   initialState: {
     loading: true,
@@ -11,22 +18,22 @@ export const boardSlice = createSlice({
     selectedProjectBoardData: [],
   },
   reducers: {
-    setProjectName: (state: any, action: { payload: string }) => {
+    setProjectName: (state: BoardSliceTypes, action: { payload: string }) => {
       state.selectedProjectName = action.payload;
     },
     setProjectData: (
-      state: any,
-      action: { payload: { id: string; boardData: any } }
+      state: BoardSliceTypes,
+      action: { payload: { id: string; boardData: Board[] } }
     ) => {
       state.selectedProjectBoardData = action.payload.boardData;
       state.selectedProjectId = action.payload.id;
     },
-    setLoading: (state: any, action: { payload: boolean }) => {
+    setLoading: (state: BoardSliceTypes, action: { payload: boolean }) => {
       state.loading = action.payload;
     },
     setSelectedProjectData: (
-      state: any,
-      action: { payload: { name: string; id: string; boardData: any } }
+      state: BoardSliceTypes,
+      action: { payload: { name: string; id: string; boardData: Board[] } }
     ) => {
       state.selectedProjectBoardData = action.payload.boardData.sort(
         (a: Board, b: Board) => a.position - b.position
@@ -35,7 +42,7 @@ export const boardSlice = createSlice({
       state.selectedProjectName = action.payload.name;
     },
     updateBoardPosition: (
-      state: any,
+      state: BoardSliceTypes,
       action: { payload: { activeBoard: string; overBoard: string } }
     ) => {
       const activeBoardIndex = state.selectedProjectBoardData.findIndex(
@@ -52,9 +59,9 @@ export const boardSlice = createSlice({
       );
     },
     updateBoardTaskPositions: (
-      state: any,
+      state: BoardSliceTypes,
       action: {
-        payload: { newData: any; prevData: Array<Board> };
+        payload: { newData: Record<string, Task[]>; prevData: Array<Board> };
       }
     ) => {
       state.selectedProjectBoardData = action.payload.prevData.map(
@@ -64,7 +71,18 @@ export const boardSlice = createSlice({
         })
       );
     },
+    // addCreatedBoard: (
+    //   state: BoardSliceTypes,
+    //   action: {
+    //     payload: { newBoard: any; prevData: Array<Board> };
+    //   }
+    // ) => {
+    //   state.selectedProjectBoardData = [
+    //     ...action.payload.prevData,
+    //     action.payload.newBoard,
+    //   ];
+    // },
   },
 });
 
-export default boardSlice;
+export default BoardSlice;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import userSlice from '../redux/slices/userSlice';
+import userSlice from '../redux/slices/UserSlice/UserSlice';
 import store from '../redux/store';
 import jwt from 'jwt-decode';
 import { BASE_URL } from '../constants';
@@ -13,7 +13,8 @@ function dispatchUserInfo(
   firstname: string,
   lastname: string,
   phone: string,
-  settings: Array<any>
+  settings: Array<string>,
+  profile_url: string
 ) {
   store.dispatch(
     userSlice.actions.setUserInfoByRequest({
@@ -26,12 +27,13 @@ function dispatchUserInfo(
       lastname,
       phone,
       settings,
+      profile_url,
     })
   );
 }
 
 const userUpdateByToken = async (token: string) => {
-  const { id } = jwt<any>(token);
+  const { id } = jwt(token) as { id: string };
 
   const {
     data: { data: userData },
@@ -58,7 +60,8 @@ const userUpdateByToken = async (token: string) => {
     firstname,
     lastname,
     phone,
-    settings
+    settings,
+    profile_url
   );
 };
 

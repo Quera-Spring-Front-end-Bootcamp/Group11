@@ -1,1 +1,1 @@
-export { WorkSpaceMenu } from './workSpaceMenu';
+export { WorkSpaceMenu, ConfirmationButton } from './WorkSpaceMenu';

@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Avatar } from '../Avatar';
 import { useSelector } from 'react-redux';
+import { storeStateTypes } from '../../util/types';
 
 const MiniProfile = () => {
-  const { firstname, lastname } = useSelector((state: any) => state.user);
+  const { firstname, lastname } = useSelector(
+    (state: storeStateTypes) => state.user
+  );
   const fullName = firstname && lastname && `${firstname} ${lastname}`;
   const avatarText = firstname && lastname && `${firstname[0]} ${lastname[0]}`;
 
