@@ -71,6 +71,39 @@ export const BoardSlice = createSlice({
         })
       );
     },
+    removeBoard: (
+      state: BoardSliceTypes,
+      action: {
+        payload: { boardId: string; prevBoardData: Array<Board> };
+      }
+    ) => {
+      const { boardId, prevBoardData } = action.payload;
+      state.selectedProjectBoardData = prevBoardData.filter(
+        (board: Board) => board._id !== boardId
+      );
+    },
+    renameBoard: (
+      state: BoardSliceTypes,
+      action: {
+        payload: {
+          newName: string;
+          boardId: string;
+          prevBoardData: Array<Board>;
+        };
+      }
+    ) => {
+      const { boardId, prevBoardData, newName } = action.payload;
+
+      state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+        if (board._id === boardId) {
+          return {
+            ...board,
+            name: newName,
+          };
+        }
+        return board;
+      });
+    },
     // addCreatedBoard: (
     //   state: BoardSliceTypes,
     //   action: {

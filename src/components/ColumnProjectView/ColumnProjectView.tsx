@@ -159,26 +159,33 @@ export function MultipleContainers({
   strategy = verticalListSortingStrategy,
   vertical = false,
 }: Props) {
+  const data = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectBoardData
+  );
+  const projectName = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectName
+  );
   const dispatch = useDispatch();
+  ///boards
+  const [containers, setContainers] = useState<string[][]>([]);
+
+  ///task cards object
+  const [items, setItems] = useState<Record<string, Task[]>>({});
+
   /**
    * get necessary data from redux store
    */
-  const { data, projectName } = useSelector((state: storeStateTypes) => ({
-    data: state.board.selectedProjectBoardData,
-    projectName: state.board.selectedProjectName,
-  }));
 
-  const [containers, setContainers] = useState(
-    data.map((board: Board) => [board.name, board._id])
-  );
-
-  const [items, setItems] = useState(() => {
-    const items: Record<string, Task[]> = {};
-    data.forEach((board: Board) => {
-      items[board._id] = board.tasks;
+  useEffect(() => {
+    setContainers(() => data.map((board: Board) => [board.name, board._id]));
+    setItems(() => {
+      const items: Record<string, Task[]> = {};
+      data.forEach((board: Board) => {
+        items[board._id] = board.tasks;
+      });
+      return items;
     });
-    return items;
-  });
+  }, [data]);
 
   const [activeId, setActiveId] = useState<null | string>(null);
   const lastOverId = useRef<null | string>(null);
@@ -456,6 +463,7 @@ export function MultipleContainers({
             <DroppableContainer
               key={container[1]}
               id={container[1]}
+              boardId={container[1]}
               label={`${container[0]}`}
               columns={columns}
               items={items[container[1]]}
@@ -550,6 +558,7 @@ export function MultipleContainers({
     if (!board) return;
     return (
       <Container
+        boardId={board[1]}
         label={`${board[0]}`}
         columns={columns}
         style={{
@@ -585,14 +594,14 @@ export function MultipleContainers({
   }
 
   // function handleAddColumn() {
-    // const newContainerId = getNextContainerId();
-    // unstable_batchedUpdates(() => {
-    //   setContainers((containers: any) => [...containers, newContainerId]);
-    //   setItems((_: any) => ({
-    //     ...items,
-    //     [newContainerId]: [],
-    //   }));
-    // });
+  // const newContainerId = getNextContainerId();
+  // unstable_batchedUpdates(() => {
+  //   setContainers((containers: any) => [...containers, newContainerId]);
+  //   setItems((_: any) => ({
+  //     ...items,
+  //     [newContainerId]: [],
+  //   }));
+  // });
   // }
 
   // function getNextContainerId() {
