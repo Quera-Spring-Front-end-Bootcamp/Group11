@@ -13,6 +13,9 @@ import boardSlice from '../redux/slices/BoardSlices/BoardSlice';
 import { toast } from 'react-hot-toast';
 import { getAllProjectBoardsApi } from '../services/boardApi';
 import { getProjectByIdApi } from '../services/projectApi';
+import { NewTaskModal } from '../components/Modal/NewTaskModal';
+import { NewTaskButton } from '../components';
+import NewTaskModalSlice from '../redux/slices/ModalSlices/NewTaskModalSlice';
 
 const Board = () => {
   const { search: queryParams } = useLocation();
@@ -59,6 +62,10 @@ const Board = () => {
     fetchProject();
   }, [queryParams]);
 
+ 
+  const handleClick = () => {
+    dispatch(NewTaskModalSlice.actions.onOpen());
+  }
   return (
     <>
       <CreateWorkSpaceModal />
@@ -78,7 +85,13 @@ const Board = () => {
 
             <div className='h-[calc(100vh-120px)] mx-4 overflow-x-auto'>
               {!selectedProject ? (
-                'WELCOME...'
+                // 'WELCOME...'
+                <>
+                  <NewTaskButton
+                    onClick={handleClick}
+                  />
+                  <NewTaskModal />
+                </>
               ) : loading ? (
                 'LOADING...'
               ) : (
