@@ -3,6 +3,7 @@ import { HiArrowRight } from 'react-icons/hi';
 import { Button } from '../../../components';
 import { profileSideBarNavItems } from '../../../constants';
 import { useSelector } from 'react-redux';
+import { storeStateTypes } from '../../../util/types';
 
 interface ProfileSideBarProp {
   profileSection: string | undefined;
@@ -10,7 +11,7 @@ interface ProfileSideBarProp {
 const ProfileSideBar = ({ profileSection }: ProfileSideBarProp) => {
   const navigate = useNavigate();
   const selectedProject = useSelector(
-    (state: any) => state.board.selectedProjectId
+    (state: storeStateTypes) => state.board.selectedProjectId
   );
   console.log(selectedProject);
   const onBackClickHandler = () => {

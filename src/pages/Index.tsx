@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import userUpdate from '../util/userinfoUpdate';
 
-const IndexPage = ({}) => {
+const IndexPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   useEffect(() => {

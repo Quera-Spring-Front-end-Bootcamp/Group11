@@ -7,6 +7,16 @@ const loginApi = async (emailOrUsername: string, password: string) => {
   });
 };
 
+const registerUserApi = async (body: {
+  username: string;
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+}) => {
+  return apiCall.post('/auth/register', body);
+};
+
 const forgetPasswordApi = async (email: string) => {
   return apiCall.post('/auth/forget-password', {
     email,
@@ -24,4 +34,10 @@ const getAccessTokenApi = async (rToken: string) => {
     refreshToken: rToken,
   });
 };
-export { getAccessTokenApi, forgetPasswordApi, loginApi, resetPasswordApi };
+export {
+  getAccessTokenApi,
+  forgetPasswordApi,
+  loginApi,
+  registerUserApi,
+  resetPasswordApi,
+};

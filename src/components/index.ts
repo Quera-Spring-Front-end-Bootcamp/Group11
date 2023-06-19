@@ -1,7 +1,7 @@
 ///board
 import { ProjectListView } from './ProjectListView';
 ///menus
-import { WorkSpaceMenu } from './Menu';
+import { WorkSpaceMenu, ConfirmationButton } from './Menu';
 ///Inputs
 import { Anchor } from './Anchor';
 import { Button } from './Button';
@@ -20,12 +20,11 @@ import { LogOutButton } from './LogOutButton';
 import { NewTaskButton } from './NewTaskButton';
 import { CircleButton } from './CircleButton';
 ///Others
-import { Container } from './Container';
 import { Accordion } from './Accordion';
 import { TaskCard } from './TaskCard';
+import { ClickOutsideWrapper } from './ClickOutsideWrapper';
 
 export {
-  Container,
   Accordion,
   ////
   Anchor,
@@ -45,8 +44,10 @@ export {
   LogOutButton,
   NewTaskButton,
   TaskCard,
+  ClickOutsideWrapper,
   ////
   ProjectListView,
   ////
   WorkSpaceMenu,
+  ConfirmationButton,
 };

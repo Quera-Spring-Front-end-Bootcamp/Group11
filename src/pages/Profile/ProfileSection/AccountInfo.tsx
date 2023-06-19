@@ -4,17 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserInfoApi } from '../../../services/userApi';
 import { toast } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
-import userSlice from '../../../redux/slices/userSlice';
+import { userSlice } from '../../../redux/slices/';
+import { storeStateTypes } from '../../../util/types';
 
 const AccountInfo = () => {
   const dispatch = useDispatch();
 
-  const { email, username, id } = useSelector((state: any) => state.user);
+  const { email, username, id } = useSelector(
+    (state: storeStateTypes) => state.user
+  );
   const [loading, setLoading] = useState(false);
-  const [disabled, setdisabled] = useState(true);
+  const [disabled, setDisabled] = useState(true);
 
   const handleChange = () => {
-    setdisabled(false);
+    setDisabled(false);
   };
 
   const { register, handleSubmit, setValue } = useForm<FieldValues>({
@@ -41,7 +44,7 @@ const AccountInfo = () => {
       toast.error('بروز رسانی اطلاعات با مشکل مواجه شد');
     }
     setLoading(false);
-    setdisabled(true);
+    setDisabled(true);
   };
   return (
     <div className='flex flex-col'>

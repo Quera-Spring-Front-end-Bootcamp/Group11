@@ -6,14 +6,18 @@ import { toast } from 'react-hot-toast';
 import CreateModal from './CreateModal';
 import { onClose } from '../../../redux/slices/ModalSlices/CreateModalSlices/CreateProjectModalSlice';
 import { createProjectApi } from '../../../services/projectApi';
-import userSlice from '../../../redux/slices/userSlice';
+import userSlice from '../../../redux/slices/UserSlice/UserSlice';
+import { storeStateTypes } from '../../../util/types';
 
 const CreateProjectModal = () => {
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.CreateProjectModal.open);
-  const wsId = useSelector((state: any) => state.CreateProjectModal.wsId);
+  const { open, wsId } = useSelector((state: storeStateTypes) => ({
+    open: state.CreateProjectModal.open,
+    wsId: state.CreateProjectModal.wsId,
+  }));
+
   const prevWorkspacesData = useSelector(
-    (state: any) => state.user.allWorkspaces
+    (state: storeStateTypes) => state.user.allWorkspaces
   );
   const [loading, setLoading] = useState(false);
 

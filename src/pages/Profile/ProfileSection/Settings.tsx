@@ -20,7 +20,7 @@ const Settings = () => {
     darModeStorage && JSON.parse(darModeStorage)
   );
   const selectedColor = watch('selectedColor');
-  const setCustomValue = (id: string, value: any) => {
+  const setCustomValue = (id: string, value: string | boolean | null) => {
     setValue(id, value, {
       shouldDirty: true,
       shouldTouch: true,

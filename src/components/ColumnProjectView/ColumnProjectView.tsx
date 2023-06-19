@@ -10,17 +10,18 @@ import {
   DragOverlay,
   DropAnimation,
   getFirstCollision,
-  KeyboardSensor,
+  // KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  Modifiers,
-  useDroppable,
-  UniqueIdentifier,
+  // Modifiers,
+  // useDroppable,
+  // UniqueIdentifier,
   useSensors,
   useSensor,
   MeasuringStrategy,
   KeyboardCoordinateGetter,
   defaultDropAnimationSideEffects,
+  UniqueIdentifier,
 } from '@dnd-kit/core';
 import {
   AnimateLayoutChanges,
@@ -35,13 +36,13 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 import { Item, Container, ContainerProps } from './components';
-import { Task } from '../../util/types';
+import { Board, Task, storeStateTypes } from '../../util/types';
 import { useDispatch, useSelector } from 'react-redux';
 import boardSlice from '../../redux/slices/BoardSlices/BoardSlice';
 import { changeBoardPositionApi } from '../../services/boardApi';
 import {
   changeTaskBoardApi,
-  changeTaskPositionApi,
+  // changeTaskPositionApi,
 } from '../../services/taskApi';
 
 export default {
@@ -145,9 +146,6 @@ interface Props {
   vertical?: boolean;
 }
 
-export const TRASH_ID = 'void';
-const PLACEHOLDER_ID = 'placeholder';
-
 export function MultipleContainers({
   adjustScale = false,
   cancelDrop,
@@ -161,31 +159,40 @@ export function MultipleContainers({
   strategy = verticalListSortingStrategy,
   vertical = false,
 }: Props) {
+  const data = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectBoardData
+  );
+  const projectName = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectName
+  );
   const dispatch = useDispatch();
+  ///boards
+  const [containers, setContainers] = useState<string[][]>([]);
+
+  ///task cards object
+  const [items, setItems] = useState<Record<string, Task[]>>({});
+
   /**
    * get necessary data from redux store
    */
-  const { data, projectName } = useSelector((state: any) => ({
-    data: state.board.selectedProjectBoardData,
-    projectName: state.board.selectedProjectName,
-  }));
 
-  const [containers, setContainers] = useState(
-    data.map((board: any) => [board.name, board._id])
-  );
-
-  const [items, setItems] = useState(() => {
-    const items: any = {};
-    data.forEach((board: any) => {
-      items[board._id] = board.tasks;
+  useEffect(() => {
+    setContainers(() => data.map((board: Board) => [board.name, board._id]));
+    setItems(() => {
+      const items: Record<string, Task[]> = {};
+      data.forEach((board: Board) => {
+        items[board._id] = board.tasks;
+      });
+      return items;
     });
-    return items;
-  });
+  }, [data]);
 
   const [activeId, setActiveId] = useState<null | string>(null);
   const lastOverId = useRef<null | string>(null);
   const recentlyMovedToNewContainer = useRef(false);
-  const isSortingContainer = activeId ? containers.includes(activeId) : false;
+  const isSortingContainer = activeId
+    ? containers.some((cont) => cont[1] === activeId)
+    : false;
 
   /**
    * Custom collision detection strategy optimized for multiple containers
@@ -301,7 +308,7 @@ export function MultipleContainers({
         }
 
         if (activeContainer !== overContainer) {
-          setItems((items: any) => {
+          setItems((items: Record<string, Task[]>) => {
             const activeItems = items[activeContainer];
             const overItems = items[overContainer];
             const overIndex = overItems.findIndex(
@@ -349,7 +356,7 @@ export function MultipleContainers({
       }}
       onDragEnd={async ({ active, over }) => {
         if (active.id in items && over?.id) {
-          setContainers((containers: Array<[string, string]>) => {
+          setContainers((containers: string[][]) => {
             const activeIndex = containers.findIndex(
               (elem) => elem[1] === active.id
             );
@@ -361,7 +368,7 @@ export function MultipleContainers({
           });
 
           const overBoardIndexNum =
-            data.findIndex((board: any) => board._id === over?.id) + 1;
+            data.findIndex((board: Board) => board._id === over?.id) + 1;
 
           dispatch(
             boardSlice.actions.updateBoardPosition({
@@ -397,7 +404,7 @@ export function MultipleContainers({
           );
 
           if (activeIndex !== overIndex) {
-            setItems((items: any) => ({
+            setItems((items: Record<string, Task[]>) => ({
               ...items,
               [overContainer]: arrayMove(
                 items[overContainer],
@@ -411,7 +418,7 @@ export function MultipleContainers({
           //update task board in DB
           await changeTaskBoardApi(active.id as string, overContainer);
 
-          //save reArranged tasks data to redux
+          // save reArranged tasks data to redux
           dispatch(
             boardSlice.actions.updateBoardTaskPositions({
               newData: items,
@@ -441,22 +448,33 @@ export function MultipleContainers({
           gridAutoFlow: vertical ? 'row' : 'column',
         }}>
         <SortableContext
-          items={[...containers, PLACEHOLDER_ID]}
+          items={
+            [...containers] as unknown as (
+              | UniqueIdentifier
+              | { id: UniqueIdentifier }
+            )[]
+          }
           strategy={
             vertical
               ? verticalListSortingStrategy
               : horizontalListSortingStrategy
           }>
-          {containers.map((container: any) => (
+          {containers.map((container: string[]) => (
             <DroppableContainer
               key={container[1]}
               id={container[1]}
+              boardId={container[1]}
               label={`${container[0]}`}
               columns={columns}
               items={items[container[1]]}
               style={containerStyle}>
               <SortableContext
-                items={items[container[1]]}
+                items={
+                  items[container[1]] as unknown as (
+                    | UniqueIdentifier
+                    | { id: UniqueIdentifier }
+                  )[]
+                }
                 strategy={strategy}>
                 {items[container[1]].map((task: Task, index: number) => {
                   return (
@@ -492,7 +510,7 @@ export function MultipleContainers({
           adjustScale={adjustScale}
           dropAnimation={dropAnimation}>
           {activeId
-            ? containers.some((cont: [string, string]) => cont[1] === activeId)
+            ? containers.some((cont: string[]) => cont[1] === activeId)
               ? renderContainerDragOverlay(activeId)
               : renderSortableItemDragOverlay(activeId)
             : null}
@@ -505,6 +523,8 @@ export function MultipleContainers({
   function renderSortableItemDragOverlay(id: string) {
     const boardId = findContainer(id);
     const task = items[boardId].find((task: Task) => task._id === id);
+
+    if (!task) return;
 
     return (
       <Item
@@ -533,10 +553,12 @@ export function MultipleContainers({
 
   function renderContainerDragOverlay(containerId: string) {
     const board = containers.find(
-      (container: [string, string]) => container[1] === containerId
+      (container: string[]) => container[1] === containerId
     );
+    if (!board) return;
     return (
       <Container
+        boardId={board[1]}
         label={`${board[0]}`}
         columns={columns}
         style={{
@@ -571,16 +593,16 @@ export function MultipleContainers({
     );
   }
 
-  function handleAddColumn() {
-    // const newContainerId = getNextContainerId();
-    // unstable_batchedUpdates(() => {
-    //   setContainers((containers: any) => [...containers, newContainerId]);
-    //   setItems((_: any) => ({
-    //     ...items,
-    //     [newContainerId]: [],
-    //   }));
-    // });
-  }
+  // function handleAddColumn() {
+  // const newContainerId = getNextContainerId();
+  // unstable_batchedUpdates(() => {
+  //   setContainers((containers: any) => [...containers, newContainerId]);
+  //   setItems((_: any) => ({
+  //     ...items,
+  //     [newContainerId]: [],
+  //   }));
+  // });
+  // }
 
   // function getNextContainerId() {
   //   const containerIds = Object.keys(items);

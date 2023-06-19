@@ -24,7 +24,7 @@ interface DemoAppState {
   selectedDate: string;
 }
 
-export default class DemoApp extends React.Component<{}, DemoAppState> {
+export default class DemoApp extends React.Component<never, DemoAppState> {
   calendarRef = React.createRef<FullCalendar>();
 
   state: DemoAppState = {

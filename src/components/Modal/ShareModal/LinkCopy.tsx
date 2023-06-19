@@ -12,7 +12,8 @@ const LinkCopy = ({ link = 'https://privateLink' }: LinkCopyProps) => {
     <Flex justify={'space-between'}>
       <CopyToClipboard
         text={link}
-        onCopy={() => {}}>
+        // onCopy={() => {}}
+      >
         <Button
           fz={12}
           p={'2px 12px'}

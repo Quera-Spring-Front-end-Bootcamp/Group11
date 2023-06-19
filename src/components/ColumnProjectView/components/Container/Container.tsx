@@ -1,14 +1,19 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import classNames from 'classnames';
 
 import { Handle } from '../Item';
 
 import styles from './Container.module.scss';
+import { BsThreeDots } from 'react-icons/bs';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { Flex } from '@mantine/core';
+import { BoardMenu } from '../../../Menu';
 
 export interface Props {
   children: React.ReactNode;
   columns?: number;
-  label?: string;
+  label: string;
+  boardId: string;
   style?: React.CSSProperties;
   horizontal?: boolean;
   hover?: boolean;
@@ -18,19 +23,18 @@ export interface Props {
   placeholder?: boolean;
   unstyled?: boolean;
   onClick?(): void;
-  onRemove?(): void;
 }
 
 export const Container = forwardRef<HTMLDivElement, Props>(
   (
     {
       children,
+      boardId,
       columns = 1,
       handleProps,
       horizontal,
       hover,
       onClick,
-      onRemove,
       label,
       placeholder,
       style,
@@ -41,7 +45,16 @@ export const Container = forwardRef<HTMLDivElement, Props>(
     }: Props,
     ref
   ) => {
+    const [open, setOpen] = useState(false);
     const Component = onClick ? 'button' : 'div';
+
+    const onPlusClickHandler = () => {
+      console.log(boardId);
+      ///open create task modal
+    };
+    const onMenuClickHandler = () => {
+      setOpen(true);
+    };
 
     return (
       <Component
@@ -49,6 +62,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
         ref={ref}
         style={
           {
+            position: 'relative',
             ...style,
             '--columns': columns,
           } as React.CSSProperties
@@ -64,11 +78,28 @@ export const Container = forwardRef<HTMLDivElement, Props>(
         )}
         onClick={onClick}
         tabIndex={onClick ? 0 : undefined}>
+        <BoardMenu
+          open={open}
+          setOpen={setOpen}
+          boardId={boardId}
+        />
         {label ? (
           <div className={styles.Header}>
             {label}
             <div className={styles.Actions}>
-              {onRemove ? <Remove onClick={onRemove} /> : undefined}
+              <Flex gap='5px'>
+                <div
+                  className='cursor-pointer'
+                  onClick={onMenuClickHandler}>
+                  <BsThreeDots />
+                </div>
+                <div
+                  className='cursor-pointer'
+                  onClick={onPlusClickHandler}>
+                  <AiOutlinePlus />
+                </div>
+              </Flex>
+
               <Handle {...handleProps} />
             </div>
           </div>

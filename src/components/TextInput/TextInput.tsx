@@ -1,7 +1,7 @@
-import { identity } from '@fullcalendar/core/internal';
 import { TextInput as MantineTextInput } from '@mantine/core';
 import { TextInputProps as MantineTextInputProps } from '@mantine/core';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+import { Ri4KLine } from 'react-icons/ri';
 
 type inputProps = Omit<MantineTextInputProps, 'pattern'> & {
   id: string;
@@ -55,6 +55,7 @@ const TextInput = ({
       radius='6px'
       {...register(id, { required, pattern })}
       {...otherProps}
+      icon={Ri4KLine}
     />
   );
 };

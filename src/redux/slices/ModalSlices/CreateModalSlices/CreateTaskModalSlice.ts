@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface CreateTaskModalSliceTypes {
+export type CreateTaskModalSliceTypes = {
   open: boolean;
-}
+};
 
 export const CreateTaskModalSlice = createSlice({
   name: 'CreateTaskModalSliceTypes',
@@ -21,5 +21,7 @@ export const CreateTaskModalSlice = createSlice({
     },
   },
 });
+
+export const { onOpen, onClose, onToggle } = CreateTaskModalSlice.actions;
 
 export default CreateTaskModalSlice;

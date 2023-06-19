@@ -1,5 +1,14 @@
 import { NumberInputStylesParams } from '@mantine/core';
 import { IconType } from 'react-icons';
+import {
+  userSliceTypes,
+  CreateWorkSpaceModalSliceTypes,
+  ShareProjectModalSliceTypes,
+  ShareWorkspaceModalSliceTypes,
+  CreateTaskModalSliceTypes,
+  CreateProjectModalSliceTypes,
+  BoardSliceTypes,
+} from '../redux/slices';
 
 export interface tabObject {
   value: string;
@@ -11,7 +20,7 @@ export interface workspaceObj {
   members: Array<{ user: User }>;
   name: string;
   projects: Array<Project>;
-  user?: string;
+  user?: User;
   _id: string;
 }
 export interface User {
@@ -25,20 +34,32 @@ export interface User {
 export interface Project {
   _id: string;
   boards: string[];
-  members: string[];
+  members: Member[];
   name: string;
 }
 
+export type Member = {
+  user: User;
+  role: 'member' | 'owner';
+};
+
 export interface Task {
   board: string;
-  comments: Array<any>;
+  comments: Array<Comment>;
   description: string;
-  label: Array<any>;
+  label: Array<Label>;
   name: string;
   position: NumberInputStylesParams;
   taskAssigns: User[];
   _id: string;
 }
+
+export type Comment = {
+  text: string;
+};
+export type Label = {
+  text: string;
+};
 
 export interface Board {
   name: string;
@@ -47,3 +68,15 @@ export interface Board {
   tasks: Task[];
   _id: string;
 }
+
+////////////
+
+export type storeStateTypes = {
+  user: userSliceTypes;
+  board: BoardSliceTypes;
+  createWorkSpaceModal: CreateWorkSpaceModalSliceTypes;
+  ShareProjectModal: ShareProjectModalSliceTypes;
+  ShareWorkspaceModal: ShareWorkspaceModalSliceTypes;
+  CreateTaskModal: CreateTaskModalSliceTypes;
+  CreateProjectModal: CreateProjectModalSliceTypes;
+};

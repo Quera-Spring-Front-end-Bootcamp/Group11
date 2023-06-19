@@ -1,3 +1,5 @@
 import CreateProjectModal from './CreateProjectModal';
 
-export { CreateProjectModal };
+import { CreateWorkSpaceModal } from './CreateWorkspaceModal';
+
+export { CreateProjectModal, CreateWorkSpaceModal };

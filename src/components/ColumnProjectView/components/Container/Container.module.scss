@@ -97,6 +97,9 @@
 
 .Actions {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 
   > *:first-child:not(:last-child) {
     opacity: 0;
