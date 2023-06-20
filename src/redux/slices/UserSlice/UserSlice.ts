@@ -124,27 +124,6 @@ export const userSlice = createSlice({
       const { prevWorkspacesData, createdWorkspace } = action.payload;
       state.allWorkspaces = [...prevWorkspacesData, createdWorkspace];
     },
-    addCreatedProjectToWorkspace: (
-      state: userSliceTypes,
-      action: {
-        payload: {
-          wsId: string;
-          createdProject: Project;
-          prevWorkspacesData: Array<workspaceObj>;
-        };
-      }
-    ) => {
-      const { prevWorkspacesData, createdProject, wsId } = action.payload;
-      state.allWorkspaces = prevWorkspacesData.map((ws: workspaceObj) => {
-        if (ws._id === wsId)
-          return {
-            ...ws,
-            projects: [...ws.projects, { ...createdProject, boards: [] }],
-          };
-
-        return ws;
-      });
-    },
     updateWorkspaceName: (
       state: userSliceTypes,
       action: {
@@ -175,6 +154,77 @@ export const userSlice = createSlice({
     ) => {
       const { wsId, prevWorkspacesData } = action.payload;
       state.allWorkspaces = prevWorkspacesData.filter((ws) => ws._id !== wsId);
+    },
+    addCreatedProjectToWorkspace: (
+      state: userSliceTypes,
+      action: {
+        payload: {
+          wsId: string;
+          createdProject: Project;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { prevWorkspacesData, createdProject, wsId } = action.payload;
+      state.allWorkspaces = prevWorkspacesData.map((ws: workspaceObj) => {
+        if (ws._id === wsId)
+          return {
+            ...ws,
+            projects: [...ws.projects, { ...createdProject, boards: [] }],
+          };
+
+        return ws;
+      });
+    },
+    deleteProjectFromWorkspace: (
+      state: userSliceTypes,
+      action: {
+        payload: {
+          wsId: string;
+          projectId: string;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { prevWorkspacesData, projectId, wsId } = action.payload;
+      state.allWorkspaces = prevWorkspacesData.map((ws: workspaceObj) => {
+        if (ws._id === wsId)
+          return {
+            ...ws,
+            projects: ws.projects.filter(
+              (proj: Project) => proj._id !== projectId
+            ),
+          };
+
+        return ws;
+      });
+    },
+    updateProjectName: (
+      state: userSliceTypes,
+      action: {
+        payload: {
+          wsId: string;
+          projectId: string;
+          updatedProject: Project;
+          prevWorkspacesData: Array<workspaceObj>;
+        };
+      }
+    ) => {
+      const { wsId, projectId, updatedProject, prevWorkspacesData } =
+        action.payload;
+
+      state.allWorkspaces = prevWorkspacesData.map((ws) => {
+        if (ws._id === wsId) {
+          return {
+            ...ws,
+            projects: ws.projects.map((proj) => {
+              if (proj._id === projectId) return updatedProject;
+              return proj;
+            }),
+          };
+        }
+        return ws;
+      });
     },
   },
 });

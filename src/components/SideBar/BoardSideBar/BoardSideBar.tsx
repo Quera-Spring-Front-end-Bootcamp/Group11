@@ -62,7 +62,7 @@ const SideBar = () => {
           </Flex>
         </Flex>
         <div className=''>
-          <SearchInput />
+          <SearchInput pholder='جستجو در ورک‌اسپیس‌ها' />
         </div>
         <div className='mb-[16px]'>
           <Button

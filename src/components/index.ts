@@ -1,7 +1,7 @@
 ///board
 import { ProjectListView } from './ProjectListView';
 ///menus
-import { WorkSpaceMenu, ConfirmationButton } from './Menu';
+import { WorkSpaceMenu } from './Menu';
 ///Inputs
 import { Anchor } from './Anchor';
 import { Button } from './Button';
@@ -45,5 +45,4 @@ export {
   ProjectListView,
   ////
   WorkSpaceMenu,
-  ConfirmationButton,
 };

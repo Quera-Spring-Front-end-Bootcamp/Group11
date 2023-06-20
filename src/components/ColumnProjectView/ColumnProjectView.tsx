@@ -44,6 +44,7 @@ import {
   changeTaskBoardApi,
   // changeTaskPositionApi,
 } from '../../services/taskApi';
+import Board from '../../pages/Board';
 
 export default {
   title: 'Presets/Sortable/Multiple Containers',
@@ -159,24 +160,29 @@ export function MultipleContainers({
   strategy = verticalListSortingStrategy,
   vertical = false,
 }: Props) {
+  const dispatch = useDispatch();
+
+  /**
+   * get necessary data from redux store
+   */
   const data = useSelector(
     (state: storeStateTypes) => state.board.selectedProjectBoardData
   );
   const projectName = useSelector(
     (state: storeStateTypes) => state.board.selectedProjectName
   );
-  const dispatch = useDispatch();
+
   ///boards
   const [containers, setContainers] = useState<string[][]>([]);
 
   ///task cards object
   const [items, setItems] = useState<Record<string, Task[]>>({});
 
-  /**
-   * get necessary data from redux store
-   */
-
+  //force reRender component and set necessary states if:
+  //    1- data length (boards count) changes
+  //    2- the name of boards change
   useEffect(() => {
+    console.log('re render');
     setContainers(() => data.map((board: Board) => [board.name, board._id]));
     setItems(() => {
       const items: Record<string, Task[]> = {};
@@ -185,7 +191,7 @@ export function MultipleContainers({
       });
       return items;
     });
-  }, [data]);
+  }, [JSON.stringify(data.map((board: Board) => board.name)), data.length]);
 
   const [activeId, setActiveId] = useState<null | string>(null);
   const lastOverId = useRef<null | string>(null);
@@ -226,7 +232,7 @@ export function MultipleContainers({
         if (overId in items) {
           const containerItems = items[overId];
 
-          // If a container is matched and it contains items (columns 'A', 'B', 'C')
+          // If a container is matched and it contains items
           if (containerItems.length > 0) {
             // Return the closest droppable within that container
             overId = closestCenter({

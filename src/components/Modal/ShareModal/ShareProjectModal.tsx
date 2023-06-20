@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -16,9 +15,9 @@ import MemberRow from './MemberRow';
 const ShareProjectModal = () => {
   const [data, setData] = useState<Project>();
   const [loading, setLoading] = useState(false);
-  const [URLSearchParams] = useSearchParams();
-  const selectedWs = URLSearchParams.get('workspaceId');
-  const selectedProject = URLSearchParams.get('projectId');
+  const selectedProject = useSelector(
+    (state: storeStateTypes) => state.ShareProjectModal.projectId
+  );
   const dispatch = useDispatch();
   const open = useSelector(
     (state: storeStateTypes) => state.ShareProjectModal.open
@@ -26,16 +25,16 @@ const ShareProjectModal = () => {
   const currentId = useSelector((state: storeStateTypes) => state.user.id);
 
   //to fetch data and updated modal state
-  const fetchProjectData = async () => {
+  const fetchProjectData = async (projectId: string) => {
     const {
       data: { data },
-    } = await getProjectByIdApi(selectedProject!);
+    } = await getProjectByIdApi(projectId);
     setData(data);
   };
 
   useEffect(() => {
-    fetchProjectData();
-  }, [selectedProject, selectedWs]);
+    fetchProjectData(selectedProject);
+  }, [selectedProject]);
 
   const {
     register, //register function will pass to text inputs
@@ -54,11 +53,11 @@ const ShareProjectModal = () => {
 
     setLoading(true);
     const { username } = data;
-    
+
     try {
       await shareProjectApi(selectedProject, username);
+      await fetchProjectData(selectedProject);
 
-      await fetchProjectData();
       setValue('username', '');
       toast.success('کاربر مورد نظر با موفقیت به پروژه اضافه شد');
       setLoading(false);

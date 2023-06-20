@@ -9,6 +9,7 @@ import {
   BsFillCaretUpFill,
 } from 'react-icons/bs';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import ProjectItem from './ProjectItem';
 
 interface WorkSpaceAccordionProps extends workspaceObj {
   i: number;
@@ -66,7 +67,7 @@ const WorkSpaceAccordion = ({
         </Flex>
         <div
           onClick={() => setShowMenu(true)}
-          className='hidden group-hover:block hover:bg-transparent hover:scale-125 transition'>
+          className='opacity-0 group-hover:opacity-100 hover:bg-transparent hover:scale-125 transition'>
           <BsThreeDots size={18} />
         </div>
       </Flex>
@@ -78,25 +79,11 @@ const WorkSpaceAccordion = ({
             ${open ? 'h-full' : 'h-0'}
         `}>
         {projects.map((proj) => (
-          <Text
-            onClick={() => onProjectClickHandler(proj._id)}
-            key={proj._id}
-            className={`
-              cursor-pointer
-              mr-[20px]
-              mt-[20px]
-              hover:bg-[#e1eff4]
-              py-1
-              px-2 
-              rounded-4
-              ${
-                URLSearchParams.get('projectId') === proj._id
-                  ? 'bg-[#b8d6e0]'
-                  : ''
-              }
-              `}>
-            {proj.name}
-          </Text>
+          <ProjectItem
+            _id={proj._id}
+            wsId={wsId}
+            name={proj.name}
+          />
         ))}
       </Flex>
     </div>
