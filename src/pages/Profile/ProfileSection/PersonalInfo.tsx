@@ -1,4 +1,4 @@
-import { Button as MantineBtn } from '@mantine/core';
+import { Loader, Button as MantineBtn } from '@mantine/core';
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 
 import { Button, Avatar, TextInput, Title } from '../../../components';
@@ -12,7 +12,7 @@ import axios from 'axios';
 const PersonalInfo = () => {
   const dispatch = useDispatch();
 
-  const { firstname, lastname, phone, id } = useSelector(
+  const { firstname, lastname, phone, id, profile_url } = useSelector(
     (state: storeStateTypes) => state.user
   );
 
@@ -20,6 +20,8 @@ const PersonalInfo = () => {
 
   const [loading, setLoading] = useState(false);
   const [disabled, setdisabled] = useState(true);
+  const [image, setImage] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = () => {
     setdisabled(false);
@@ -62,24 +64,46 @@ const PersonalInfo = () => {
     setdisabled(true);
   };
   const uploadImage = async (filesInput: ChangeEvent<HTMLInputElement>) => {
-    if (!filesInput.target.files) return;
+    //cloadinary keys for Api communication
+    const preset_key = 'gqxu362e';
+    const cloudName = 'dcn5dnfrd';
 
+    //get the selected file details
+    if (!filesInput.target.files) return;
     const file = filesInput.target.files[0];
 
-    const imageData = {
-      file,
-      upload_preset: 'gqxu362e',
-    };
+    //create a FormData instance and append needed
+    //data to it, as cloadinary only accepts formData
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', preset_key);
+    try {
+      setUploading(true);
 
-    console.log(imageData);
+      //upload to cloudinary
+      const { data: uploadResponse } = await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        formData
+      );
 
-    const resp = await axios.post(
-      'https://api.cloudinary.com/v1_1/dcn5dnfrd/image/upload',
-      imageData
-    );
+      //update user profile url in DB
+      await updateUserInfoApi(id, {
+        profile_url: uploadResponse.secure_url,
+      });
 
-    console.log(resp);
+      //update user profile url in redux
+      dispatch(
+        userSlice.actions.setProfilePicture({ url: uploadResponse.secure_url })
+      );
+
+      toast.success('تصویر پروفایل با موفقیت تغییر یافت');
+      setUploading(false);
+    } catch (error) {
+      toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید');
+      console.log(error);
+    }
   };
+
   return (
     <div className='flex flex-col'>
       <div>
@@ -93,21 +117,38 @@ const PersonalInfo = () => {
       <div className='flex flex-row items-center mt-[35px]'>
         <div>
           <Avatar
-            color={'red'} //from BackEnd
+            src={!uploading ? profile_url : undefined}
+            color={'red'}
             fontSize={'35px'}
             className='p-0 m-0'
             size={'100px'}
             radius={'50%'}>
-            {avatarText}
+            {uploading ? <Loader /> : avatarText}
           </Avatar>
         </div>
         <div className='flex flex-col mr-[16px] items-center'>
-          <label className='text-[20px] p-2 h-12 border border-[#15aabf] rounded-[8px] font-semibold text-[#15aabf] hover:bg-[#15abbf0f] cursor-pointer'>
-            <input
-              className='hidden'
-              type='file'
-              onChange={(e) => uploadImage(e)}
-            />
+          <label
+            className={`
+              text-[20px]
+              p-2
+              h-12
+              border
+              rounded-[8px]
+              font-semibold
+              hover:bg-[#15abbf0f]
+              ${
+                uploading
+                  ? 'border-[#393b3c50] hover:bg-[#0000] text-[#393b3c4a] cursor-progress'
+                  : 'border-[#15aabf] hover:bg-[#15abbf0f] text-[#15aabf] cursor-pointer'
+              }
+            `}>
+            {!uploading && (
+              <input
+                className='hidden'
+                type='file'
+                onChange={(e) => uploadImage(e)}
+              />
+            )}
             ویرایش تصویر پروفایل
           </label>
           <div className='mt-[12px] text-[#8A8989] font-normal text-12 leading-19'>

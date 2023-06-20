@@ -96,6 +96,16 @@ export const userSlice = createSlice({
       state.phone = phone;
       state.profile_url = profile_url;
     },
+    setProfilePicture: (
+      state: userSliceTypes,
+      action: {
+        payload: {
+          url: string;
+        };
+      }
+    ) => {
+      state.profile_url = action.payload.url;
+    },
     setWorkspaces: (
       state: userSliceTypes,
       action: { payload: Array<workspaceObj> }
