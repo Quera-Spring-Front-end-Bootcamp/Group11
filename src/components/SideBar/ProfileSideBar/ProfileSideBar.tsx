@@ -10,14 +10,15 @@ interface ProfileSideBarProp {
 }
 const ProfileSideBar = ({ profileSection }: ProfileSideBarProp) => {
   const navigate = useNavigate();
-  const selectedProject = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectId
+  const { selectedProjectId, selectedWorkspaceId } = useSelector(
+    (state: storeStateTypes) => state.board
   );
-  console.log(selectedProject);
   const onBackClickHandler = () => {
     navigate({
       pathname: '/board/TaskList',
-      search: selectedProject && `?projectId=${selectedProject}`,
+      search:
+        selectedProjectId &&
+        `?projectId=${selectedProjectId}&workspaceId=${selectedWorkspaceId}`,
     });
   };
   return (

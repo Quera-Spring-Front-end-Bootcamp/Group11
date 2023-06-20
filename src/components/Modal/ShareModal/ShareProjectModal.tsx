@@ -33,6 +33,7 @@ const ShareProjectModal = () => {
   };
 
   useEffect(() => {
+    if (!selectedProject) return;
     fetchProjectData(selectedProject);
   }, [selectedProject]);
 
@@ -92,6 +93,7 @@ const ShareProjectModal = () => {
       errorForm={errors}
       loading={loading}
       submit={handleSubmit(onSubmit)}
+      title='به اشتراک گذاری پروژه'
     />
   );
 };

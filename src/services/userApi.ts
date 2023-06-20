@@ -8,8 +8,12 @@ type updateUserBody = {
   firstname?: string;
   lastname?: string;
 };
+const getUserApi = async (userId: string) => {
+  return apiCall.get(`users/${userId}`);
+};
+
 const updateUserInfoApi = async (userId: string, body: updateUserBody) => {
   return apiCall.put(`users/${userId}`, body);
 };
 
-export { updateUserInfoApi };
+export { updateUserInfoApi, getUserApi };

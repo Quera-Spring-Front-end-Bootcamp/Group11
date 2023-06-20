@@ -2,6 +2,7 @@ import { Flex, Text } from '@mantine/core';
 import { AiOutlineDownCircle } from 'react-icons/ai';
 import { Task, User } from '../../util/types';
 import { Avatar, ColorInput } from '..';
+import { Avatar as MantineAvatar, Tooltip } from '@mantine/core/';
 import { BsFlag, BsTextRight } from 'react-icons/bs';
 import { usePersianNumberTransform } from '../../hook';
 import { workSpaceColors } from '../../constants';
@@ -66,41 +67,31 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
             w='50%'
             justify='stretch'>
             <Flex className='relative w-full justify-center'>
-              <div
-                className={`
-                  relative
-                  w-1/2
-                  -translate-x-[${
-                    task.taskAssigns.length > 1
-                      ? task.taskAssigns.length * 10
-                      : 0
-                  }%]
-                `}>
-                {task.taskAssigns.length ? (
-                  task.taskAssigns.map((user: User, i: number) => (
-                    <Avatar
-                      key={user._id}
-                      alt={user.firstname}
-                      fontSize='12px'
-                      style={{
-                        transform: `translate(calc(50% - ${i * 50}%), 0)`,
-                      }}
-                      className={`
-                        rounded-full
-                        shadow-md
-                        absolute
-                        left-1/2
-                      `}
-                    />
-                  ))
-                ) : (
-                  <div
-                    className={`grid justify-center
+              {task.taskAssigns.length ? (
+                <MantineAvatar.Group spacing='sm'>
+                  {task.taskAssigns.map((user: User, i: number) => {
+                    return (
+                      <Avatar
+                        key={user._id}
+                        alt={user.firstname}
+                        userId={user._id}
+                        fontSize='12px'
+                        label={`${user.username}`}
+                        // style={{
+                        //   transform: `translate(calc(50% - ${i * 50}%), 0)`,
+                        // }}
+                        className='rounded-full shadow-md'
+                      />
+                    );
+                  })}
+                </MantineAvatar.Group>
+              ) : (
+                <div
+                  className={`grid justify-center
                     `}>
-                    N/A
-                  </div>
-                )}
-              </div>
+                  N/A
+                </div>
+              )}
             </Flex>
             <div className='w-full text-center'>نامشخص</div>
             <div className='w-full grid justify-center'>

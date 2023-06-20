@@ -1,8 +1,7 @@
-import axios from 'axios';
 import userSlice from '../redux/slices/UserSlice/UserSlice';
 import store from '../redux/store';
 import jwt from 'jwt-decode';
-import { BASE_URL } from '../constants';
+import { getUserApi } from '../services/userApi';
 
 function dispatchUserInfo(
   id: string,
@@ -37,7 +36,7 @@ const userUpdateByToken = async (token: string) => {
 
   const {
     data: { data: userData },
-  } = await axios.get(`${BASE_URL}/users/${id}`);
+  } = await getUserApi(id);
 
   const {
     email,

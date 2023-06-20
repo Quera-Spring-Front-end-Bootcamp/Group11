@@ -119,6 +119,7 @@ const PersonalInfo = () => {
           <Avatar
             src={!uploading ? profile_url : undefined}
             color={'red'}
+            label={`${firstname} ${lastname}`}
             fontSize={'35px'}
             className='p-0 m-0'
             size={'100px'}

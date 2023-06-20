@@ -14,6 +14,7 @@ interface IShareProjectModalProps {
   submit: () => void;
   formId: string;
   onClose: () => void;
+  title: string;
 }
 
 const ShareModalParent = ({
@@ -25,6 +26,7 @@ const ShareModalParent = ({
   formId,
   onClose,
   errorForm,
+  title,
 }: IShareProjectModalProps) => {
   const body = (
     <>
@@ -53,8 +55,7 @@ const ShareModalParent = ({
         <LinkCopy link='link' />
         <Text
           fz='14px'
-          c='#7D828C
-'
+          c='#7D828C'
           ta='right'>
           اشتراک گذاشته شده با
         </Text>
@@ -71,7 +72,7 @@ const ShareModalParent = ({
     <Modal
       opened={open}
       onClose={onClose}
-      title={'به اشتراک گذاری پروژه'}
+      title={title}
       body={body}
     />
   );

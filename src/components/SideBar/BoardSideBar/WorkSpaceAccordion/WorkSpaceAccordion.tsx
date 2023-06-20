@@ -80,6 +80,7 @@ const WorkSpaceAccordion = ({
         `}>
         {projects.map((proj) => (
           <ProjectItem
+            key={proj._id}
             _id={proj._id}
             wsId={wsId}
             name={proj.name}
