@@ -14,6 +14,7 @@ interface BoardOverviewRow {
 }
 
 const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
+  const toPersianNumeric = usePersianNumberTransform();
   return (
     <div className='mr-[30px]'>
       <Flex
@@ -29,10 +30,8 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
             className='px-[6px] py-[4px] rounded-4'>
             {name}
           </div>
-          <Text fz='12px'>
-            {usePersianNumberTransform(`${tasks.length} تسک`)}
-          </Text>
-          <Flex></Flex>
+          <Text fz='12px'>{toPersianNumeric(`${tasks.length} تسک`)}</Text>
+          {/* <Flex></Flex> */}
         </Flex>
         <Flex
           w='50%'

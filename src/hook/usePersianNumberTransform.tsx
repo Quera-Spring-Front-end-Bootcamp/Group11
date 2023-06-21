@@ -1,6 +1,4 @@
-import React from 'react';
-
-function usePersianNumberTransform(inputString: string) {
+function usePersianNumberTransform() {
   const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
   const englishNumbers = /[0-9]/g;
 
@@ -10,11 +8,7 @@ function usePersianNumberTransform(inputString: string) {
     });
   };
 
-  const transformedString = React.useMemo(() => {
-    return transformToPersianNumbers(inputString);
-  }, [inputString]);
-
-  return transformedString;
+  return transformToPersianNumbers;
 }
 
 export default usePersianNumberTransform;

@@ -2,13 +2,14 @@ import userSlice from '../redux/slices/UserSlice/UserSlice';
 import store from '../redux/store';
 import jwt from 'jwt-decode';
 import { getUserApi } from '../services/userApi';
+import { workspaceObj } from './types';
 
 function dispatchUserInfo(
   id: string,
   username: string,
   email: string,
-  workspaceMember: Array<string>,
-  workspaces: Array<string>,
+  workspaceMember: Array<{ workspace: workspaceObj }>,
+  workspaces: Array<workspaceObj>,
   firstname: string,
   lastname: string,
   phone: string,

@@ -39,8 +39,6 @@ const Avatar = ({
     fetchUser();
   }, []);
 
-  console.log(profileUrl);
-
   return (
     <Tooltip
       label={label}

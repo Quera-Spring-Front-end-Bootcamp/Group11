@@ -21,21 +21,21 @@ const SideBar = () => {
     (state: storeStateTypes) => state.user.allWorkspaces
   );
 
-  useEffect(() => {
-    const fetchWorkSpaces = async () => {
-      const {
-        data: { data: wsData },
-      } = await getAllWorkspacesApi();
-      dispatch(userSlice.actions.setWorkspaces(wsData));
-    };
+  // useEffect(() => {
+  //   const fetchWorkSpaces = async () => {
+  //     const {
+  //       data: { data: wsData },
+  //     } = await getAllWorkspacesApi();
+  //     dispatch(userSlice.actions.setWorkspaces(wsData));
+  //   };
 
-    try {
-      fetchWorkSpaces();
-    } catch (error) {
-      console.log(error);
-      toast.error('مشکل در برقراری ارتباط با سرور');
-    }
-  }, []);
+  //   try {
+  //     fetchWorkSpaces();
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error('مشکل در برقراری ارتباط با سرور');
+  //   }
+  // }, []);
 
   return (
     <div className='flex flex-col justify-between mt-[31px] bg-[#FAFBFC] w-[100%] h-[calc(100%-100px)] border-l-[#AAAAAA] '>
