@@ -25,7 +25,6 @@ const PasswordInput = ({
           border: '1px solid #AAAAAA',
           textAlign: 'right',
           width: '100%',
-          height: '40px',
           ':focus-within': {
             border: '2px solid gray',
           },

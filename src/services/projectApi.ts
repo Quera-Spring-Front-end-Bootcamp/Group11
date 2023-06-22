@@ -9,5 +9,17 @@ const createProjectApi = async (name: string, workspaceId: string) => {
 const shareProjectApi = async (projectId: string, usernameOrId: string) => {
   return apiCall.put(`/projects/${projectId}/members/${usernameOrId}`);
 };
+const deleteProjectApi = async (projectId: string) => {
+  return apiCall.delete(`/projects/${projectId}`);
+};
+const updateProjectApi = async (projectId: string, body: { name: string }) => {
+  return apiCall.put(`/projects/${projectId}`, body);
+};
 
-export { getProjectByIdApi, createProjectApi, shareProjectApi };
+export {
+  getProjectByIdApi,
+  createProjectApi,
+  shareProjectApi,
+  deleteProjectApi,
+  updateProjectApi,
+};

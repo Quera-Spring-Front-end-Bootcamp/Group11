@@ -8,6 +8,7 @@ interface IConfirmationButton {
   loading?: boolean;
   cancelButton?: boolean;
   fullHeight?: boolean;
+  padding?: '0px' | '2px';
 }
 const ConfirmationButton = ({
   onClick,
@@ -15,15 +16,16 @@ const ConfirmationButton = ({
   icon: Icon,
   loading,
   cancelButton,
-  fullHeight,
+  padding = '2px',
 }: IConfirmationButton) => {
   return (
     <Flex
       onClick={onClick as any}
-      className='w-1/2 transition justify-center items-center p-2 rounded-6'
+      className=' transition justify-center items-center rounded-6 w-full'
       bg={bg}
       sx={{
-        height: fullHeight ? '100%' : '22px',
+        padding,
+        height: '100%',
         '&:hover': {
           backgroundColor: bg,
         },
@@ -36,7 +38,7 @@ const ConfirmationButton = ({
       ) : (
         <Icon
           color='#00000080'
-          size={20}
+          size={15}
         />
       )}
     </Flex>

@@ -1,7 +1,6 @@
 import { TextInput as MantineTextInput } from '@mantine/core';
 import { TextInputProps as MantineTextInputProps } from '@mantine/core';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
-import { Ri4KLine } from 'react-icons/ri';
 
 type inputProps = Omit<MantineTextInputProps, 'pattern'> & {
   id: string;
@@ -42,7 +41,6 @@ const TextInput = ({
           ':focus': {
             border: haveError ? '2px solid red' : '1px solid #AAAAAAff',
           },
-          height: '40px',
         },
         label: {
           width: '100%',
@@ -55,7 +53,6 @@ const TextInput = ({
       radius='6px'
       {...register(id, { required, pattern })}
       {...otherProps}
-      icon={Ri4KLine}
     />
   );
 };

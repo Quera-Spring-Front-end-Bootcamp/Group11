@@ -32,6 +32,7 @@ const ShareWorkspaceModal = () => {
   }, [selectedWs]);
 
   useEffect(() => {
+    if (!selectedWs) return;
     fetchWorkspaceData();
   }, [selectedWs]);
 
@@ -91,6 +92,7 @@ const ShareWorkspaceModal = () => {
       errorForm={errors}
       loading={loading}
       submit={handleSubmit(onSubmit)}
+      title='به اشتراک گذاری ورک‌اسپیس'
     />
   );
 };

@@ -33,8 +33,8 @@ export interface User {
 }
 export interface Project {
   _id: string;
-  boards: string[];
-  members: Member[];
+  boards?: string[];
+  members?: Member[];
   name: string;
 }
 

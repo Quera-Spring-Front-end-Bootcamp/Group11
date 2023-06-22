@@ -40,7 +40,7 @@ const Board = () => {
         //get selected project data
         const {
           data: {
-            data: { name: projectName, _id: id },
+            data: { workspace, name: projectName, _id: id },
           },
         } = await getProjectByIdApi(selectedProject);
 
@@ -50,6 +50,7 @@ const Board = () => {
             boardData: projectData,
             id,
             name: projectName,
+            wsId: workspace,
           })
         );
 
