@@ -8,6 +8,9 @@ import {
   CreateTaskModalSliceTypes,
   CreateProjectModalSliceTypes,
   BoardSliceTypes,
+  NewTaskModalSliceTypes,
+  EditTaskModalSliceTypes,
+  DeleteTaskModalSliceTypes,
 } from '../redux/slices';
 
 export interface tabObject {
@@ -79,4 +82,7 @@ export type storeStateTypes = {
   ShareWorkspaceModal: ShareWorkspaceModalSliceTypes;
   CreateTaskModal: CreateTaskModalSliceTypes;
   CreateProjectModal: CreateProjectModalSliceTypes;
+  NewTaskModal: NewTaskModalSliceTypes;
+  EditTaskModal: EditTaskModalSliceTypes;
+  DeleteTaskModal: DeleteTaskModalSliceTypes;
 };

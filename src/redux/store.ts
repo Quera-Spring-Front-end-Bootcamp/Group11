@@ -8,7 +8,9 @@ import {
   CreateProjectModalSlice,
   BoardSlice,
   ShareWorkspaceModalSlice,
-  NewTaskModalSlice
+  NewTaskModalSlice,
+  EditTaskModalSlice,
+  DeleteTaskModalSlice,
 } from './slices';
 
 export default configureStore({
@@ -21,6 +23,8 @@ export default configureStore({
     CreateTaskModal: CreateTaskModalSlice.reducer,
     CreateProjectModal: CreateProjectModalSlice.reducer,
     NewTaskModal: NewTaskModalSlice.reducer,
+    EditTaskModal: EditTaskModalSlice.reducer,
+    DeleteTaskModal: DeleteTaskModalSlice.reducer,
     ////Board
     board: BoardSlice.reducer,
   },

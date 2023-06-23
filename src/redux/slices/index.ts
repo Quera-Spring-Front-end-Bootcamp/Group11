@@ -1,4 +1,5 @@
 import { userSlice, userSliceTypes } from './UserSlice';
+
 import {
   ShareProjectModalSlice,
   ShareWorkspaceModalSlice,
@@ -9,7 +10,17 @@ import {
 import {
   NewTaskModalSlice,
   NewTaskModalSliceTypes,
-} from './ModalSlices/NewTaskModalSlice/NewTaskModalSlice';
+} from './ModalSlices/NewTaskModalSlice';
+
+import {
+  EditTaskModalSlice,
+  EditTaskModalSliceTypes,
+} from './ModalSlices/EditTaskModalSlice';
+
+import {
+  DeleteTaskModalSlice,
+  DeleteTaskModalSliceTypes,
+} from './ModalSlices/DeleteTaskModalSlice';
 
 import {
   CreateProjectModalSlice,
@@ -26,17 +37,22 @@ export {
   userSlice,
   ///
   NewTaskModalSlice,
+  EditTaskModalSlice,
+  DeleteTaskModalSlice,
   ShareProjectModalSlice,
   CreateProjectModalSlice,
   CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
   ShareWorkspaceModalSlice,
+
   ///
   BoardSlice,
 };
 
 export type {
   NewTaskModalSliceTypes,
+  EditTaskModalSliceTypes,
+  DeleteTaskModalSliceTypes,
   userSliceTypes,
   ShareProjectModalSliceTypes,
   ShareWorkspaceModalSliceTypes,
