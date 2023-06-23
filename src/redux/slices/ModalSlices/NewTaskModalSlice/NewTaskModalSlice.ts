@@ -5,6 +5,7 @@ export interface NewTaskModalSliceTypes {
   taskTitle: string;
   priority: string;
   loading: boolean;
+  boardId: string;
 }
 
 export const NewTaskModalSlice = createSlice({
@@ -14,6 +15,7 @@ export const NewTaskModalSlice = createSlice({
     taskTitle: '',
     priority: '',
     loading: true,
+    boardId: '',
   },
   reducers: {
     onOpen: (state: NewTaskModalSliceTypes) => {
@@ -22,19 +24,28 @@ export const NewTaskModalSlice = createSlice({
     onClose: (state: NewTaskModalSliceTypes) => {
       state.open = false;
     },
-    setTaskInfo: (
+
+    setBoardId: (
       state: NewTaskModalSliceTypes,
-      action: { payload: { taskTitle: string; priority: string } }
+      action: { payload: { boardId: string } }
     ) => {
-      const {
-        payload: { taskTitle, priority },
-      } = action;
-      state.taskTitle = taskTitle;
-      state.priority = priority;
+      const { boardId } = action.payload;
+      state.boardId = boardId;
     },
+
+    // setTaskInfo: (
+    //   state: NewTaskModalSliceTypes,
+    //   action: { payload: { taskTitle: string; priority: string } }
+    // ) => {
+    //   const {
+    //     payload: { taskTitle, priority },
+    //   } = action;
+    //   state.taskTitle = taskTitle;
+    //   state.priority = priority;
+    // },
   },
 });
 
-export const { onOpen, onClose, setTaskInfo } = NewTaskModalSlice.actions;
+export const { onOpen, onClose, setBoardId } = NewTaskModalSlice.actions;
 
 export default NewTaskModalSlice;

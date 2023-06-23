@@ -38,5 +38,5 @@ export {
   deleteTaskApi,
   updateTaskInfoApi,
   assigneTaskApi,
-  unassigneTaskApi
+  unassigneTaskApi,
 };

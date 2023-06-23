@@ -23,6 +23,7 @@ import { CircleButton } from './CircleButton';
 import { Accordion } from './Accordion';
 import { TaskCard } from './TaskCard';
 import { ClickOutsideWrapper } from './ClickOutsideWrapper';
+import { DeleteTaskModal, EditTaskModal, NewTaskModal } from './Modal';
 
 export {
   Accordion,
@@ -50,4 +51,8 @@ export {
   ////
   WorkSpaceMenu,
   ConfirmationButton,
+  ////
+  NewTaskModal,
+  EditTaskModal,
+  DeleteTaskModal
 };

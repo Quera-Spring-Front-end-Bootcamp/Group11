@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, TextInput as MantineTextInput, Tooltip } from '@mantine/core';
 import { Select } from 'react-hook-form-mantine';
 import { Indicator, Button as MantineBtn, Menu, Modal } from '@mantine/core';
-import NewTaskModalSlice from '../../../redux/slices/ModalSlices/NewTaskModalSlice';
+import { NewTaskModalSlice } from '../../../redux/slices';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Button, CircleButton, TextArea, TextInput } from '../..';
 import { useEffect, useState } from 'react';
@@ -17,6 +17,8 @@ import {
   BsThreeDots,
 } from 'react-icons/bs';
 import { priorityItem } from '../../../constants';
+import { createTaskApi } from '../../../services/taskApi';
+import { storeStateTypes } from '../../../util/types';
 
 const NewTaskModal = () => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,10 @@ const NewTaskModal = () => {
   const [selectedTags, setselectedTags] = useState<any>([]);
 
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.NewTaskModal.open);
+  const open = useSelector((state: storeStateTypes) => state.NewTaskModal.open);
+  const boardId = useSelector(
+    (state: storeStateTypes) => state.NewTaskModal.boardId
+  );
 
   const tags = [
     {
@@ -66,10 +71,10 @@ const NewTaskModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       taskTitle: '',
+      description: '',
       project: '',
       tags: [],
       priority: '',
-      id: Date.now(),
     },
   });
 
@@ -93,6 +98,10 @@ const NewTaskModal = () => {
     setpriority(e.currentTarget.id);
   };
 
+  const handleClose = () => {
+    dispatch(NewTaskModalSlice.actions.onClose());
+  };
+
   const handleChange = () => {
     setdisabled(false);
   };
@@ -102,8 +111,8 @@ const NewTaskModal = () => {
     setValue('priority', priority);
   }, [priority, selectedTags, setValue]);
 
-  const handleSelectedTag = (event) => {
-    const updateSelectedTags = selectedTags.filter((item) => {
+  const handleSelectedTag = (event: any) => {
+    const updateSelectedTags = selectedTags.filter((item: any) => {
       item.id !== event.currentTarget.id;
     });
     setselectedTags(updateSelectedTags);
@@ -111,25 +120,24 @@ const NewTaskModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
-    // const { firstname, lastname, phone } = data;
-    // setLoading(true);
-    // try {
-    //   const { data: apiData } = await updateUserInfoApi(id, {
-    //     firstname,
-    //     lastname,
-    //     phone,
-    //   });
-    //   dispatch(
-    //     userSlice.actions.setUserPersonaInfo({ firstname, lastname, phone })
-    //   );
-    //   console.log(apiData);
-    //   toast.success('بروز رسانی اطلاعات با موفقیت انجام شد');
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error('بروز رسانی اطلاعات با مشکل مواجه شد');
-    // }
-    // setLoading(false);
-    // setdisabled(true);
+    const { name, description } = data;
+    setLoading(true);
+    try {
+      const { data: apiData } = await createTaskApi({
+        name,
+        description,
+        boardId,
+      });
+
+      console.log(apiData);
+      toast.success('ایجاد تسک جدید با موفقیت انجام شد');
+      setLoading(false);
+      setdisabled(true);
+      dispatch(NewTaskModalSlice.actions.onClose());
+    } catch (error) {
+      console.log(error);
+      toast.error('ایجاد تسک جدید با مشکل مواجه شد');
+    }
   };
 
   const taskModalTitle = (
@@ -146,7 +154,7 @@ const NewTaskModal = () => {
         onChange={handleChange}
         data-autofocus
         w={'50%'}
-        id='taskTitle'
+        id='name'
         register={register}
         placeholder='عنوان تسک'
       />
@@ -155,7 +163,8 @@ const NewTaskModal = () => {
 
   return (
     <Modal
-      onClose={() => dispatch(NewTaskModalSlice.actions.onClose())}
+      closeOnClickOutside={true}
+      onClose={handleClose}
       centered={true}
       size='auto'
       radius='20px'
@@ -163,10 +172,7 @@ const NewTaskModal = () => {
       opened={open}
       dir='rtl'>
       <Modal.Header className='flex items-center mb-[40px]'>
-        <Modal.CloseButton
-          onClick={() => dispatch(NewTaskModalSlice.actions.onClose())}
-          size={'1.5rem'}
-        />
+        <Modal.CloseButton size={'1.5rem'} />
         {taskModalTitle}
       </Modal.Header>
       <Modal.Body>
@@ -284,7 +290,7 @@ const NewTaskModal = () => {
 
                   <Menu.Dropdown>
                     <div className='flex flex-wrap gap-2'>
-                      {selectedTags.map((item) => {
+                      {selectedTags.map((item: any) => {
                         return (
                           <Tooltip label='برای حذف تگ کلیک کن'>
                             <Box
