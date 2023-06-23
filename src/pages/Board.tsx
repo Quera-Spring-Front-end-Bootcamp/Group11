@@ -18,6 +18,11 @@ import { getProjectByIdApi } from '../services/projectApi';
 import { storeStateTypes } from '../util/types';
 import { Loader } from '@mantine/core';
 import LogoType from '../components/LogoType/LogoType';
+import {
+  NewTaskModal,
+  EditTaskModal,
+  DeleteTaskModal,
+} from '../components/Modal';
 
 const Board = () => {
   const { search: queryParams } = useLocation();
@@ -82,6 +87,10 @@ const Board = () => {
 
   return (
     <>
+      <NewTaskModal />
+      <EditTaskModal boardId={''} />
+      <DeleteTaskModal />
+
       <CreateWorkSpaceModal />
       <ShareProjectModal />
       <ShareWorkspaceModal />
