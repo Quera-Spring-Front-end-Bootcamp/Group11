@@ -2,7 +2,11 @@ import { Button } from '../Button';
 
 import { FiPlusSquare } from 'react-icons/fi';
 
-const NewTaskButton = () => {
+interface NewTaskButtonProp {
+  onClick: () => void;
+}
+
+const NewTaskButton = ({ onClick }: NewTaskButtonProp) => {
   return (
     <Button
       pt={'8px'}
@@ -12,7 +16,7 @@ const NewTaskButton = () => {
       styles={() => ({
         root: {
           width: 'fit-content',
-          border: '0'
+          border: '0',
         },
         leftIcon: {
           marginLeft: '4px',
@@ -20,8 +24,7 @@ const NewTaskButton = () => {
           padding: '4px',
         },
       })}
-      // onClick={onClick}
-      // Add Modal OnClick
+      onClick={onClick}
       leftIcon={<FiPlusSquare size='1.5rem' />}>
       تسک جدید
     </Button>

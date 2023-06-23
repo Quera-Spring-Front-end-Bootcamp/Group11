@@ -8,6 +8,8 @@ import { BsThreeDots } from 'react-icons/bs';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Flex } from '@mantine/core';
 import { BoardMenu } from '../../../Menu';
+import { useDispatch } from 'react-redux';
+import { NewTaskModalSlice } from '../../../../redux/slices';
 
 export interface Props {
   children: React.ReactNode;
@@ -47,10 +49,12 @@ export const Container = forwardRef<HTMLDivElement, Props>(
   ) => {
     const [open, setOpen] = useState(false);
     const Component = onClick ? 'button' : 'div';
+    const dispatch = useDispatch();
 
     const onPlusClickHandler = () => {
       console.log(boardId);
-      ///open create task modal
+      dispatch(NewTaskModalSlice.actions.onOpen());
+      dispatch(NewTaskModalSlice.actions.setBoardId({ boardId }));
     };
     const onMenuClickHandler = () => {
       setOpen(true);

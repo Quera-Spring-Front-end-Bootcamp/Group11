@@ -499,6 +499,7 @@ export function MultipleContainers({
                         deadLine: 'N/A',
                         projectName: projectName,
                         taskTitle: task.name,
+                        taskId: task._id,
                       }}
                     />
                   );
@@ -552,6 +553,7 @@ export function MultipleContainers({
           deadLine: 'N/A',
           projectName: projectName,
           taskTitle: task.name,
+          taskId: id,
         }}
       />
     );
@@ -592,6 +594,7 @@ export function MultipleContainers({
               deadLine: 'N/A',
               projectName: projectName,
               taskTitle: task.name,
+              taskId: task._id,
             }}
           />
         ))}
@@ -628,7 +631,7 @@ interface SortableItemProps {
   getIndex(id: string): number;
   renderItem(): React.ReactElement;
   wrapperStyle({ index }: { index: number }): React.CSSProperties;
-  taskDetail: { projectName: string; taskTitle: string; deadLine: string };
+  taskDetail: { projectName: string; taskTitle: string; deadLine: string , taskId: string};
 }
 
 function SortableItem({

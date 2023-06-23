@@ -9,7 +9,12 @@ import styles from './Item.module.scss';
 import { TaskCard } from '../../..';
 
 export interface ItemProps {
-  taskDetail?: { projectName: string; taskTitle: string; deadLine: string };
+  taskDetail: {
+    projectName: string;
+    taskTitle: string;
+    deadLine: string;
+    taskId: string;
+  };
   dragOverlay?: boolean;
   color?: string;
   disabled?: boolean;
@@ -25,7 +30,7 @@ export interface ItemProps {
   style?: React.CSSProperties;
   transition?: string | null;
   wrapperStyle?: React.CSSProperties;
-  value: React.ReactNode;
+  value: string;
   onRemove?(): void;
   renderItem?(args: {
     dragOverlay: boolean;
@@ -148,6 +153,7 @@ export const Item = React.forwardRef<HTMLLIElement, ItemProps>(
             deadLine={taskDetail?.deadLine}
             projectName={taskDetail?.projectName}
             taskTitle={taskDetail?.taskTitle}
+            taskId={value}
           />
         </div>
       </li>
