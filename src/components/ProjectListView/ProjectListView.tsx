@@ -29,7 +29,6 @@ const ProjectListView = () => {
             key={board._id}
             tasks={board.tasks}
             name={board.name}
-            position={board.position - 1}
             color={board.color}
           />
         ))}
