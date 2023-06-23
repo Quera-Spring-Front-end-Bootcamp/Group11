@@ -14,7 +14,7 @@ const DeleteTaskModal = () => {
     (state: storeStateTypes) => state.DeleteTaskModal.open
   );
   const taskId = useSelector(
-    (state: storeStateTypes) => state.NewTaskModal.boardId
+    (state: storeStateTypes) => state.DeleteTaskModal.taskId
   );
 
   const handleClose = () => {

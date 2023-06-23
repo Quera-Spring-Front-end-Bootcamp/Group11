@@ -1,9 +1,12 @@
 import { Avatar } from '..';
-import { Card } from '@mantine/core';
+import { Card, Tooltip } from '@mantine/core';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
-import { BsCheckSquare, BsThreeDots } from 'react-icons/bs';
+import { BsCheckSquare } from 'react-icons/bs';
+import { RiDeleteBinLine } from 'react-icons/ri';
 import { useState } from 'react';
+import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
+import { useDispatch } from 'react-redux';
 
 interface TagProp {
   children: string;
@@ -24,18 +27,26 @@ interface taskCardProps {
   projectName?: string;
   taskTitle?: string;
   deadLine?: string;
+  taskId: string;
 }
 
-const TaskCard = ({ projectName, taskTitle, deadLine }: taskCardProps) => {
+const TaskCard = ({
+  projectName,
+  taskTitle,
+  deadLine,
+  taskId,
+}: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isCheckList, setIsCheckList] = useState(true);
+  const dispatch = useDispatch();
 
   const onClick = () => {
-    console.log('card');
+    dispatch(EditTaskModalSlice.actions.onOpen());
   };
-  const onClick1 = (e: { stopPropagation: () => void }) => {
+  const handleDeleteTask = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
-    console.log('3dots');
+    dispatch(DeleteTaskModalSlice.actions.onOpen());
+    dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
   return (
     <Card
@@ -99,7 +110,18 @@ const TaskCard = ({ projectName, taskTitle, deadLine }: taskCardProps) => {
           (isHover ? ' h-10' : ' h-0')
         }>
         <FiCheckCircle />
-        <BsThreeDots onClick={onClick1} />
+        <Tooltip
+          label='حذف تسک'
+          color='blue'
+          withArrow
+          position='left'>
+          <RiDeleteBinLine
+            title='حذف تسک'
+            size={'1.2rem'}
+            className='hover:text-[red] cursor-pointer'
+            onClick={handleDeleteTask}
+          />
+        </Tooltip>
       </div>
     </Card>
   );
