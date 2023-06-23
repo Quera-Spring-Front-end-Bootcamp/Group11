@@ -87,7 +87,7 @@ const Board = () => {
       <ShareWorkspaceModal />
       <CreateProjectModal />
       <DatePickerModal
-        opened={true}
+        // opened={true}
         onClose={() => {}}
       />
       <div className='flex flex-row h-screen w-screen'>

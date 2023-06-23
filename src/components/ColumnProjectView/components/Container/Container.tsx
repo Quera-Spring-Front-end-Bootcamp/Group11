@@ -8,6 +8,8 @@ import { BsThreeDots } from 'react-icons/bs';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Flex } from '@mantine/core';
 import { BoardMenu } from '../../../Menu';
+import { useSelector } from 'react-redux';
+import { storeStateTypes } from '../../../../util/types';
 
 export interface Props {
   children: React.ReactNode;
@@ -48,6 +50,13 @@ export const Container = forwardRef<HTMLDivElement, Props>(
     const [open, setOpen] = useState(false);
     const Component = onClick ? 'button' : 'div';
 
+    const color = useSelector(
+      (state: storeStateTypes) =>
+        state.board.selectedProjectBoardData.find(
+          (board) => board._id === boardId
+        )?.color
+    );
+
     const onPlusClickHandler = () => {
       console.log(boardId);
       ///open create task modal
@@ -86,7 +95,9 @@ export const Container = forwardRef<HTMLDivElement, Props>(
           />
         )}
         {label ? (
-          <div className={styles.Header}>
+          <div
+            style={{ borderTop: `1px solid ${color}` }}
+            className={styles.Header}>
             {label}
             <div className={styles.Actions}>
               <Flex gap='5px'>

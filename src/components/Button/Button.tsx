@@ -19,12 +19,12 @@ const Button = ({
       radius={'6px'}
       p={'10px'}
       c={'white'}
-      bg={'#208D8E'}
       fz={'14px'}
       fw={'700'}
       lh={'22px'}
       styles={{
         root: {
+          backgroundColor: '#208D8E',
           '&:hover': {
             backgroundColor: '#277576',
           },

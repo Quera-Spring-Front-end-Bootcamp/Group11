@@ -12,9 +12,9 @@ import {
   PasswordInput,
   Button,
 } from '../../../components';
-import { BASE_URL } from '../../../constants';
 import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { loginApi } from '../../../services/authApi';
+import { getUserApi } from '../../../services/userApi';
 
 const LogInCard = () => {
   const [loading, setLoading] = useState(false);
@@ -48,18 +48,10 @@ const LogInCard = () => {
 
       const {
         data: { data: userData },
-      } = await axios.get(`${BASE_URL}/users/${id}`);
+      } = await getUserApi(id);
 
-      const {
-        email,
-        profile_url,
-        username,
-        workspaceMember,
-        workspaces,
-        firstname,
-        lastname,
-        phone,
-      } = userData;
+      const { email, profile_url, username, firstname, lastname, phone } =
+        userData;
 
       //save tokens to local storage
       localStorage.setItem('accessToken', accessToken);
@@ -71,8 +63,6 @@ const LogInCard = () => {
           email,
           id,
           username,
-          workspaces,
-          workspaceMember,
           firstname,
           lastname,
           phone,
@@ -82,7 +72,7 @@ const LogInCard = () => {
 
       toast.success('خوش آمدید');
       setLoading(false);
-      navigate('/board');
+      navigate('/');
     } catch (error: any) {
       console.log(error);
       if (error.message === 'Network Error')

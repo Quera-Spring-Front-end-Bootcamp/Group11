@@ -19,6 +19,7 @@ const WorkSpaceAccordion = ({
   projects,
   name,
   i,
+  color,
 }: WorkSpaceAccordionProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,9 +46,7 @@ const WorkSpaceAccordion = ({
             height='20px'
             width='20px'
             radius='4px'
-            bg={
-              workSpaceColors[i] ? workSpaceColors[i] : workSpaceColors[i + 1]
-            }
+            bg={color}
             icon={
               projects.length
                 ? open

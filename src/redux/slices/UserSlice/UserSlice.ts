@@ -63,8 +63,6 @@ export const userSlice = createSlice({
           email: string;
           settings?: string[];
           id: string;
-          workspaces: Array<workspaceObj>;
-          workspaceMember: Array<{ workspace: workspaceObj }>;
           firstname: string;
           lastname: string;
           phone: string;
@@ -72,18 +70,8 @@ export const userSlice = createSlice({
         };
       }
     ) => {
-      const {
-        username,
-        email,
-        id,
-        // settings,
-        workspaces,
-        workspaceMember,
-        firstname,
-        lastname,
-        phone,
-        profile_url,
-      } = action.payload;
+      const { username, email, id, firstname, lastname, phone, profile_url } =
+        action.payload;
 
       state.id = id;
       state.username = username;
@@ -92,13 +80,6 @@ export const userSlice = createSlice({
       state.lastname = lastname;
       state.phone = phone;
       state.profile_url = profile_url;
-
-      state.allWorkspaces = [
-        ...workspaces,
-        ...workspaceMember.map(
-          (ws: { workspace: workspaceObj }) => ws.workspace
-        ),
-      ].filter((ws) => ws !== null);
     },
     setProfilePicture: (
       state: userSliceTypes,
@@ -112,9 +93,13 @@ export const userSlice = createSlice({
     },
     setWorkspaces: (
       state: userSliceTypes,
-      action: { payload: Array<workspaceObj> }
+      action: {
+        payload: {
+          allWorkspaces: Array<workspaceObj>;
+        };
+      }
     ) => {
-      // state.allWorkspaces = action.payload;
+      state.allWorkspaces = action.payload.allWorkspaces;
     },
     addCreatedWorkspace: (
       state: userSliceTypes,
@@ -126,6 +111,7 @@ export const userSlice = createSlice({
       }
     ) => {
       const { prevWorkspacesData, createdWorkspace } = action.payload;
+
       state.allWorkspaces = [...prevWorkspacesData, createdWorkspace];
     },
     updateWorkspaceName: (

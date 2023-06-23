@@ -72,6 +72,7 @@ export const BoardMenu = ({ open, setOpen, boardId }: MenuProps) => {
       toast.success('نام ستون مورد نظر با موفقیت تغییر یافت');
       setLoading(false);
       setEditingName(false);
+      setOpen(false);
     } catch (error) {
       console.log(error);
       toast.error('ساخت پروژه با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');

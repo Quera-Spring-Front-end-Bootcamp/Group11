@@ -88,4 +88,12 @@ export const profileSideBarNavItems = [
   },
 ];
 
-export const BASE_URL = 'http://localhost:3000/api';
+export const persianDays = [
+  'شنبه',
+  'یکشنبه',
+  'دوشنبه',
+  'سه‌شنبه',
+  'چهار‌شنبه',
+  'پنج‌شنبه',
+  'جمعه',
+];

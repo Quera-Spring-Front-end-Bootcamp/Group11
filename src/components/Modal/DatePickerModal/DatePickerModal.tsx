@@ -1,169 +1,355 @@
-import { Flex, Modal as MantineModal } from '@mantine/core';
+import { Text, Flex, Modal as MantineModal } from '@mantine/core';
 import { ModalProps as MantineModalProps } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import pd from 'persian-date';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import pda from '@alireza-ab/persian-date';
 import { Button } from '../..';
 import { usePersianNumberTransform } from '../../../hook';
+import DayItem from './DayItem';
+import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
+import { persianDays } from '../../../constants';
+import { BsCalendar4Event } from 'react-icons/bs';
 
-interface ModalProps extends MantineModalProps {}
+// type SideDatesTypes = {
+//   today: { instance: any; text: string; value: string };
+//   tomorrow: { instance: any; text: string; value: string };
+//   thisWeekend: { instance: any; text: string; value: string };
+//   nextWeek: { instance: any; text: string; value: string };
+//   nextWeekend: { instance: any; text: string; value: string };
+//   nextTwoWeeks: { instance: any; text: string; value: string };
+//   nextFourWeeks: { instance: any; text: string; value: string };
+// };
+type SideDatesTypes = Record<
+  string,
+  { instance: pda; text: string; value: string }
+>;
 
-const DatePickerModal = ({ ...otherProps }: ModalProps) => {
-  const toPersion = usePersianNumberTransform();
-  const [month, setMonth] = useState<number | undefined>();
-  const [day, setDay] = useState<number | undefined>();
-  const [year, setYear] = useState<number | undefined>();
-  const [startOfMonth, setStartOfMonth] = useState('');
+type TodayTypes = {
+  instance: any;
+  arrayDate: Array<number>;
+  sideDates: SideDatesTypes;
+};
 
-  const dateObj = new pd([year, month, day]);
-  const persianMonths = [
-    ['فروردین', 1],
-    ['اردیبهشت', 2],
-    ['خرداد', 3],
-    ['تیر', 4],
-    ['مرداد', 5],
-    ['شهریور', 6],
-    ['مهر', 7],
-    ['آبان', 8],
-    ['آذر', 9],
-    ['دی', 10],
-    ['بهمن', 11],
-    ['اسفند', 12],
-  ];
+type SideDateTextProps = {
+  text: string;
+  value: string;
+  dateInstance: pda;
+  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+};
+const SideDateText = ({
+  text,
+  value,
+  dateInstance,
+  setSelectedDate,
+}: SideDateTextProps) => {
+  const toPersian = usePersianNumberTransform();
+  return (
+    <Flex
+      onClick={() => {
+        setSelectedDate(
+          toPersian(dateInstance.toString('jddd jD jMMMM jYYYY'))
+        );
 
-  //prettier-ignore
-  const persianDays = {
-    شنبه: 1,
-    یکشنبه: 2,
-    دوشنبه: 3,
-    'سه شنبه': 4,
-    'چهار شنبه': 5,
-    'پنج‌شنبه': 6,
-    جمعه: 7,
-  };
+        const dateTS = new Date(dateInstance.valueOf()).toISOString();
+        console.log(dateTS);
+      }}
+      dir='rtl'
+      className='w-full justify-between items-center cursor-pointer hover:bg-slate-300/20 rounded-md p-2'>
+      <div className='text-[20px] font-semibold'>{text}</div>
+      <div className='text-[16px] text-[#CCCFD5] font-semibold'>
+        {toPersian(value)}
+      </div>
+    </Flex>
+  );
+};
 
-  // const today = new pd([1402, 3, 9]).toLocale('fa').format('M,dddd');
-  // console.log(today);
+const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
+  const toPersian = usePersianNumberTransform();
+  const [month, setMonth] = useState<number>(1);
+  const [day, setDay] = useState<number>(1);
+  const [year, setYear] = useState<number>(1400);
+  const [startOfMonth, setStartOfMonth] = useState<number>(1);
+  const [selectedDate, setSelectedDate] = useState('');
 
-  useEffect(() => {
-    const date = new pd();
-    setMonth(+date.toLocale('en').format('M'));
-    setDay(+date.toLocale('en').format('D'));
-    setYear(+date.toLocale('en').format('YYYY'));
-    setStartOfMonth(date.startOf('month').toLocale('fa').format('dddd'));
+  const todayObj: TodayTypes = useMemo(() => {
+    const today = new pda();
+    const tomorrow = new pda().addDay(1);
+    const thisWeekend = new pda().endOf('week');
+    const nextWeek = new pda().addWeek(1).startOf('week');
+    const nextWeekend = new pda().addWeek(1).endOf('week');
+    const nextTwoWeeks = new pda().addWeek(2).startOf('week');
+    const nextFourWeeks = new pda().addWeek(4).startOf('week');
+
+    const dateObj = {
+      instance: today,
+      arrayDate: today
+        .toString('jYYYY jM jD')
+        .split(' ')
+        .map((dt: string) => +dt),
+      sideDates: {
+        today: {
+          instance: today,
+          value: today.toString('jddd'),
+          text: 'امروز',
+        },
+        tomorrow: {
+          instance: tomorrow,
+          value: tomorrow.toString('jddd'),
+          text: 'فردا',
+        },
+        thisWeekend: {
+          instance: thisWeekend,
+          value: thisWeekend.toString('jD jMMM'),
+          text: 'این آخر هفته',
+        },
+        nextWeek: {
+          instance: nextWeek,
+          value: nextWeek.toString('jD jMMM'),
+          text: 'هفته‌ی آینده',
+        },
+        nextWeekend: {
+          instance: nextWeekend,
+          value: nextWeekend.toString('jD jMMM'),
+          text: 'آخرهفته‌ی آینده',
+        },
+        nextTwoWeeks: {
+          instance: nextTwoWeeks,
+          value: nextTwoWeeks.toString('jD jMMM'),
+          text: 'دو هفته دیگر',
+        },
+        nextFourWeeks: {
+          instance: nextFourWeeks,
+          value: nextFourWeeks.toString('jD jMMM'),
+          text: 'چهار هفته دیگر',
+        },
+      },
+    };
+
+    return dateObj;
   }, []);
 
-  console.log(dateObj.format());
+  const dayCount = useMemo(() => {
+    return month < 7
+      ? 31
+      : month === 12 && pda.isLeapYear('jalali', year)
+      ? 30
+      : month === 12
+      ? 29
+      : 30;
+  }, [month, year]);
 
-  // const startDay = persianDays.find(day => )
+  const onNextMonthClickHandler = useCallback(() => {
+    const next = month + 1;
+    if (next === 13) {
+      setDay(1);
+      setMonth(1);
+      setYear(year + 1);
+      const date = new pda([year + 1, 1, 1], 'jalali');
+      setStartOfMonth(+date.startOf('month').toString('jd') + 1);
+      return;
+    }
 
-  // console.log('start', startOfMonth);
+    setMonth(next);
+    const dayCalculated =
+      day === 31 || day === 30
+        ? next === 12
+          ? pda.isLeapYear('jalali', year)
+            ? 30
+            : 29
+          : next >= 7
+          ? day
+          : day
+        : day;
 
-  const dayCount = month < 7 ? 31 : month === 12 ? 29 : 30;
-  const startDayOfMonth = persianDays[startOfMonth];
+    const date = new pda([year, next, dayCalculated], 'jalali');
+    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
+    setDay(dayCalculated);
+  }, [month, year]);
 
-  // console.log(startOfMonth);
+  const onPreviousMonthClickHandler = useCallback(() => {
+    const prev = month - 1;
+    if (prev === 0) {
+      setDay(1);
+      setMonth(12);
+      setYear(year - 1);
+      const date = new pda([year - 1, 12, 1], 'jalali');
+      setStartOfMonth(+date.startOf('month').toString('jd') + 1);
+      return;
+    }
+    setMonth(prev);
+    const dayCalculated = day === 30 ? (prev <= 6 ? 31 : 30) : day;
+    const date = new pda([year, month - 1, dayCalculated], 'jalali');
+    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
+    setDay(dayCalculated);
+  }, [month, year]);
 
-  // console.log(persianDays[startOfMonth]);
+  const onTodayClickHandler = useCallback(() => {
+    setYear(todayObj.arrayDate[0]);
+    setMonth(todayObj.arrayDate[1]);
+    setDay(todayObj.arrayDate[2]);
+    setStartOfMonth(+todayObj.instance.startOf('month').toString('jd') + 1);
+  }, [todayObj]);
 
-  // console.log(month);
+  useEffect(() => {
+    const date = new pda();
+    setDay(+date.toString('jD'));
+    setMonth(+date.toString('jM'));
+    setYear(+date.toString('jYYYY'));
+    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
+  }, []);
 
   return (
-    <>
-      <MantineModal
-        radius='md'
-        size={'936px'}
-        styles={() => ({
-          root: {
-            position: 'relative',
-          },
-          // content: { width: '470px', padding: '0px 16px 12px 16px' },
-          body: {
-            padding: 0,
-            margin: 0,
-          },
-          title: {
-            textAlign: 'center',
-            width: '100%',
-            fontSize: '24px',
-            fontWeight: 'bold',
-          },
-          header: {
-            // padding: '24px 0',
-          },
-        })}
-        centered
-        withCloseButton={false}
-        {...otherProps}>
-        <MantineModal.Body>
-          <div className='w-full h-[100px]'>
-            ددلاین
-            <Button
-              onClick={() => {
-                const next = month + 1;
-                console.log(next);
-                setMonth(next);
-                console.log(day);
-                console.log(day === 31 ? (next >= 7 ? 30 : day) : day);
-                const date = new pd([
-                  year,
-                  next,
-                  day === 31 ? (next >= 7 ? 30 : day) : day,
-                ]);
-                setStartOfMonth(
-                  date.startOf('month').toLocale('fa').format('dddd')
-                );
-                setDay(day === 31 ? (next >= 7 ? 30 : day) : day);
-              }}>
-              بعد
-            </Button>
-            <Button
-              onClick={() => {
-                setMonth(month - 1);
-                const date = new pd([year, month - 1, day]);
-                setStartOfMonth(
-                  date.startOf('month').toLocale('fa').format('dddd')
-                );
-              }}>
-              قبل
-            </Button>
-            {month && persianMonths[month - 1][0]}
-          </div>
-          <Flex className='w-full h-[490px]'>
+    <MantineModal
+      radius='md'
+      size={'936px'}
+      styles={() => ({
+        root: {
+          position: 'relative',
+        },
+        body: {
+          padding: 0,
+          margin: 0,
+        },
+        title: {
+          textAlign: 'center',
+          width: '100%',
+          fontSize: '24px',
+          fontWeight: 'bold',
+        },
+        header: {},
+      })}
+      centered
+      withCloseButton={false}
+      {...otherProps}>
+      <MantineModal.Body>
+        <Flex
+          dir='rtl'
+          className='w-full h-[90px] items-center px-8 gap-3 text-[24px]'>
+          <BsCalendar4Event color={'#BDBDBD'} />
+          <Text>زمان پایان:</Text>
+          <Text>{selectedDate}</Text>
+        </Flex>
+
+        <Flex className='w-full h-[490px] border-[#E4E4E4] border-t-[3px]'>
+          <Flex
+            dir='rtl'
+            direction='column'
+            className='w-2/3'>
             <Flex
-              dir='rtl'
-              className='w-2/3'>
-              <Flex className='grid w-full grid-cols-7 grid-rows-7 '>
-                {Object.keys(persianDays).map((day, i) => (
-                  <div className='self-center place-self-center text-[16px] text-[#CCCFD5]'>
-                    {day}
-                  </div>
-                ))}
-                {Array(
-                  dayCount + startDayOfMonth - 1
-                    ? dayCount + startDayOfMonth - 1
-                    : 0
-                )
-                  .fill('')
-                  .map((day, i) => {
-                    if (i < persianDays[startOfMonth] - 1) return <div></div>;
-
-                    const dayPersian = toPersion(
-                      `${i - persianDays[startOfMonth] + 2}`
-                    );
-
-                    return (
-                      <div className='self-center place-self-center font-semibold text-[20px]'>
-                        {dayPersian}
-                      </div>
-                    );
-                  })}
+              gap='28px'
+              className='text-[20px] py-5 items-center'>
+              <Flex
+                justify='space-between'
+                className='w-32'>
+                <Text className='w-full text-center'>
+                  {new pda([year, month, day], 'jalali').toString('jMMM')}
+                </Text>
+                <Text>{year && toPersian(year)}</Text>
               </Flex>
+              <Flex gap='8px'>
+                <Button
+                  onClick={onNextMonthClickHandler}
+                  c='#000'
+                  p={0}
+                  h='15px'
+                  w='15px'
+                  styles={{
+                    root: {
+                      backgroundColor: 'transparent',
+
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    },
+                  }}
+                  icon={GrFormNext}
+                />
+                <Button
+                  onClick={onPreviousMonthClickHandler}
+                  c='#000'
+                  p={0}
+                  h='15px'
+                  w='15px'
+                  styles={{
+                    root: {
+                      backgroundColor: 'transparent',
+
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    },
+                  }}
+                  icon={GrFormPrevious}
+                />
+              </Flex>
+              <Button
+                onClick={onTodayClickHandler}
+                c='#000'
+                px={15}
+                py={4}
+                h={'auto'}
+                className='transition'
+                styles={{
+                  root: {
+                    backgroundColor: '#00000010',
+
+                    '&:hover': {
+                      backgroundColor: '#00000020',
+                    },
+                  },
+                }}>
+                امروز
+              </Button>
             </Flex>
-            <div className='w-1/3 bg-[#F7F8F9]'></div>
+            <Flex className='grid h-full w-full grid-cols-7 grid-rows-7 '>
+              {persianDays.map((day) => (
+                <div
+                  key={day}
+                  className='self-center place-self-center text-[16px] text-[#bec0c4]'>
+                  {day}
+                </div>
+              ))}
+              {Array(
+                dayCount + startOfMonth - 1 //if NaN array count is 0
+                  ? dayCount +
+                      startOfMonth - //add extra empty cells if month starts in the middle of the week
+                      1
+                  : 0
+              )
+                .fill('')
+                .map((_, i) => (
+                  <DayItem
+                    key={i}
+                    today={todayObj.arrayDate}
+                    isEmpty={i < startOfMonth - 1} //if less than start of week index then cell is empty
+                    year={year}
+                    month={month}
+                    day={i - startOfMonth + 2} //month day number [1:31]
+                    setSelectedDate={setSelectedDate}
+                  />
+                ))}
+            </Flex>
+            <div className='w-full flex justify-end pb-5 pl-5'>
+              <Button w='125px'>بستن</Button>
+            </div>
           </Flex>
-        </MantineModal.Body>
-      </MantineModal>
-    </>
+          <Flex
+            direction='column'
+            className='w-1/3 h-full px-5 pb-16 pt-6 justify-between bg-[#F7F8F9]'>
+            {Object.keys(todayObj.sideDates).map((item) => (
+              <SideDateText
+                key={item}
+                setSelectedDate={setSelectedDate}
+                dateInstance={
+                  todayObj.sideDates[item as keyof SideDatesTypes].instance
+                }
+                text={todayObj.sideDates[item as keyof SideDatesTypes].text}
+                value={todayObj.sideDates[item as keyof SideDatesTypes].value}
+              />
+            ))}
+          </Flex>
+        </Flex>
+      </MantineModal.Body>
+    </MantineModal>
   );
 };
 

@@ -2,12 +2,13 @@ import { Modal as MantineModal } from '@mantine/core';
 import { ModalProps as MantineModalProps } from '@mantine/core';
 import { MdOutlineKeyboardBackspace } from 'react-icons/md';
 import { Button } from '../..';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 
 interface ModalProps extends MantineModalProps {
   body?: React.ReactElement;
   footer?: React.ReactElement;
   actionLabel?: string;
-  action?: () => void;
+  action?: () => void | SubmitHandler<FieldValues>;
   back?: boolean;
   backAction?: () => void;
   loading?: boolean;

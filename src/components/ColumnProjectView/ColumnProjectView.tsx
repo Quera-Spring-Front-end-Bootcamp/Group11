@@ -44,7 +44,6 @@ import {
   changeTaskBoardApi,
   // changeTaskPositionApi,
 } from '../../services/taskApi';
-import Board from '../../pages/Board';
 
 export default {
   title: 'Presets/Sortable/Multiple Containers',

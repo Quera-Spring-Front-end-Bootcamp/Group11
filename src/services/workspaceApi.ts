@@ -8,16 +8,17 @@ const getWorkspacesByIdApi = async (wsId: string) => {
   return apiCall.get(`/workspace/${wsId}`);
 };
 
-const createWorkSpaceApi = async (body: { name: string }) => {
+const createWorkSpaceApi = async (body: { name: string; color: string }) => {
   return apiCall.post(`/workspace/create`, body);
 };
 
 const updateWorkspaceApi = async (
   id: string,
   body: {
-    name: string;
-    usernameOrId: string;
-    image: string;
+    name?: string;
+    usernameOrId?: string;
+    image?: string;
+    color?: string;
   }
 ) => {
   return apiCall.patch(`/workspace/${id}`, body);
