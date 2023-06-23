@@ -125,6 +125,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const onCancelDeleteHandler = (e: MouseEvent) => {
     e.stopPropagation();
     setDeleting(false);
+    setValue('name', '');
   };
 
   return (
@@ -138,7 +139,8 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
         styles={{
           dropdown: {
             padding: '14px !important',
-            maxWidth: '240px',
+            maxWidth: '220px',
+            minWidth: '220px',
           },
           item: {
             padding: 4,
@@ -164,35 +166,38 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
             icon={!editingName && <FiEdit size={22} />}>
             {editingName ? (
               <Flex
+                // maw={'168.5px'}
+                mah={'22px'}
                 gap='2px'
-                direction={'row'}>
+                direction={'row'}
+                align={'center'}
+                pos='relative'>
+                <div className='absolute -right-1 w-1/6 h-[30px]'>
+                  <ConfirmationButton
+                    onClick={(e: MouseEvent) => {
+                      e.stopPropagation();
+                      setEditingName(false);
+                    }}
+                    bg='transparent'
+                    fullHeight
+                    icon={RxCross2}
+                  />
+                </div>
                 <TextInput
                   id='name'
                   register={register}
                   errors={errors}
                   required
+                  sx={{ paddingRight: '25px' }}
                 />
-                <Button
-                  onClick={handleSubmit(onSubmitNewName)}
-                  p={0}
-                  loading={loading}
-                  icon={AiOutlineCheck}
-                />
-                <Button
-                  onClick={(e: MouseEvent) => {
-                    e.stopPropagation();
-                    setEditingName(false);
-                  }}
-                  p={0}
-                  bg='red'
-                  sx={{
-                    '&:hover': {
-                      backgroundColor: 'red',
-                    },
-                  }}
-                  // h='100%'
-                  icon={RxCross2}
-                />
+                <div className='w-1/4 h-[25px]'>
+                  <ConfirmationButton
+                    onClick={handleSubmit(onSubmitNewName) as any}
+                    bg='green'
+                    fullHeight
+                    icon={AiOutlineCheck}
+                  />
+                </div>
               </Flex>
             ) : (
               ' ویرایش نام ورک‌اسپیس'

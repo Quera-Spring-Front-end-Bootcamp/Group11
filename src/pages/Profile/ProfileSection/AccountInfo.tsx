@@ -78,7 +78,8 @@ const AccountInfo = () => {
             />
             <Button
               w={'110px'}
-              className='absolute left-0 top-[51px]'>
+              className='absolute h-[36px] bottom-0 left-0'
+              sx={{ borderRadius: '6px 0 0 6px' }}>
               احراز هویت
             </Button>
           </div>

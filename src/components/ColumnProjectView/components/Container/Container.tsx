@@ -82,11 +82,13 @@ export const Container = forwardRef<HTMLDivElement, Props>(
         )}
         onClick={onClick}
         tabIndex={onClick ? 0 : undefined}>
-        <BoardMenu
-          open={open}
-          setOpen={setOpen}
-          boardId={boardId}
-        />
+        {open && (
+          <BoardMenu
+            open={open}
+            setOpen={setOpen}
+            boardId={boardId}
+          />
+        )}
         {label ? (
           <div className={styles.Header}>
             {label}

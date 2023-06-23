@@ -4,6 +4,7 @@ import { Board, Task } from '../../../util/types';
 
 export type BoardSliceTypes = {
   loading: boolean;
+  selectedWorkspaceId: string;
   selectedProjectName: string;
   selectedProjectId: string;
   selectedProjectBoardData: Board[];
@@ -13,6 +14,7 @@ export const BoardSlice = createSlice({
   name: 'board',
   initialState: {
     loading: true,
+    selectedWorkspaceId: '',
     selectedProjectName: '',
     selectedProjectId: '',
     selectedProjectBoardData: [],
@@ -33,13 +35,17 @@ export const BoardSlice = createSlice({
     },
     setSelectedProjectData: (
       state: BoardSliceTypes,
-      action: { payload: { name: string; id: string; boardData: Board[] } }
+      action: {
+        payload: { wsId: string; name: string; id: string; boardData: Board[] };
+      }
     ) => {
-      state.selectedProjectBoardData = action.payload.boardData.sort(
+      const { wsId, name, id, boardData } = action.payload;
+      state.selectedWorkspaceId = wsId;
+      state.selectedProjectBoardData = boardData.sort(
         (a: Board, b: Board) => a.position - b.position
       );
-      state.selectedProjectId = action.payload.id;
-      state.selectedProjectName = action.payload.name;
+      state.selectedProjectId = id;
+      state.selectedProjectName = name;
     },
     updateBoardPosition: (
       state: BoardSliceTypes,
