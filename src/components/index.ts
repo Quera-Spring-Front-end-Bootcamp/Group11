@@ -50,9 +50,7 @@ export {
   ProjectListView,
   ////
   WorkSpaceMenu,
-  ConfirmationButton,
   NewTaskModal,
   EditTaskModal,
-  DeleteTaskModal
-
+  DeleteTaskModal,
 };
