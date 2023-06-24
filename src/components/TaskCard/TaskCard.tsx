@@ -56,11 +56,14 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
 
   if (!taskObject) return;
 
+  const deadLineArray = new Date(taskObject?.deadline as string)
+    .toLocaleDateString('en-GB')
+    .split('/');
+
   const date = new pda();
   const datePersian = date
-    .fromJalali(new Date(taskObject?.deadline as string))
+    .fromGregorian([deadLineArray[2], deadLineArray[1], deadLineArray[0]])
     .toString('jd jMMMM');
-  console.log(datePersian);
   return (
     <Card
       onMouseEnter={() => {
