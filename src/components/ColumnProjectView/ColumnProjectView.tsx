@@ -178,8 +178,9 @@ export function MultipleContainers({
   const [items, setItems] = useState<Record<string, Task[]>>({});
 
   //force reRender component and set necessary states if:
-  //    1- data length (boards count) changes
   //    2- the name of boards change
+  //    3- length of tasks array in each board changes (Task Count => Delete, Add)
+  //    1- data length (boards count) changes
   useEffect(() => {
     setContainers(() => data.map((board: Board) => [board.name, board._id]));
     setItems(() => {
@@ -189,7 +190,11 @@ export function MultipleContainers({
       });
       return items;
     });
-  }, [JSON.stringify(data.map((board: Board) => board.name)), data.length]);
+  }, [
+    JSON.stringify(data.map((board: Board) => board.name)),
+    JSON.stringify(data.map((board: Board) => board.tasks.length)),
+    data.length,
+  ]);
 
   const [activeId, setActiveId] = useState<null | string>(null);
   const lastOverId = useRef<null | string>(null);
@@ -629,7 +634,12 @@ interface SortableItemProps {
   getIndex(id: string): number;
   renderItem(): React.ReactElement;
   wrapperStyle({ index }: { index: number }): React.CSSProperties;
-  taskDetail: { projectName: string; taskTitle: string; deadLine: string , taskId: string};
+  taskDetail: {
+    projectName: string;
+    taskTitle: string;
+    deadLine: string;
+    taskId: string;
+  };
 }
 
 function SortableItem({

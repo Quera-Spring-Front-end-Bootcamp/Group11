@@ -55,6 +55,7 @@ export interface Task {
   name: string;
   position: NumberInputStylesParams;
   taskAssigns: User[];
+  deadline: string;
   _id: string;
 }
 

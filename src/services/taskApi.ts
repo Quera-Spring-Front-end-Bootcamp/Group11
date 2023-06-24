@@ -3,11 +3,12 @@ type createTaskBody = {
   name: string;
   description: string;
   boardId: string;
+  deadline: string;
 };
 type updateTaskInfoBody = {
-  name: string;
-  description: string;
-  deadline: string;
+  name?: string;
+  description?: string;
+  deadline?: string;
 };
 
 const changeTaskBoardApi = async (taskId: string, boardId: string) => {
@@ -25,10 +26,10 @@ const deleteTaskApi = async (taskId: string) => {
 const updateTaskInfoApi = async (taskId: string, body: updateTaskInfoBody) => {
   return apiCall.put(`task/${taskId}`, body);
 };
-const assigneTaskApi = async (taskId: string, usernameOrId: string) => {
+const assignTaskApi = async (taskId: string, usernameOrId: string) => {
   return apiCall.put(`task/${taskId}/assign/${usernameOrId}`);
 };
-const unassigneTaskApi = async (taskId: string, usernameOrId: string) => {
+const unassignTaskApi = async (taskId: string, usernameOrId: string) => {
   return apiCall.delete(`task/${taskId}/assign/${usernameOrId}`);
 };
 export {
@@ -37,6 +38,6 @@ export {
   createTaskApi,
   deleteTaskApi,
   updateTaskInfoApi,
-  assigneTaskApi,
-  unassigneTaskApi,
+  assignTaskApi,
+  unassignTaskApi,
 };

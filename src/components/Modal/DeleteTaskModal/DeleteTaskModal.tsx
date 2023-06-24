@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Button as MantineBtn, Modal } from '@mantine/core';
-import { DeleteTaskModalSlice } from '../../../redux/slices';
+import { BoardSlice, DeleteTaskModalSlice } from '../../../redux/slices';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { storeStateTypes } from '../../../util/types';
 import { deleteTaskApi } from '../../../services/taskApi';
+import Board from '../../../pages/Board';
 
 const DeleteTaskModal = () => {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,9 @@ const DeleteTaskModal = () => {
   const taskId = useSelector(
     (state: storeStateTypes) => state.DeleteTaskModal.taskId
   );
+  const prevBoardData = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectBoardData
+  );
 
   const handleClose = () => {
     dispatch(DeleteTaskModalSlice.actions.onClose());
@@ -25,11 +29,14 @@ const DeleteTaskModal = () => {
     try {
       await deleteTaskApi(taskId);
       toast.success('تسک با موفقیت حذف شد');
+      dispatch(
+        BoardSlice.actions.removeTaskFromBoard({ prevBoardData, taskId })
+      );
       setLoading(false);
       handleClose();
     } catch (error) {
       console.log(error);
-      toast.error('حذف تسک با مشکل مواجه شد');
+      toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید.');
       handleClose();
     }
   };

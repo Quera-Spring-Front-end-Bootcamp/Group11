@@ -8,16 +8,10 @@ import DayItem from './DayItem';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 import { persianDays } from '../../../constants';
 import { BsCalendar4Event } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { storeStateTypes } from '../../../util/types';
+import { NewTaskModalSlice } from '../../../redux/slices';
 
-// type SideDatesTypes = {
-//   today: { instance: any; text: string; value: string };
-//   tomorrow: { instance: any; text: string; value: string };
-//   thisWeekend: { instance: any; text: string; value: string };
-//   nextWeek: { instance: any; text: string; value: string };
-//   nextWeekend: { instance: any; text: string; value: string };
-//   nextTwoWeeks: { instance: any; text: string; value: string };
-//   nextFourWeeks: { instance: any; text: string; value: string };
-// };
 type SideDatesTypes = Record<
   string,
   { instance: pda; text: string; value: string }
@@ -41,6 +35,7 @@ const SideDateText = ({
   dateInstance,
   setSelectedDate,
 }: SideDateTextProps) => {
+  const disptach = useDispatch();
   const toPersian = usePersianNumberTransform();
   return (
     <Flex
@@ -49,8 +44,8 @@ const SideDateText = ({
           toPersian(dateInstance.toString('jddd jD jMMMM jYYYY'))
         );
 
-        const dateTS = new Date(dateInstance.valueOf()).toISOString();
-        console.log(dateTS);
+        const dateTS = dateInstance.valueOf();
+        disptach(NewTaskModalSlice.actions.setDeadline({ deadline: dateTS }));
       }}
       dir='rtl'
       className='w-full justify-between items-center cursor-pointer hover:bg-slate-300/20 rounded-md p-2'>
@@ -69,6 +64,10 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
   const [year, setYear] = useState<number>(1400);
   const [startOfMonth, setStartOfMonth] = useState<number>(1);
   const [selectedDate, setSelectedDate] = useState('');
+
+  const deadline = useSelector(
+    (state: storeStateTypes) => state.NewTaskModal.deadline
+  );
 
   const todayObj: TodayTypes = useMemo(() => {
     const today = new pda();
@@ -186,7 +185,11 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
     setYear(todayObj.arrayDate[0]);
     setMonth(todayObj.arrayDate[1]);
     setDay(todayObj.arrayDate[2]);
-    setStartOfMonth(+todayObj.instance.startOf('month').toString('jd') + 1);
+    setStartOfMonth(
+      +new pda([todayObj.arrayDate[0], todayObj.arrayDate[1]], 'jalali')
+        .startOf('month')
+        .toString('jd') + 1
+    );
   }, [todayObj]);
 
   useEffect(() => {
@@ -203,7 +206,8 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
       size={'936px'}
       styles={() => ({
         root: {
-          position: 'relative',
+          position: 'absolute',
+          zIndex: 999,
         },
         body: {
           padding: 0,
@@ -226,7 +230,7 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
           className='w-full h-[90px] items-center px-8 gap-3 text-[24px]'>
           <BsCalendar4Event color={'#BDBDBD'} />
           <Text>زمان پایان:</Text>
-          <Text>{selectedDate}</Text>
+          <Text>{deadline ? selectedDate : ''}</Text>
         </Flex>
 
         <Flex className='w-full h-[490px] border-[#E4E4E4] border-t-[3px]'>

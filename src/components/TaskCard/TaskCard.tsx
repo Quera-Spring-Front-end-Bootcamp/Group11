@@ -1,12 +1,16 @@
-import { Avatar } from '..';
-import { Card, Tooltip } from '@mantine/core';
+import { Card, Flex, Tooltip } from '@mantine/core';
+import { useDispatch, useSelector } from 'react-redux';
+import pda from '@alireza-ab/persian-date';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
 import { BsCheckSquare } from 'react-icons/bs';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { useState } from 'react';
 import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
-import { useDispatch } from 'react-redux';
+import { storeStateTypes } from '../../util/types';
+import { Avatar } from '..';
+import { IoReturnDownBackSharp } from 'react-icons/io5';
+import { usePersianNumberTransform } from '../../hook';
 
 interface TagProp {
   children: string;
@@ -25,20 +29,21 @@ const Tag = ({ children, tagColor }: TagProp) => {
 
 interface taskCardProps {
   projectName?: string;
-  taskTitle?: string;
   deadLine?: string;
   taskId: string;
 }
 
-const TaskCard = ({
-  projectName,
-  taskTitle,
-  deadLine,
-  taskId,
-}: taskCardProps) => {
+const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isCheckList, setIsCheckList] = useState(true);
   const dispatch = useDispatch();
+  const toPersian = usePersianNumberTransform();
+
+  const taskObject = useSelector((state: storeStateTypes) =>
+    state.board.selectedProjectBoardData
+      .find((board) => board.tasks.some((task) => task._id === taskId))
+      ?.tasks.find((task) => task._id === taskId)
+  );
 
   const onClick = () => {
     dispatch(EditTaskModalSlice.actions.onOpen());
@@ -48,6 +53,14 @@ const TaskCard = ({
     dispatch(DeleteTaskModalSlice.actions.onOpen());
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
+
+  if (!taskObject) return;
+
+  const date = new pda();
+  const datePersian = date
+    .fromJalali(new Date(taskObject?.deadline as string))
+    .toString('jd jMMMM');
+  console.log(datePersian);
   return (
     <Card
       onMouseEnter={() => {
@@ -76,7 +89,7 @@ const TaskCard = ({
       </div>
       <div className='flex flex-row items-center mt-[9px]'>
         <span className='text-[12px] font-medium text-[#0E0E0E] leading-[18px] whitespace-break-spaces'>
-          {taskTitle}
+          {taskObject?.name}
         </span>
         <VscChecklist
           className={
@@ -84,16 +97,18 @@ const TaskCard = ({
           }
         />
       </div>
-      <div className='flex flex-row items-center mt-[18.5px]'>
+      <Flex
+        dir='rtl'
+        className='items-center mt-[18.5px]'>
         <FiFlag className='text-[#FB0606]' />
         <span className='text-[10px] text-[#343434] font-medium mr-[5px]'>
-          {deadLine}
+          {toPersian(datePersian)}
         </span>
-        <div className='flex flex-row items-center  text-[#BDC0C6] mr-[8px] '>
+        {/* <div className='flex flex-row items-center justify-center text-[#BDC0C6] mr-[8px] '>
           <BsCheckSquare className='text-[12px]' />
           <span className='text-[10px] font-medium mr-[4px]'>۱۲ / ۲</span>
-        </div>
-      </div>
+        </div> */}
+      </Flex>
       <div className='flex flex-row items-center mt-[20px]'>
         <Tag tagColor={'#BFFDE3'}>پروژه</Tag>
         <Tag tagColor={'#EEDFF7'}>درس</Tag>
