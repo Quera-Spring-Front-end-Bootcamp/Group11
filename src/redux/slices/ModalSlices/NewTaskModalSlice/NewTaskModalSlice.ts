@@ -6,6 +6,7 @@ export interface NewTaskModalSliceTypes {
   priority: string;
   loading: boolean;
   boardId: string;
+  deadline: number;
 }
 
 export const NewTaskModalSlice = createSlice({
@@ -16,6 +17,7 @@ export const NewTaskModalSlice = createSlice({
     priority: '',
     loading: true,
     boardId: '',
+    deadline: 0,
   },
   reducers: {
     onOpen: (state: NewTaskModalSliceTypes) => {
@@ -31,6 +33,14 @@ export const NewTaskModalSlice = createSlice({
     ) => {
       const { boardId } = action.payload;
       state.boardId = boardId;
+    },
+
+    setDeadline: (
+      state: NewTaskModalSliceTypes,
+      action: { payload: { deadline: any } }
+    ) => {
+      const { deadline } = action.payload;
+      state.deadline = deadline;
     },
 
     // setTaskInfo: (

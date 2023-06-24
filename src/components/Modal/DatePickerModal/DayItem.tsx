@@ -1,5 +1,7 @@
 import pda from '@alireza-ab/persian-date';
 import { usePersianNumberTransform } from '../../../hook';
+import { useDispatch } from 'react-redux';
+import { NewTaskModalSlice } from '../../../redux/slices';
 
 type DayItemProps = {
   isEmpty?: boolean;
@@ -17,6 +19,7 @@ const DayItem = ({
   today,
   setSelectedDate,
 }: DayItemProps) => {
+  const dispatch = useDispatch();
   const toPersian = usePersianNumberTransform();
   const isToday = year === today[0] && month === today[1] && day === today[2];
   const dayNumberPersian = toPersian(day);
@@ -31,8 +34,8 @@ const DayItem = ({
           setSelectedDate(
             toPersian(dateOfItemInstance.toString('jddd jD jMMMM jYYYY'))
           );
-          const dateTS = new Date(dateOfItemInstance.valueOf()).toISOString();
-          console.log(dateTS);
+          const dateTS = dateOfItemInstance.valueOf();
+          dispatch(NewTaskModalSlice.actions.setDeadline({ deadline: dateTS }));
         }}
         className={`
           cursor-pointer

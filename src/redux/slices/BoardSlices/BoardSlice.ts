@@ -110,6 +110,46 @@ export const BoardSlice = createSlice({
         return board;
       });
     },
+    addCreatedTaskToBoard: (
+      state: BoardSliceTypes,
+      action: {
+        payload: {
+          boardId: string;
+          createdTask: Task;
+          prevBoardData: Array<Board>;
+        };
+      }
+    ) => {
+      const { boardId, createdTask, prevBoardData } = action.payload;
+
+      state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+        if (board._id === boardId) {
+          return {
+            ...board,
+            tasks: [...board.tasks, createdTask],
+          };
+        }
+        return board;
+      });
+    },
+    removeTaskFromBoard: (
+      state: BoardSliceTypes,
+      action: {
+        payload: {
+          taskId: string;
+          prevBoardData: Array<Board>;
+        };
+      }
+    ) => {
+      const { taskId, prevBoardData } = action.payload;
+      state.selectedProjectBoardData = prevBoardData.map((board) => {
+        return {
+          ...board,
+          tasks: board.tasks.filter((task) => task._id !== taskId),
+        };
+      });
+    },
+
     // addCreatedBoard: (
     //   state: BoardSliceTypes,
     //   action: {
