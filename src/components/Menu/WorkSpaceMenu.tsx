@@ -31,6 +31,7 @@ import {
   updateWorkspaceApi,
 } from '../../services/workspaceApi';
 import { storeStateTypes } from '../../util/types';
+import { ChangeColorModal } from '../Modal';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -40,8 +41,10 @@ interface MenuProps extends MantineMenuProps {
 export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   const [editingName, setEditingName] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [changeColorLoading, setChangeColorLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [colorChangeOpen, setColorChangeOpen] = useState(false);
   const currentUserId = useSelector((state: storeStateTypes) => state.user.id);
   const prevWorkspacesData = useSelector(
     (state: storeStateTypes) => state.user.allWorkspaces
@@ -59,12 +62,16 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
     register, //register function will pass to text inputs
     handleSubmit, //submit function
     setValue,
+    watch,
     formState: { errors }, //error for form validation
   } = useForm<FieldValues>({
     defaultValues: {
       name: '',
+      color: '',
     },
   });
+
+  const color = watch('color');
 
   const onSubmitNewName: SubmitHandler<FieldValues> = async (data) => {
     const { name } = data;
@@ -74,9 +81,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
       const {
         data: { data: updatedWorkspace },
       } = await updateWorkspaceApi(wsId, {
-        image: 'url',
         name,
-        usernameOrId: currentUserId,
       });
 
       dispatch(
@@ -91,10 +96,41 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
 
       setValue('name', '');
       setLoading(false);
+      setOpen(false);
     } catch (error) {
       console.log(error);
-      toast.error('ساخت پروژه با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
+      toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید');
       setLoading(false);
+    }
+  };
+
+  const onSubmitNewColor: SubmitHandler<FieldValues> = async (data) => {
+    const { color } = data;
+    setChangeColorLoading(true);
+
+    try {
+      console.log(color);
+      // const {
+      //   data: { data: updatedWorkspace },
+      // } = await updateWorkspaceApi(wsId, {
+      //   color,
+      // });
+
+      // dispatch(
+      //   userSlice.actions.updateWorkspaceColor({
+      //     wsId,
+      //     updatedWorkspace,
+      //     prevWorkspacesData,
+      //   })
+      // );
+
+      toast.success('رنگ ورک‌اسپیس با موفقیت تغییر یافت');
+
+      setChangeColorLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید');
+      setChangeColorLoading(false);
     }
   };
 
@@ -131,8 +167,17 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
   return (
     <ClickOutsideWrapper
       onOutsideClick={() => {
+        if (colorChangeOpen) return;
         setOpen(false);
       }}>
+      <ChangeColorModal
+        open={colorChangeOpen}
+        setOpen={setColorChangeOpen}
+        setColor={setValue}
+        loading={changeColorLoading}
+        submit={handleSubmit(onSubmitNewColor)}
+        selectedWorkSpaceColor={color}
+      />
       <MantineMenu
         shadow='sm'
         opened={open}
@@ -196,6 +241,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
                     bg='green'
                     fullHeight
                     icon={AiOutlineCheck}
+                    loading={loading}
                   />
                 </div>
               </Flex>
@@ -203,7 +249,9 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
               ' ویرایش نام ورک‌اسپیس'
             )}
           </MantineMenu.Item>
-          <MantineMenu.Item icon={<IoColorPaletteOutline size={22} />}>
+          <MantineMenu.Item
+            onClick={() => setColorChangeOpen(true)}
+            icon={<IoColorPaletteOutline size={22} />}>
             ویرایش رنگ
           </MantineMenu.Item>
           <MantineMenu.Item icon={<BsLink45Deg size={22} />}>

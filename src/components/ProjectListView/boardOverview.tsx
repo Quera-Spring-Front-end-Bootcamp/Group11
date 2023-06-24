@@ -10,10 +10,12 @@ import { workSpaceColors } from '../../constants';
 interface BoardOverviewRow {
   name: string;
   tasks: Array<Task>;
-  position: number;
+  color: string;
 }
 
-const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
+const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
+  const toPersianNumeric = usePersianNumberTransform();
+
   return (
     <div className='mr-[30px]'>
       <Flex
@@ -25,14 +27,12 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
           align='center'>
           <AiOutlineDownCircle size={20} />
           <div
-            style={{ backgroundColor: workSpaceColors[position] || '#000' }}
+            style={{ backgroundColor: color || '#000' }}
             className='px-[6px] py-[4px] rounded-4'>
             {name}
           </div>
-          <Text fz='12px'>
-            {usePersianNumberTransform(`${tasks.length} تسک`)}
-          </Text>
-          <Flex></Flex>
+          <Text fz='12px'>{toPersianNumeric(`${tasks.length} تسک`)}</Text>
+          {/* <Flex></Flex> */}
         </Flex>
         <Flex
           w='50%'
@@ -77,9 +77,6 @@ const BoardOverviewRow = ({ name, tasks, position }: BoardOverviewRow) => {
                         userId={user._id}
                         fontSize='12px'
                         label={`${user.username}`}
-                        // style={{
-                        //   transform: `translate(calc(50% - ${i * 50}%), 0)`,
-                        // }}
                         className='rounded-full shadow-md'
                       />
                     );

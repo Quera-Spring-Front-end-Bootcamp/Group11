@@ -25,6 +25,7 @@ export interface workspaceObj {
   projects: Array<Project>;
   user?: User;
   _id: string;
+  color: string;
 }
 export interface User {
   _id: string;
@@ -70,6 +71,7 @@ export interface Board {
   project: string;
   tasks: Task[];
   _id: string;
+  color: string;
 }
 
 ////////////

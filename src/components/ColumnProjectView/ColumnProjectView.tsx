@@ -44,7 +44,6 @@ import {
   changeTaskBoardApi,
   // changeTaskPositionApi,
 } from '../../services/taskApi';
-import Board from '../../pages/Board';
 
 export default {
   title: 'Presets/Sortable/Multiple Containers',
@@ -182,7 +181,6 @@ export function MultipleContainers({
   //    1- data length (boards count) changes
   //    2- the name of boards change
   useEffect(() => {
-    console.log('re render');
     setContainers(() => data.map((board: Board) => [board.name, board._id]));
     setItems(() => {
       const items: Record<string, Task[]> = {};

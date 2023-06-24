@@ -114,6 +114,15 @@ export const profileSideBarNavItems = [
   },
 ];
 
+export const persianDays = [
+  'شنبه',
+  'یکشنبه',
+  'دوشنبه',
+  'سه‌شنبه',
+  'چهار‌شنبه',
+  'پنج‌شنبه',
+  'جمعه',
+];
 export const BASE_URL = 'http://localhost:3000/api';
 
 export const priorityItem = [
@@ -148,4 +157,3 @@ export const priorityItem = [
     icon: BsX,
   },
 ];
-

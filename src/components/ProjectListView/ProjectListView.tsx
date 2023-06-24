@@ -2,7 +2,7 @@ import { Flex, Text } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { AiOutlineDownCircle } from 'react-icons/ai';
 import BoardOverviewRow from './boardOverview';
-import { storeStateTypes } from '../../util/types';
+import { Board, storeStateTypes } from '../../util/types';
 
 const ProjectListView = () => {
   const { data, projectName } = useSelector((state: storeStateTypes) => ({
@@ -24,12 +24,12 @@ const ProjectListView = () => {
         direction={'column'}
         gap={'30px'}
         mt={'36px'}>
-        {data.map((board: any) => (
+        {data.map((board: Board) => (
           <BoardOverviewRow
             key={board._id}
             tasks={board.tasks}
             name={board.name}
-            position={board.position - 1}
+            color={board.color}
           />
         ))}
       </Flex>

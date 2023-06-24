@@ -171,11 +171,14 @@ const CreateWorkSpaceModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.OVERVIEW) return onNext(); //if not on last Step simply go next step
     setLoading(true);
-    const { workSpaceName } = data;
+    const { workSpaceName, selectedWorkSpaceColor } = data;
     try {
       const {
         data: { data: createdWorkspace },
-      } = await createWorkSpaceApi({ name: workSpaceName });
+      } = await createWorkSpaceApi({
+        name: workSpaceName,
+        color: selectedWorkSpaceColor,
+      });
 
       dispatch(
         userSlice.actions.addCreatedWorkspace({

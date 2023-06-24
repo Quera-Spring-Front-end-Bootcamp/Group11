@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@alireza-ab/persian-date": "^2.6.2",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
@@ -28,8 +29,10 @@
     "classnames": "^2.3.2",
     "cloudinary-react": "^1.8.1",
     "fullcalendar": "^6.1.8",
+    "jalali-moment": "^3.3.11",
     "jwt-decode": "^3.1.2",
     "moment-jalaali": "^0.10.0",
+    "persian-date": "^1.1.0",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dnd": "^16.0.1",

@@ -7,12 +7,10 @@ import { CreateWorkSpaceModalSlice } from '../../../redux/slices';
 import { WorkSpaceAccordion } from '..';
 import { storeStateTypes, workspaceObj } from '../../../util/types';
 import { useEffect, useState } from 'react';
-import userSlice from '../../../redux/slices/UserSlice/UserSlice';
 import { toast } from 'react-hot-toast';
 import { Flex, Text } from '@mantine/core';
-import { getAllWorkspacesApi } from '../../../services/workspaceApi';
 
-import { BsSearch, BsFillCaretDownFill } from 'react-icons/bs';
+import { BsSearch, BsFillCaretDownFill, BsClockHistory } from 'react-icons/bs';
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
@@ -22,12 +20,7 @@ const SideBar = () => {
   );
 
   useEffect(() => {
-    const fetchWorkSpaces = async () => {
-      const {
-        data: { data: wsData },
-      } = await getAllWorkspacesApi();
-      dispatch(userSlice.actions.setWorkspaces(wsData));
-    };
+    const fetchWorkSpaces = async () => {};
 
     try {
       fetchWorkSpaces();
@@ -104,6 +97,7 @@ const SideBar = () => {
               members={ws.members}
               projects={ws.projects}
               name={ws.name}
+              color={ws.color}
             />
           ))}
         </Flex>

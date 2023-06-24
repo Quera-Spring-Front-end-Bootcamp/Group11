@@ -3,6 +3,7 @@ import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import {
   CreateProjectModal,
   CreateWorkSpaceModal,
+  DatePickerModal,
   ShareProjectModal,
   ShareWorkspaceModal,
 } from '../components/Modal';
@@ -94,6 +95,10 @@ const Board = () => {
       <ShareProjectModal />
       <ShareWorkspaceModal />
       <CreateProjectModal />
+      <DatePickerModal
+        // opened={true}
+        onClose={() => {}}
+      />
       <div className='flex flex-row h-screen w-screen'>
         <div className='bg-[#FAFBFC] h-[100%] w-[23%] order-1'>
           <BaseSideBar>
