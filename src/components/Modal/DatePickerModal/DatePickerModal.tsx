@@ -1,6 +1,6 @@
 import { Text, Flex, Modal as MantineModal } from '@mantine/core';
 import { ModalProps as MantineModalProps } from '@mantine/core';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import pda from '@alireza-ab/persian-date';
 import { Button } from '../..';
 import { usePersianNumberTransform } from '../../../hook';
