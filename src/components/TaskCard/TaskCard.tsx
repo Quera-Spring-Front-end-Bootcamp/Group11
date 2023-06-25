@@ -149,15 +149,17 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
         <FiCheckCircle />
         <Tooltip
           label='حذف تسک'
-          color='blue'
+          color='red'
           withArrow
-          position='left'>
-          <RiDeleteBinLine
-            title='حذف تسک'
-            size={'1.2rem'}
-            className='hover:text-[red] cursor-pointer'
-            onClick={handleDeleteTask}
-          />
+          transitionProps={{ transition: 'scale-x', duration: 300 }}
+          position='right'>
+          <div>
+            <RiDeleteBinLine
+              size={'1.2rem'}
+              className='hover:text-[red] cursor-pointer'
+              onClick={handleDeleteTask}
+            />
+          </div>
         </Tooltip>
       </div>
     </Card>
