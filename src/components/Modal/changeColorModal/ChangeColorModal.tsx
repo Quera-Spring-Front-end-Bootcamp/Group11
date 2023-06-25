@@ -23,12 +23,9 @@ const ChangeColorModal = ({
   submit,
   loading,
 }: ChangeColorModalProp) => {
-  let title;
-  let body;
-  let footer;
-
-  title = 'انتخاب رنگ ورک‌اسپیس';
-  body = (
+  console.log(selectedWorkSpaceColor);
+  const title = 'انتخاب رنگ ورک‌اسپیس';
+  const body = (
     <>
       <div className='grid grid-cols-[6fr,1fr] gap-4'>
         <div className='flex flex-col'>
@@ -69,7 +66,6 @@ const ChangeColorModal = ({
       onClose={() => setOpen(false)}
       title={title}
       body={body}
-      footer={footer}
       actionLabel={'تایید'}
       action={submit}
       loading={loading}

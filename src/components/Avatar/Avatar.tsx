@@ -5,7 +5,7 @@ import { getUserApi } from '../../services/userApi';
 
 interface AvatarProps extends MantineAvatarProps {
   onClick?: () => void;
-  fontSize: string;
+  fontSize?: string;
   userId?: string;
   label?: string;
 }

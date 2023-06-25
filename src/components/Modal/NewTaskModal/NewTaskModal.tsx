@@ -139,6 +139,7 @@ const NewTaskModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { name, description, deadline } = data;
+    const haveDeadLine = !!+new Date(deadline).valueOf();
     setLoading(true);
     try {
       const {
@@ -146,7 +147,7 @@ const NewTaskModal = () => {
       } = await createTaskApi({
         name,
         description,
-        deadline,
+        deadline: haveDeadLine ? deadline : undefined,
         boardId,
       });
 

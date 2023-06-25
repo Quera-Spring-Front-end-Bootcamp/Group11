@@ -61,6 +61,7 @@ const WorkSpaceAccordion = ({
               open={showMenu}
               setOpen={setShowMenu}
               wsId={wsId}
+              wsColor={color}
             />
           )}
         </Flex>

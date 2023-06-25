@@ -34,7 +34,8 @@ const Modal = ({
         size={width ? width : '500px'}
         styles={() => ({
           root: {
-            position: 'relative',
+            position: 'absolute',
+            zIndex: 999,
           },
           content: { width: '470px', padding: '0px 16px 12px 16px' },
           body: {

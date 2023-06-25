@@ -2,7 +2,7 @@ import { Flex, Text } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { AiOutlineDownCircle } from 'react-icons/ai';
 import BoardOverviewRow from './boardOverview';
-import { Board, storeStateTypes } from '../../util/types';
+import { Board, storeStateTypes } from '../../../util/types';
 
 const ProjectListView = () => {
   const { data, projectName } = useSelector((state: storeStateTypes) => ({

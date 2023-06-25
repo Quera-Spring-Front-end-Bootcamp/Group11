@@ -6,7 +6,7 @@ import type { Transform } from '@dnd-kit/utilities';
 import { Handle } from './components';
 
 import styles from './Item.module.scss';
-import { TaskCard } from '../../..';
+import { TaskCard } from '../../../..';
 
 export interface ItemProps {
   taskDetail: {
