@@ -11,6 +11,7 @@ import { BsCalendar4Event } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeStateTypes } from '../../../util/types';
 import { NewTaskModalSlice } from '../../../redux/slices';
+import { AiOutlineClear } from 'react-icons/ai';
 
 type SideDatesTypes = Record<
   string,
@@ -27,25 +28,22 @@ type SideDateTextProps = {
   text: string;
   value: string;
   dateInstance: pda;
-  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
 };
-const SideDateText = ({
-  text,
-  value,
-  dateInstance,
-  setSelectedDate,
-}: SideDateTextProps) => {
+const SideDateText = ({ text, value, dateInstance }: SideDateTextProps) => {
   const disptach = useDispatch();
   const toPersian = usePersianNumberTransform();
   return (
     <Flex
       onClick={() => {
-        setSelectedDate(
-          toPersian(dateInstance.toString('jddd jD jMMMM jYYYY'))
-        );
-
         const dateTS = dateInstance.valueOf();
-        disptach(NewTaskModalSlice.actions.setDeadline({ deadline: dateTS }));
+        disptach(
+          NewTaskModalSlice.actions.setDeadline({
+            deadline: dateTS,
+            deadLinePersianFormatted: toPersian(
+              dateInstance.toString('jddd jD jMMMM jYYYY')
+            ),
+          })
+        );
       }}
       dir='rtl'
       className='w-full justify-between items-center cursor-pointer hover:bg-slate-300/20 rounded-md p-2'>
@@ -57,16 +55,17 @@ const SideDateText = ({
   );
 };
 
-const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
+const DatePickerModal = ({ onClose, ...otherProps }: MantineModalProps) => {
   const toPersian = usePersianNumberTransform();
   const [month, setMonth] = useState<number>(1);
   const [day, setDay] = useState<number>(1);
   const [year, setYear] = useState<number>(1400);
   const [startOfMonth, setStartOfMonth] = useState<number>(1);
-  const [selectedDate, setSelectedDate] = useState('');
 
-  const deadline = useSelector(
-    (state: storeStateTypes) => state.NewTaskModal.deadline
+  const dispatch = useDispatch();
+
+  const { deadline, deadLinePersianFormatted: selectedDate } = useSelector(
+    (state: storeStateTypes) => state.NewTaskModal
   );
 
   const todayObj: TodayTypes = useMemo(() => {
@@ -136,6 +135,23 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
       : 30;
   }, [month, year]);
 
+  useEffect(() => {
+    const date = new pda();
+    setDay(+date.toString('jD'));
+    setMonth(+date.toString('jM'));
+    setYear(+date.toString('jYYYY'));
+    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
+  }, []);
+
+  const onSelectedDateClearClickHandler = useCallback(() => {
+    dispatch(
+      NewTaskModalSlice.actions.setDeadline({
+        deadline: 0,
+        deadLinePersianFormatted: '',
+      })
+    );
+  }, []);
+
   const onNextMonthClickHandler = useCallback(() => {
     const next = month + 1;
     if (next === 13) {
@@ -192,16 +208,9 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
     );
   }, [todayObj]);
 
-  useEffect(() => {
-    const date = new pda();
-    setDay(+date.toString('jD'));
-    setMonth(+date.toString('jM'));
-    setYear(+date.toString('jYYYY'));
-    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
-  }, []);
-
   return (
     <MantineModal
+      onClose={onClose}
       radius='md'
       size={'936px'}
       styles={() => ({
@@ -328,13 +337,34 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
                     year={year}
                     month={month}
                     day={i - startOfMonth + 2} //month day number [1:31]
-                    setSelectedDate={setSelectedDate}
                   />
                 ))}
             </Flex>
-            <div className='w-full flex justify-end pb-5 pl-5'>
-              <Button w='125px'>بستن</Button>
-            </div>
+            <Flex
+              justify='end'
+              gap='16px'
+              className='w-full pb-5 pl-5'>
+              {deadline ? (
+                <Button
+                  onClick={onSelectedDateClearClickHandler}
+                  w='auto'
+                  bg='red'
+                  styles={{
+                    root: {
+                      '&:hover': {
+                        backgroundColor: '#ff000099',
+                      },
+                    },
+                  }}>
+                  <AiOutlineClear size={25} />
+                </Button>
+              ) : null}
+              <Button
+                onClick={() => onClose()}
+                w='125px'>
+                بستن
+              </Button>
+            </Flex>
           </Flex>
           <Flex
             direction='column'
@@ -342,7 +372,6 @@ const DatePickerModal = ({ ...otherProps }: MantineModalProps) => {
             {Object.keys(todayObj.sideDates).map((item) => (
               <SideDateText
                 key={item}
-                setSelectedDate={setSelectedDate}
                 dateInstance={
                   todayObj.sideDates[item as keyof SideDatesTypes].instance
                 }

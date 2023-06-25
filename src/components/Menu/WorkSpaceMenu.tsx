@@ -37,15 +37,15 @@ interface MenuProps extends MantineMenuProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   wsId: string;
+  wsColor: string;
 }
-export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
+export const WorkSpaceMenu = ({ open, setOpen, wsId, wsColor }: MenuProps) => {
   const [editingName, setEditingName] = useState(false);
   const [loading, setLoading] = useState(false);
   const [changeColorLoading, setChangeColorLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [colorChangeOpen, setColorChangeOpen] = useState(false);
-  const currentUserId = useSelector((state: storeStateTypes) => state.user.id);
   const prevWorkspacesData = useSelector(
     (state: storeStateTypes) => state.user.allWorkspaces
   );
@@ -125,7 +125,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
       // );
 
       toast.success('رنگ ورک‌اسپیس با موفقیت تغییر یافت');
-
+      setOpen(false);
       setChangeColorLoading(false);
     } catch (error) {
       console.log(error);
@@ -176,7 +176,7 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId }: MenuProps) => {
         setColor={setValue}
         loading={changeColorLoading}
         submit={handleSubmit(onSubmitNewColor)}
-        selectedWorkSpaceColor={color}
+        selectedWorkSpaceColor={wsColor}
       />
       <MantineMenu
         shadow='sm'

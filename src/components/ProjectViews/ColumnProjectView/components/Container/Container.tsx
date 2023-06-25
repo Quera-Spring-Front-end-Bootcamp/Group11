@@ -7,11 +7,11 @@ import styles from './Container.module.scss';
 import { BsThreeDots } from 'react-icons/bs';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Flex } from '@mantine/core';
-import { BoardMenu } from '../../../Menu';
+import { BoardMenu } from '../../../../Menu';
 import { useSelector } from 'react-redux';
-import { storeStateTypes } from '../../../../util/types';
+import { storeStateTypes } from '../../../../../util/types';
 import { useDispatch } from 'react-redux';
-import { NewTaskModalSlice } from '../../../../redux/slices';
+import { NewTaskModalSlice } from '../../../../../redux/slices';
 
 export interface Props {
   children: React.ReactNode;

@@ -1,5 +1,5 @@
-import { Avatar, Flex, Text } from '@mantine/core';
-import { Button } from '../..';
+import { Flex, Text } from '@mantine/core';
+import { Avatar, Button } from '../..';
 interface LinkCopyProps {
   currentUserId: string;
   userId: string;
@@ -65,6 +65,8 @@ const MemberRow = ({
         ) : null}
         <Text>{name}</Text>
         <Avatar
+          userId={userId}
+          label={name}
           color='cyan'
           radius='xl'>
           {name[0].toUpperCase()}

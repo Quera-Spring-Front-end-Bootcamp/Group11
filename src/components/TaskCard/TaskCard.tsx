@@ -1,13 +1,13 @@
-import { Card, Flex, Tooltip } from '@mantine/core';
+import { Avatar as MantineAvatar, Card, Flex, Tooltip } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
 import pda from '@alireza-ab/persian-date';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
 import { BsCheckSquare } from 'react-icons/bs';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
-import { storeStateTypes } from '../../util/types';
+import { User, storeStateTypes } from '../../util/types';
 import { Avatar } from '..';
 import { IoReturnDownBackSharp } from 'react-icons/io5';
 import { usePersianNumberTransform } from '../../hook';
@@ -54,16 +54,20 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
 
-  if (!taskObject) return;
+  const datePersian = useMemo(() => {
+    if (!taskObject?.deadline) return 'نامشخص';
+    const date = new pda();
+    const deadLineArray = new Date(taskObject?.deadline as string)
+      .toLocaleDateString('en-GB')
+      .split('/');
 
-  const deadLineArray = new Date(taskObject?.deadline as string)
-    .toLocaleDateString('en-GB')
-    .split('/');
+    return toPersian(
+      date
+        .fromGregorian([deadLineArray[2], deadLineArray[1], deadLineArray[0]])
+        .toString('jDD jMMMM jy')
+    );
+  }, [JSON.stringify(taskObject)]);
 
-  const date = new pda();
-  const datePersian = date
-    .fromGregorian([deadLineArray[2], deadLineArray[1], deadLineArray[0]])
-    .toString('jd jMMMM');
   return (
     <Card
       onMouseEnter={() => {
@@ -83,12 +87,27 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
         <span className='text-[10px] font-medium text-[#534D60]'>
           {projectName}
         </span>
-        <Avatar
-          fontSize=''
-          className={isHover ? ' visible' : ' invisible'}
-          size='sm'>
-          NM
-        </Avatar>
+        {taskObject?.taskAssigns.length ? (
+          <MantineAvatar.Group spacing='sm'>
+            {taskObject?.taskAssigns.map((user: User, i: number) => {
+              return (
+                <Avatar
+                  key={user._id}
+                  alt={user.firstname}
+                  userId={user._id}
+                  fontSize='12px'
+                  label={`${user.username}`}
+                  size='sm'
+                  color='cyan'
+                  className='rounded-full shadow-md'>
+                  {user.username[0]}
+                </Avatar>
+              );
+            })}
+          </MantineAvatar.Group>
+        ) : (
+          <div className='grid justify-center text-xs'>تخصیص داده نشده</div>
+        )}
       </div>
       <div className='flex flex-row items-center mt-[9px]'>
         <span className='text-[12px] font-medium text-[#0E0E0E] leading-[18px] whitespace-break-spaces'>
@@ -105,7 +124,7 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
         className='items-center mt-[18.5px]'>
         <FiFlag className='text-[#FB0606]' />
         <span className='text-[10px] text-[#343434] font-medium mr-[5px]'>
-          {toPersian(datePersian)}
+          {datePersian}
         </span>
         {/* <div className='flex flex-row items-center justify-center text-[#BDC0C6] mr-[8px] '>
           <BsCheckSquare className='text-[12px]' />

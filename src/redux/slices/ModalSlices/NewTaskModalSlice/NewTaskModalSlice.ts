@@ -7,6 +7,7 @@ export interface NewTaskModalSliceTypes {
   loading: boolean;
   boardId: string;
   deadline: number;
+  deadLinePersianFormatted: string;
 }
 
 export const NewTaskModalSlice = createSlice({
@@ -18,6 +19,7 @@ export const NewTaskModalSlice = createSlice({
     loading: true,
     boardId: '',
     deadline: 0,
+    deadLinePersianFormatted: '',
   },
   reducers: {
     onOpen: (state: NewTaskModalSliceTypes) => {
@@ -37,10 +39,13 @@ export const NewTaskModalSlice = createSlice({
 
     setDeadline: (
       state: NewTaskModalSliceTypes,
-      action: { payload: { deadline: any } }
+      action: {
+        payload: { deadline: number; deadLinePersianFormatted: string };
+      }
     ) => {
-      const { deadline } = action.payload;
+      const { deadline, deadLinePersianFormatted } = action.payload;
       state.deadline = deadline;
+      state.deadLinePersianFormatted = deadLinePersianFormatted
     },
 
     // setTaskInfo: (

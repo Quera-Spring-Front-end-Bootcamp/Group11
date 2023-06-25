@@ -1,5 +1,7 @@
-///board
-import { ProjectListView } from './ProjectListView';
+///views
+import { ColumnProjectView } from './ProjectViews/ColumnProjectView/ColumnProjectView';
+import { ListProjectView } from './ProjectViews/ListProjectView';
+import { CalenderProjectView } from './ProjectViews/CalenderProjectView';
 ///menus
 import { WorkSpaceMenu } from './Menu';
 ///Inputs
@@ -26,6 +28,11 @@ import { ClickOutsideWrapper } from './ClickOutsideWrapper';
 import { DeleteTaskModal, EditTaskModal, NewTaskModal } from './Modal';
 
 export {
+  ///
+  ColumnProjectView,
+  ListProjectView,
+  CalenderProjectView,
+  ///
   Accordion,
   ////
   Anchor,
@@ -46,8 +53,6 @@ export {
   NewTaskButton,
   TaskCard,
   ClickOutsideWrapper,
-  ////
-  ProjectListView,
   ////
   WorkSpaceMenu,
   NewTaskModal,

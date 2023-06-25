@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Flex, Text } from '@mantine/core';
 
-import { BsSearch, BsFillCaretDownFill, BsClockHistory } from 'react-icons/bs';
+import { BsSearch, BsFillCaretDownFill } from 'react-icons/bs';
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);

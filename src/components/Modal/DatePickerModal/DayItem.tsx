@@ -9,16 +9,8 @@ type DayItemProps = {
   year?: number;
   month?: number;
   day?: number;
-  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
 };
-const DayItem = ({
-  isEmpty,
-  year,
-  month,
-  day,
-  today,
-  setSelectedDate,
-}: DayItemProps) => {
+const DayItem = ({ isEmpty, year, month, day, today }: DayItemProps) => {
   const dispatch = useDispatch();
   const toPersian = usePersianNumberTransform();
   const isToday = year === today[0] && month === today[1] && day === today[2];
@@ -31,11 +23,16 @@ const DayItem = ({
       <div
         onClick={() => {
           const dateOfItemInstance = new pda([year, month, day], 'jalali');
-          setSelectedDate(
-            toPersian(dateOfItemInstance.toString('jddd jD jMMMM jYYYY'))
-          );
           const dateTS = dateOfItemInstance.valueOf();
-          dispatch(NewTaskModalSlice.actions.setDeadline({ deadline: dateTS }));
+
+          dispatch(
+            NewTaskModalSlice.actions.setDeadline({
+              deadline: dateTS,
+              deadLinePersianFormatted: toPersian(
+                dateOfItemInstance.toString('jddd jD jMMMM jYYYY')
+              ),
+            })
+          );
         }}
         className={`
           cursor-pointer

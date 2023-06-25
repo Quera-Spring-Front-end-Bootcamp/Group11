@@ -36,14 +36,14 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 import { Item, Container, ContainerProps } from './components';
-import { Board, Task, storeStateTypes } from '../../util/types';
+import { Board, Task, storeStateTypes } from '../../../util/types';
 import { useDispatch, useSelector } from 'react-redux';
-import boardSlice from '../../redux/slices/BoardSlices/BoardSlice';
-import { changeBoardPositionApi } from '../../services/boardApi';
+import boardSlice from '../../../redux/slices/BoardSlices/BoardSlice';
+import { changeBoardPositionApi } from '../../../services/boardApi';
 import {
   changeTaskBoardApi,
   // changeTaskPositionApi,
-} from '../../services/taskApi';
+} from '../../../services/taskApi';
 
 export default {
   title: 'Presets/Sortable/Multiple Containers',
@@ -146,7 +146,7 @@ interface Props {
   vertical?: boolean;
 }
 
-export function MultipleContainers({
+export function ColumnProjectView({
   adjustScale = false,
   cancelDrop,
   columns,

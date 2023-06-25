@@ -21,14 +21,16 @@ import Profile from './pages/Profile/Profile';
 import IndexPage from './pages/Index';
 import { useEffect } from 'react';
 import userUpdate from './util/userinfoUpdate';
-import { ProjectListView } from './components';
+import {
+  ListProjectView,
+  ColumnProjectView,
+  CalenderProjectView,
+} from './components';
 import {
   AccountInfo,
   PersonalInfo,
   Settings,
 } from './pages/Profile/ProfileSection';
-import { Calendar } from './components/Calendar';
-import { MultipleContainers } from './components/ColumnProjectView/ColumnProjectView';
 
 function App() {
   const navigate = useNavigate();
@@ -74,19 +76,15 @@ function App() {
           element={<Board />}>
           <Route
             path='TaskList'
-            element={<ProjectListView />}
+            element={<ListProjectView />}
           />
           <Route
             path='TaskColumn'
-            element={<MultipleContainers />}
+            element={<ColumnProjectView />}
           />
           <Route
             path='TaskCalendar'
-            element={
-              <div>
-                <Calendar />
-              </div>
-            }
+            element={<CalenderProjectView />}
           />
         </Route>
         <Route

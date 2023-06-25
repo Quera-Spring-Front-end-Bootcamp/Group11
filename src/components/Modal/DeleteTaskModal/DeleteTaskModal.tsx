@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Button as MantineBtn, Modal } from '@mantine/core';
+import { Flex, Button as MantineBtn, Modal } from '@mantine/core';
 import { BoardSlice, DeleteTaskModalSlice } from '../../../redux/slices';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { storeStateTypes } from '../../../util/types';
 import { deleteTaskApi } from '../../../services/taskApi';
 import Board from '../../../pages/Board';
+import { Button } from '../..';
 
 const DeleteTaskModal = () => {
   const [loading, setLoading] = useState(false);
@@ -26,14 +27,17 @@ const DeleteTaskModal = () => {
   };
 
   const handleConfirmDelete = async () => {
+    setLoading(true);
     try {
       await deleteTaskApi(taskId);
       toast.success('تسک با موفقیت حذف شد');
       dispatch(
         BoardSlice.actions.removeTaskFromBoard({ prevBoardData, taskId })
       );
-      setLoading(false);
       handleClose();
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     } catch (error) {
       console.log(error);
       toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید.');
@@ -49,20 +53,39 @@ const DeleteTaskModal = () => {
         <span className='text-rose-700 text-[25px] font-bold'>
           از حذف تسک مطمئن هستید؟
         </span>
-        <div className='flex flex-row justify-center items-center gap-[20px]'>
-          <MantineBtn
+        <Flex className='flex flex-row justify-center items-center gap-[20px] w-full'>
+          <Button
             loading={loading}
             onClick={handleConfirmDelete}
-            color='red'>
+            c='#000'
+            w='50%'
+            bg='red'
+            styles={{
+              root: {
+                '&:hover': {
+                  backgroundColor: '#ff000099',
+                },
+              },
+            }}>
             بله
-          </MantineBtn>
-          <MantineBtn
+          </Button>
+          <Button
             onClick={handleClose}
             variant='outline'
-            color='red'>
+            c='#000'
+            bg='#0000000'
+            w='50%'
+            styles={{
+              root: {
+                border: '2px solid red',
+                '&:hover': {
+                  backgroundColor: '#00000010',
+                },
+              },
+            }}>
             خیر
-          </MantineBtn>
-        </div>
+          </Button>
+        </Flex>
       </div>
     </Modal>
   );
