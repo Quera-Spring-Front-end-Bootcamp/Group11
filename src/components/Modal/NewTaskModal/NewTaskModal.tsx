@@ -157,7 +157,12 @@ const NewTaskModal = () => {
       setDisabled(true);
 
       dispatch(NewTaskModalSlice.actions.onClose());
-      dispatch(NewTaskModalSlice.actions.setDeadline({ deadline: 0 }));
+      dispatch(
+        NewTaskModalSlice.actions.setDeadline({
+          deadline: 0,
+          deadLinePersianFormatted: '',
+        })
+      );
       dispatch(
         BoardSlice.actions.addCreatedTaskToBoard({
           boardId,

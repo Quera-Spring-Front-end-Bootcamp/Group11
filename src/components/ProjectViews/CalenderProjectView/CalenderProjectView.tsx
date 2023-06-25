@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import pda from '@alireza-ab/persian-date';
 import { useDispatch } from 'react-redux';
+import { Button, Text } from '@mantine/core';
+import DayItem from './Components/DayItem';
 
 type TodayTypes = {
   instance: any;
@@ -29,7 +31,7 @@ const CalenderProjectView = () => {
     return dateObj;
   }, []);
 
-  const dayCount = useMemo(() => {
+  const dayOfMonth = (month: number, year: number) => {
     return month < 7
       ? 31
       : month === 12 && pda.isLeapYear('jalali', year)
@@ -37,6 +39,22 @@ const CalenderProjectView = () => {
       : month === 12
       ? 29
       : 30;
+  };
+
+  const thisMonthDayCount = useMemo(() => {
+    return dayOfMonth(month, year);
+  }, [month, year]);
+
+  const prevMonthDayCount = useMemo(() => {
+    const prevMonth = month - 1 === 0 ? 12 : month - 1;
+    const prevMonthYear = month - 1 === 0 ? year - 1 : year;
+    return dayOfMonth(prevMonth, prevMonthYear);
+  }, [month, year]);
+
+  const nextMonthDayCount = useMemo(() => {
+    const nextMonth = month + 1 === 13 ? 1 : month + 1;
+    const nextMonthYear = month + 1 === 13 ? year + 1 : year;
+    return dayOfMonth(nextMonth, nextMonthYear);
   }, [month, year]);
 
   useEffect(() => {
@@ -103,25 +121,75 @@ const CalenderProjectView = () => {
     );
   }, [todayObj]);
 
+  let nextMonthDaysCounter = 1;
+  const forPrevMonth = (num: number) => num < startOfMonth - 1;
+
+  const forNextMonth = (num: number) =>
+    num > thisMonthDayCount + startOfMonth - 2;
+
   return (
     <div className='h-full p-5'>
-      <div className='h-full w-full grid grid-cols-7 grid-rows-6 border-r border-t'>
+      <div
+        style={{
+          gridTemplateRows:
+            thisMonthDayCount + startOfMonth - 1 > 35 ? 'repeat(6, minmax(0, 1fr)' : 'repeat(5, minmax(0, 1fr)',
+        }}
+        className='h-full w-full grid grid-cols-7 border-r border-t'>
+        <Button
+          onClick={onNextMonthClickHandler}
+          className='absolute left-10 z-50'></Button>
         {Array(
-          dayCount + startOfMonth - 1 //if NaN array count is 0
-            ? dayCount +
-                startOfMonth - //add extra empty cells if month starts in the middle of the week
-                1
+          thisMonthDayCount + startOfMonth - 1
+            ? thisMonthDayCount + startOfMonth - 1 > 35
+              ? 42
+              : 35
             : 0
         )
           .fill('i')
           .map((elem, i) => {
-            if (i < startOfMonth - 1)
-              return <div className='w-full h-full border-l border-b'></div>;
+            const day = forPrevMonth(i)
+              ? prevMonthDayCount - startOfMonth + 2 + i
+              : forNextMonth(i)
+              ? nextMonthDaysCounter++ && nextMonthDaysCounter - 1
+              : i - startOfMonth + 2;
             return (
-              <div className='w-full h-full border-l border-b'>
-                {i - startOfMonth + 2}
-              </div>
+              <DayItem
+                key={i}
+                index={i}
+                year={year}
+                month={month}
+                day={day}
+              />
             );
+            // if (i < startOfMonth - 1)
+            //   return (
+            //     <>
+            //       <div className='w-full h-full border-l border-b'>
+            //         <Text>{persianDays[i]}</Text>
+            //         {prevMonthDayCount - startOfMonth + 2 + i}
+            //       </div>
+            //     </>
+            //   );
+            // if (i > thisMonthDayCount + startOfMonth - 2) {
+            //   nextMonthDaysCounter++;
+            //   return (
+            //     <>
+            //       <div className='w-full h-full border-l border-b'>
+            //         <Text>{persianDays[i]}</Text>
+            //         {nextMonthDaysCounter}
+            //       </div>
+            //     </>
+            //   );
+            // }
+
+            // return (
+            //   <>
+            //     <div className='w-full h-full border-l border-b'>
+            //       <Text>{persianDays[i]}</Text>
+            //       {i - startOfMonth + 2}
+            //     </div>
+            //   </>
+            // );
           })}
       </div>
     </div>
