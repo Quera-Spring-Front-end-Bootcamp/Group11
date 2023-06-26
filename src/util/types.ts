@@ -11,6 +11,7 @@ import {
   NewTaskModalSliceTypes,
   EditTaskModalSliceTypes,
   DeleteTaskModalSliceTypes,
+  CalenderViewSliceTypes,
 } from '../redux/slices';
 
 export interface tabObject {
@@ -80,6 +81,7 @@ export interface Board {
 export type storeStateTypes = {
   user: userSliceTypes;
   project: ProjectSliceTypes;
+  calenderView: CalenderViewSliceTypes;
   createWorkSpaceModal: CreateWorkSpaceModalSliceTypes;
   ShareProjectModal: ShareProjectModalSliceTypes;
   ShareWorkspaceModal: ShareWorkspaceModalSliceTypes;

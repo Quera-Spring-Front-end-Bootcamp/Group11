@@ -1,35 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import pda from '@alireza-ab/persian-date';
-import { useDispatch } from 'react-redux';
-import { Button } from '@mantine/core';
-import DayItem from './Components/DayItem';
+import { useSelector } from 'react-redux';
 
-type TodayTypes = {
-  instance: any;
-  arrayDate: Array<number>;
-};
+import DayItem from './Components/DayItem';
+import { storeStateTypes } from '../../../util/types';
 
 const CalenderProjectView = () => {
-  const [month, setMonth] = useState<number>(1);
-  const [day, setDay] = useState<number>(1);
-  const [year, setYear] = useState<number>(1400);
-  const [startOfMonth, setStartOfMonth] = useState<number>(1);
-
-  const dispatch = useDispatch();
-
-  const todayObj: TodayTypes = useMemo(() => {
-    const today = new pda();
-
-    const dateObj = {
-      instance: today,
-      arrayDate: today
-        .toString('jYYYY jM jD')
-        .split(' ')
-        .map((dt: string) => +dt),
-    };
-
-    return dateObj;
-  }, []);
+  const { month, startOfMonth, year } = useSelector(
+    (state: storeStateTypes) => state.calenderView
+  );
 
   const dayOfMonth = (month: number, year: number) => {
     return month < 7
@@ -51,81 +30,42 @@ const CalenderProjectView = () => {
     return dayOfMonth(prevMonth, prevMonthYear);
   }, [month, year]);
 
-  const nextMonthDayCount = useMemo(() => {
-    const nextMonth = month + 1 === 13 ? 1 : month + 1;
-    const nextMonthYear = month + 1 === 13 ? year + 1 : year;
-    return dayOfMonth(nextMonth, nextMonthYear);
-  }, [month, year]);
-
-  useEffect(() => {
-    const date = new pda();
-    setDay(+date.toString('jD'));
-    setMonth(+date.toString('jM'));
-    setYear(+date.toString('jYYYY'));
-    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
-  }, []);
-
-  const onNextMonthClickHandler = useCallback(() => {
-    const next = month + 1;
-    if (next === 13) {
-      setDay(1);
-      setMonth(1);
-      setYear(year + 1);
-      const date = new pda([year + 1, 1, 1], 'jalali');
-      setStartOfMonth(+date.startOf('month').toString('jd') + 1);
-      return;
-    }
-
-    setMonth(next);
-    const dayCalculated =
-      day === 31 || day === 30
-        ? next === 12
-          ? pda.isLeapYear('jalali', year)
-            ? 30
-            : 29
-          : next >= 7
-          ? day
-          : day
-        : day;
-
-    const date = new pda([year, next, dayCalculated], 'jalali');
-    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
-    setDay(dayCalculated);
-  }, [month, year]);
-
-  const onPreviousMonthClickHandler = useCallback(() => {
-    const prev = month - 1;
-    if (prev === 0) {
-      setDay(1);
-      setMonth(12);
-      setYear(year - 1);
-      const date = new pda([year - 1, 12, 1], 'jalali');
-      setStartOfMonth(+date.startOf('month').toString('jd') + 1);
-      return;
-    }
-    setMonth(prev);
-    const dayCalculated = day === 30 ? (prev <= 6 ? 31 : 30) : day;
-    const date = new pda([year, month - 1, dayCalculated], 'jalali');
-    setStartOfMonth(+date.startOf('month').toString('jd') + 1);
-    setDay(dayCalculated);
-  }, [month, year]);
-
-  const onTodayClickHandler = useCallback(() => {
-    setYear(todayObj.arrayDate[0]);
-    setMonth(todayObj.arrayDate[1]);
-    setDay(todayObj.arrayDate[2]);
-    setStartOfMonth(
-      +new pda([todayObj.arrayDate[0], todayObj.arrayDate[1]], 'jalali')
-        .startOf('month')
-        .toString('jd') + 1
-    );
-  }, [todayObj]);
-
   let nextMonthDaysCounter = 1;
-  const forPrevMonth = (num: number) => num < startOfMonth - 1;
 
-  const forNextMonth = (num: number) =>
-    num > thisMonthDayCount + startOfMonth - 2;
+  const forPrevMonth = (index: number) => index < startOfMonth - 1;
+
+  const forNextMonth = (index: number) =>
+    index > thisMonthDayCount + startOfMonth - 2;
+
+  const dateCalculatorForDayItem = (index: number) => {
+    const itemDay = forPrevMonth(index)
+      ? prevMonthDayCount - startOfMonth + 2 + index
+      : forNextMonth(index)
+      ? nextMonthDaysCounter++ && nextMonthDaysCounter - 1
+      : index - startOfMonth + 2;
+
+    const itemMonth = forNextMonth(index)
+      ? month === 12
+        ? 1
+        : month + 1
+      : forPrevMonth(index)
+      ? month === 1
+        ? 12
+        : month - 1
+      : month;
+
+    const itemYear = forNextMonth(index)
+      ? month === 12
+        ? year + 1
+        : year
+      : forPrevMonth(index)
+      ? month === 1
+        ? year - 1
+        : year
+      : year;
+
+    return [itemYear, itemMonth, itemDay];
+  };
 
   return (
     <div className='h-full p-5'>
@@ -137,9 +77,6 @@ const CalenderProjectView = () => {
               : 'repeat(5, minmax(0, 1fr)',
         }}
         className='h-full w-full grid grid-cols-7 border-r border-t'>
-        <Button
-          onClick={onNextMonthClickHandler}
-          className='absolute left-10 z-50'></Button>
         {Array(
           thisMonthDayCount + startOfMonth - 1
             ? thisMonthDayCount + startOfMonth - 1 > 35
@@ -148,19 +85,13 @@ const CalenderProjectView = () => {
             : 0
         )
           .fill('i')
-          .map((elem, i) => {
-            const day = forPrevMonth(i)
-              ? prevMonthDayCount - startOfMonth + 2 + i
-              : forNextMonth(i)
-              ? nextMonthDaysCounter++ && nextMonthDaysCounter - 1
-              : i - startOfMonth + 2;
+          .map((_, i) => {
+            // const day =
             return (
               <DayItem
                 key={i}
                 index={i}
-                year={year}
-                month={month}
-                day={day}
+                itemDate={dateCalculatorForDayItem(i)}
               />
             );
           })}

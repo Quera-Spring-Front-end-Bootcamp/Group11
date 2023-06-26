@@ -31,6 +31,11 @@ import {
   CreateWorkSpaceModalSliceTypes,
 } from './ModalSlices/CreateModalSlices';
 
+import {
+  CalenderViewSlice,
+  CalenderViewSliceTypes,
+} from './BoardSlices/CalenderViewSlice';
+
 import { ProjectSlice, ProjectSliceTypes } from './BoardSlices';
 
 export {
@@ -46,6 +51,7 @@ export {
   ShareWorkspaceModalSlice,
   ///
   ProjectSlice,
+  CalenderViewSlice,
 };
 
 export type {
@@ -59,4 +65,5 @@ export type {
   CreateTaskModalSliceTypes,
   CreateWorkSpaceModalSliceTypes,
   ProjectSliceTypes,
+  CalenderViewSliceTypes,
 };

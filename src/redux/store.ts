@@ -11,6 +11,7 @@ import {
   NewTaskModalSlice,
   EditTaskModalSlice,
   DeleteTaskModalSlice,
+  CalenderViewSlice,
 } from './slices';
 
 export default configureStore({
@@ -27,5 +28,6 @@ export default configureStore({
     DeleteTaskModal: DeleteTaskModalSlice.reducer,
     ////Board
     project: ProjectSlice.reducer,
+    calenderView: CalenderViewSlice.reducer,
   },
 });

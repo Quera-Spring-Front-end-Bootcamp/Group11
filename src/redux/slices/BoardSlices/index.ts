@@ -1,5 +1,6 @@
 import ProjectSlice, { ProjectSliceTypes } from './ProjectSlice';
+import CalenderViewSlice, { CalenderViewSliceTypes } from './CalenderViewSlice';
 
-export { ProjectSlice };
+export { ProjectSlice, CalenderViewSlice };
 
-export type { ProjectSliceTypes };
+export type { ProjectSliceTypes, CalenderViewSliceTypes };

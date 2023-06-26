@@ -1,4 +1,4 @@
-import Filter from './Filter';
+import HeaderControls from './HeaderControls';
 import Tabs from './Tabs';
 
-export { Filter, Tabs };
+export { HeaderControls, Tabs };

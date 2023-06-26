@@ -2,7 +2,7 @@ import { AiOutlineShareAlt } from 'react-icons/ai';
 
 import ShareProjectModalSlice from '../../redux/slices/ModalSlices/ShareModalSlices/ShareProjectModalSlice';
 
-import { Tabs, Filter } from './Components/';
+import { Tabs, HeaderControls } from './Components/';
 import { tabValues } from '../../constants';
 import { Button } from '..';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +46,7 @@ export default function HeaderBoard() {
           </Button>
         </section>
         <section className='flex justify-between w-full h-[70px]'>
-          <Filter />
+          <HeaderControls />
         </section>
       </header>
     </>
