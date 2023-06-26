@@ -1,5 +1,6 @@
-import BoardSlice, { BoardSliceTypes } from './BoardSlice';
+import ProjectSlice, { ProjectSliceTypes } from './ProjectSlice';
+import CalenderViewSlice, { CalenderViewSliceTypes } from './CalenderViewSlice';
 
-export { BoardSlice };
+export { ProjectSlice, CalenderViewSlice };
 
-export type { BoardSliceTypes };
+export type { ProjectSliceTypes, CalenderViewSliceTypes };
