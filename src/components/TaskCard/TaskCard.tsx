@@ -1,14 +1,12 @@
 import { Avatar as MantineAvatar, Card, Flex, Tooltip } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
-import pda from '@alireza-ab/persian-date';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
 import { User, storeStateTypes } from '../../util/types';
 import { Avatar } from '..';
-import { usePersianNumberTransform, useToPersianDate } from '../../hook';
 
 interface TagProp {
   children: string;
@@ -31,14 +29,14 @@ interface taskCardProps {
   taskId: string;
 }
 
-const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
+const TaskCard = ({ projectName, taskId }: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isCheckList, setIsCheckList] = useState(true);
   const dispatch = useDispatch();
   const toPersianDate = useToPersianDate();
 
   const taskObject = useSelector((state: storeStateTypes) =>
-    state.board.selectedProjectBoardData
+    state.project.selectedProjectBoardData
       .find((board) => board.tasks.some((task) => task._id === taskId))
       ?.tasks.find((task) => task._id === taskId)
   );
@@ -52,7 +50,7 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
 
-if(!taskObject) return 
+  if (!taskObject) return;
 
   return (
     <Card

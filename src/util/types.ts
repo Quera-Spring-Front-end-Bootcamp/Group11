@@ -7,7 +7,7 @@ import {
   ShareWorkspaceModalSliceTypes,
   CreateTaskModalSliceTypes,
   CreateProjectModalSliceTypes,
-  BoardSliceTypes,
+  ProjectSliceTypes,
   NewTaskModalSliceTypes,
   EditTaskModalSliceTypes,
   DeleteTaskModalSliceTypes,
@@ -79,7 +79,7 @@ export interface Board {
 
 export type storeStateTypes = {
   user: userSliceTypes;
-  board: BoardSliceTypes;
+  project: ProjectSliceTypes;
   createWorkSpaceModal: CreateWorkSpaceModalSliceTypes;
   ShareProjectModal: ShareProjectModalSliceTypes;
   ShareWorkspaceModal: ShareWorkspaceModalSliceTypes;

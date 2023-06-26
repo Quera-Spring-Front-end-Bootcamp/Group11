@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import pda from '@alireza-ab/persian-date';
 import { useDispatch } from 'react-redux';
-import { Button, Text } from '@mantine/core';
+import { Button } from '@mantine/core';
 import DayItem from './Components/DayItem';
 
 type TodayTypes = {

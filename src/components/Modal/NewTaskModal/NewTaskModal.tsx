@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { Select } from 'react-hook-form-mantine';
 import { Indicator, Button as MantineBtn, Menu, Modal } from '@mantine/core';
-import { BoardSlice, NewTaskModalSlice } from '../../../redux/slices';
+import { ProjectSlice, NewTaskModalSlice } from '../../../redux/slices';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Button, CircleButton, TextArea, TextInput } from '../..';
 import { useEffect, useMemo, useState } from 'react';
@@ -46,7 +46,7 @@ const NewTaskModal = () => {
     (state: storeStateTypes) => state.NewTaskModal.boardId
   );
   const prevBoardData = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectBoardData
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
 
   const tags = [
@@ -164,7 +164,7 @@ const NewTaskModal = () => {
         })
       );
       dispatch(
-        BoardSlice.actions.addCreatedTaskToBoard({
+        ProjectSlice.actions.addCreatedTaskToBoard({
           boardId,
           createdTask,
           prevBoardData,

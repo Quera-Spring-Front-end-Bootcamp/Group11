@@ -38,7 +38,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Item, Container, ContainerProps } from './components';
 import { Board, Task, storeStateTypes } from '../../../util/types';
 import { useDispatch, useSelector } from 'react-redux';
-import boardSlice from '../../../redux/slices/BoardSlices/BoardSlice';
+import boardSlice from '../../../redux/slices/BoardSlices/ProjectSlice';
 import { changeBoardPositionApi } from '../../../services/boardApi';
 import {
   changeTaskBoardApi,
@@ -165,10 +165,10 @@ export function ColumnProjectView({
    * get necessary data from redux store
    */
   const data = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectBoardData
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
   const projectName = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectName
+    (state: storeStateTypes) => state.project.selectedProjectName
   );
 
   ///boards

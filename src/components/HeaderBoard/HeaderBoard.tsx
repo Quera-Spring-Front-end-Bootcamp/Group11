@@ -14,7 +14,7 @@ export default function HeaderBoard() {
     dispatch(ShareProjectModalSlice.actions.onOpen());
   };
   const selectedProject = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectName
+    (state: storeStateTypes) => state.project.selectedProjectName
   );
   return (
     <>

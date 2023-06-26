@@ -1,5 +1,5 @@
-import BoardSlice, { BoardSliceTypes } from './BoardSlice';
+import ProjectSlice, { ProjectSliceTypes } from './ProjectSlice';
 
-export { BoardSlice };
+export { ProjectSlice };
 
-export type { BoardSliceTypes };
+export type { ProjectSliceTypes };

@@ -31,7 +31,7 @@ import {
   CreateWorkSpaceModalSliceTypes,
 } from './ModalSlices/CreateModalSlices';
 
-import { BoardSlice, BoardSliceTypes } from './BoardSlices';
+import { ProjectSlice, ProjectSliceTypes } from './BoardSlices';
 
 export {
   userSlice,
@@ -44,9 +44,8 @@ export {
   CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
   ShareWorkspaceModalSlice,
-
   ///
-  BoardSlice,
+  ProjectSlice,
 };
 
 export type {
@@ -59,5 +58,5 @@ export type {
   CreateProjectModalSliceTypes,
   CreateTaskModalSliceTypes,
   CreateWorkSpaceModalSliceTypes,
-  BoardSliceTypes,
+  ProjectSliceTypes,
 };

@@ -11,7 +11,7 @@ interface ProfileSideBarProp {
 const ProfileSideBar = ({ profileSection }: ProfileSideBarProp) => {
   const navigate = useNavigate();
   const { selectedProjectId, selectedWorkspaceId } = useSelector(
-    (state: storeStateTypes) => state.board
+    (state: storeStateTypes) => state.project
   );
   const onBackClickHandler = () => {
     navigate({
