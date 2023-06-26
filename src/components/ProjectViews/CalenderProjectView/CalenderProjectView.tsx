@@ -132,7 +132,9 @@ const CalenderProjectView = () => {
       <div
         style={{
           gridTemplateRows:
-            thisMonthDayCount + startOfMonth - 1 > 35 ? 'repeat(6, minmax(0, 1fr)' : 'repeat(5, minmax(0, 1fr)',
+            thisMonthDayCount + startOfMonth - 1 > 35
+              ? 'repeat(6, minmax(0, 1fr)'
+              : 'repeat(5, minmax(0, 1fr)',
         }}
         className='h-full w-full grid grid-cols-7 border-r border-t'>
         <Button
@@ -161,35 +163,6 @@ const CalenderProjectView = () => {
                 day={day}
               />
             );
-            // if (i < startOfMonth - 1)
-            //   return (
-            //     <>
-            //       <div className='w-full h-full border-l border-b'>
-            //         <Text>{persianDays[i]}</Text>
-            //         {prevMonthDayCount - startOfMonth + 2 + i}
-            //       </div>
-            //     </>
-            //   );
-            // if (i > thisMonthDayCount + startOfMonth - 2) {
-            //   nextMonthDaysCounter++;
-            //   return (
-            //     <>
-            //       <div className='w-full h-full border-l border-b'>
-            //         <Text>{persianDays[i]}</Text>
-            //         {nextMonthDaysCounter}
-            //       </div>
-            //     </>
-            //   );
-            // }
-
-            // return (
-            //   <>
-            //     <div className='w-full h-full border-l border-b'>
-            //       <Text>{persianDays[i]}</Text>
-            //       {i - startOfMonth + 2}
-            //     </div>
-            //   </>
-            // );
           })}
       </div>
     </div>

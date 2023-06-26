@@ -4,19 +4,11 @@ import pda from '@alireza-ab/persian-date';
 import { BsFlag, BsTextRight } from 'react-icons/bs';
 import { Avatar, ColorInput } from '../..';
 import { Task, User } from '../../../util/types';
+import { usePersianNumberTransform, useToPersianDate } from '../../../hook';
 
 const TaskRow = ({ task }: { task: Task }) => {
-  const datePersian = useMemo(() => {
-    if (!task.deadline) return 'نامشخص';
-    const date = new pda();
-    const deadLineArray = new Date(task.deadline as string)
-      .toLocaleDateString('en-GB')
-      .split('/');
-
-    return date
-      .fromGregorian([deadLineArray[2], deadLineArray[1], deadLineArray[0]])
-      .toString('jDD jMMMM jy');
-  }, [JSON.stringify(task)]);
+  const toPersian = usePersianNumberTransform();
+  const toJalaliDate = useToPersianDate();
 
   return (
     <Flex
@@ -67,7 +59,7 @@ const TaskRow = ({ task }: { task: Task }) => {
             </div>
           )}
         </Flex>
-        <div className='w-full text-center'>{datePersian}</div>
+        <div className='w-full text-center'>{toJalaliDate(task.deadline)}</div>
         <div className='w-full grid justify-center'>
           <BsFlag color='#ff0000' />
         </div>

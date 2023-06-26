@@ -39,8 +39,10 @@ const DayItem = ({ index, year, month, day, today }: DayItemProps) => {
   return (
     <>
       <div className='relative w-full h-full border-l border-b p-2 bg-white'>
-        <Text>{persianDays[index]}</Text>
-        <div className='absolute bottom-2 left-4'>{toPersian(day)}</div>
+        <Text className='font-semibold'>{persianDays[index]}</Text>
+        <Text className='absolute bottom-2 left-4 font-semibold'>
+          {toPersian(day)}
+        </Text>
       </div>
     </>
   );

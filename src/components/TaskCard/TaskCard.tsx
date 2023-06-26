@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import pda from '@alireza-ab/persian-date';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
-import { BsCheckSquare } from 'react-icons/bs';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { useMemo, useState } from 'react';
 import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
 import { User, storeStateTypes } from '../../util/types';
 import { Avatar } from '..';
-import { IoReturnDownBackSharp } from 'react-icons/io5';
-import { usePersianNumberTransform } from '../../hook';
+import { usePersianNumberTransform, useToPersianDate } from '../../hook';
 
 interface TagProp {
   children: string;
@@ -37,7 +35,7 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isCheckList, setIsCheckList] = useState(true);
   const dispatch = useDispatch();
-  const toPersian = usePersianNumberTransform();
+  const toPersianDate = useToPersianDate();
 
   const taskObject = useSelector((state: storeStateTypes) =>
     state.board.selectedProjectBoardData
@@ -54,19 +52,7 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
 
-  const datePersian = useMemo(() => {
-    if (!taskObject?.deadline) return 'نامشخص';
-    const date = new pda();
-    const deadLineArray = new Date(taskObject?.deadline as string)
-      .toLocaleDateString('en-GB')
-      .split('/');
-
-    return toPersian(
-      date
-        .fromGregorian([deadLineArray[2], deadLineArray[1], deadLineArray[0]])
-        .toString('jDD jMMMM jy')
-    );
-  }, [JSON.stringify(taskObject)]);
+if(!taskObject) return 
 
   return (
     <Card
@@ -87,9 +73,9 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
         <span className='text-[10px] font-medium text-[#534D60]'>
           {projectName}
         </span>
-        {taskObject?.taskAssigns.length ? (
+        {taskObject.taskAssigns.length ? (
           <MantineAvatar.Group spacing='sm'>
-            {taskObject?.taskAssigns.map((user: User, i: number) => {
+            {taskObject.taskAssigns.map((user: User, i: number) => {
               return (
                 <Avatar
                   key={user._id}
@@ -124,7 +110,7 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
         className='items-center mt-[18.5px]'>
         <FiFlag className='text-[#FB0606]' />
         <span className='text-[10px] text-[#343434] font-medium mr-[5px]'>
-          {datePersian}
+          {toPersianDate(taskObject.deadline)}
         </span>
         {/* <div className='flex flex-row items-center justify-center text-[#BDC0C6] mr-[8px] '>
           <BsCheckSquare className='text-[12px]' />

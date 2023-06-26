@@ -24,15 +24,17 @@ const ProfileSideBar = ({ profileSection }: ProfileSideBarProp) => {
   return (
     <div className='flex flex-col  w-[100%] h-[100%] mt-[70px]'>
       <Button
-        w={'110px'}
+        w={'120px'}
         radius={'8px'}
         py={'4px'}
+        px={'2px'}
         fz={'20px'}
         fw={'500'}
         onClick={onBackClickHandler}
-        leftIcon={<HiArrowRight size={'1.2rem'} />}
+        icon={HiArrowRight}
         styles={() => ({
           root: {
+            backgroundColor: '#208D8E',
             '&:hover': {
               backgroundColor: '#277576',
             },
