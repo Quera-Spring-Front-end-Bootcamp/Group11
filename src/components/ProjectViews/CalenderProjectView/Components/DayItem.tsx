@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import pda from '@alireza-ab/persian-date';
-import { useDispatch, useSelector } from 'react-redux';
 import { Text } from '@mantine/core';
+import pda from '@alireza-ab/persian-date';
+import { MdOutlineAddBox } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '../../..';
 import { persianDays } from '../../../../constants';
 import { usePersianNumberTransform } from '../../../../hook';
-import { Button } from '../../..';
-import { MdOutlineAddBox } from 'react-icons/md';
 import { storeStateTypes } from '../../../../util/types';
-
+import { useCallback } from 'react';
+import { NewTaskModalSlice } from '../../../../redux/slices';
 
 type DayItemProps = {
   index: number;
@@ -23,12 +23,28 @@ const DayItem = ({ index, itemDate }: DayItemProps) => {
 
   const isToday = day === today[2] && month === today[1] && year === today[0];
 
+  const firstBoardId = useSelector(
+    (state: storeStateTypes) => state.project.selectedProjectBoardData[0]._id
+  );
+
+  const onTaskAddClickHandler = useCallback(() => {
+    const dateSelected = new pda([year, month, day], 'jalali');
+    dispatch(NewTaskModalSlice.actions.onOpen());
+    dispatch(NewTaskModalSlice.actions.setBoardId({ boardId: firstBoardId }));
+    dispatch(
+      NewTaskModalSlice.actions.setDeadline({
+        deadline: dateSelected.valueOf(),
+        deadLinePersianFormatted: toPersian(
+          dateSelected.toString('jddd jD jMMMM jYYYY')
+        ),
+      })
+    );
+  }, []);
+
   return (
     <>
       <div
-        onClick={() => {
-          console.log(year, month, day);
-        }}
+        onClick={() => {}}
         style={{
           border: isToday ? '2.5px solid green' : '0.75px solid #00000020',
         }}
@@ -41,7 +57,8 @@ const DayItem = ({ index, itemDate }: DayItemProps) => {
           p={0}
           w={'auto'}
           h={'auto'}
-          className='absolute bottom-2 right-4 opacity-0 group-hover:opacity-100 transition'>
+          className='absolute bottom-2 right-4 opacity-0 group-hover:opacity-100 transition'
+          onClick={onTaskAddClickHandler}>
           <MdOutlineAddBox size={25} />
         </Button>
       </div>

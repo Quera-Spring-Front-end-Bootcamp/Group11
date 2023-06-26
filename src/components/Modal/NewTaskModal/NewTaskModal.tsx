@@ -118,6 +118,19 @@ const NewTaskModal = () => {
 
   const handleClose = () => {
     dispatch(NewTaskModalSlice.actions.onClose());
+
+    //empty all data on close modal
+    setTimeout(function () {
+      setValue('tags', []);
+      setValue('priority', '');
+      setValue('deadline', '');
+      dispatch(
+        NewTaskModalSlice.actions.setDeadline({
+          deadline: 0,
+          deadLinePersianFormatted: '',
+        })
+      );
+    }, 300);
   };
 
   const handleChange = () => {
@@ -152,7 +165,6 @@ const NewTaskModal = () => {
       });
 
       toast.success('تسک جدید با موفقیت ایجاد شد');
-      console.log(createdTask);
       setLoading(false);
       setDisabled(true);
 
