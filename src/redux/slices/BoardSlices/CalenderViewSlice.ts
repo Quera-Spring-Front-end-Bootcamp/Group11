@@ -13,17 +13,17 @@ export const CalenderViewSlice = createSlice({
   name: 'board',
   initialState: () => {
     const date = new pda();
+    const month = +date.toString('jM');
+    const day = +date.toString('jD');
+    const year = +date.toString('jYYYY');
+    const startOfMonth = +date.startOf('month').toString('jd') + 1;
+
     return {
-      month: +date.toString('jM'),
-      day: +date.toString('jd'),
-      year: +date.toString('jYYYY'),
-      startOfMonth: +date.startOf('month').toString('jd') + 1,
-      today: [
-        +date.toString('jYYYY'),
-        +date.toString('jM'),
-        +date.toString('jd'),
-        +date.startOf('month').toString('jd') + 1,
-      ],
+      month,
+      day,
+      year,
+      startOfMonth,
+      today: [year, month, day, startOfMonth],
     };
   },
   reducers: {
