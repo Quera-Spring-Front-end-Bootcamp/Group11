@@ -8,13 +8,15 @@ import { usePersianNumberTransform } from '../../../../hook';
 import { storeStateTypes } from '../../../../util/types';
 import { useCallback } from 'react';
 import { NewTaskModalSlice } from '../../../../redux/slices';
+import { toast } from 'react-hot-toast';
 
 type DayItemProps = {
   index: number;
   itemDate: Array<number>;
+  firstBoardId?: string;
 };
 
-const DayItem = ({ index, itemDate }: DayItemProps) => {
+const DayItem = ({ index, itemDate, firstBoardId }: DayItemProps) => {
   const { today } = useSelector((state: storeStateTypes) => state.calenderView);
   const toPersian = usePersianNumberTransform();
   const dispatch = useDispatch();
@@ -23,11 +25,9 @@ const DayItem = ({ index, itemDate }: DayItemProps) => {
 
   const isToday = day === today[2] && month === today[1] && year === today[0];
 
-  const firstBoardId = useSelector(
-    (state: storeStateTypes) => state.project.selectedProjectBoardData[0]._id
-  );
-
   const onTaskAddClickHandler = useCallback(() => {
+    if(!firstBoardId) return toast.error('ابتدا یک بورد برای پروژه فعلی بسازید')
+    
     const dateSelected = new pda([year, month, day], 'jalali');
     dispatch(NewTaskModalSlice.actions.onOpen());
     dispatch(NewTaskModalSlice.actions.setBoardId({ boardId: firstBoardId }));
