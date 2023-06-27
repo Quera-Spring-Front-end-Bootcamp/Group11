@@ -48,7 +48,9 @@ const NewTaskModal = () => {
   const prevBoardData = useSelector(
     (state: storeStateTypes) => state.board.selectedProjectBoardData
   );
-
+  const project = useSelector(
+    (state: storeStateTypes) => state.board.selectedProjectName
+  );
   const tags = [
     {
       tagName: 'My Tag1',
@@ -87,11 +89,8 @@ const NewTaskModal = () => {
     setValue,
   } = useForm<FieldValues>({
     defaultValues: {
-      taskTitle: '',
+      name: '',
       description: '',
-      project: '',
-      tags: [],
-      priority: '',
       deadline: '',
     },
   });
@@ -165,6 +164,9 @@ const NewTaskModal = () => {
           prevBoardData,
         })
       );
+      setValue('name', '');
+      setValue('description', '');
+      setValue('deadline', '');
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -210,24 +212,34 @@ const NewTaskModal = () => {
         withCloseButton={false}
         opened={open}
         dir='rtl'>
-        <Modal.Header className='flex items-center mb-[40px]'>
-          <Modal.CloseButton size={'1.5rem'} />
+        <Modal.Header className='flex items-center justify-between mb-[40px]'>
           {taskModalTitle}
+          <Modal.CloseButton size={'1.5rem'} />
         </Modal.Header>
         <Modal.Body>
           <form
             className='flex flex-col  gap-[40px] p-[36px 44px] w-[100%]'
             onSubmit={handleSubmit(onSubmit)}>
             <div className='flex flex-row items-center gap-[8px] '>
-              <span>در پروژه</span>
-              <Select
+              <span>در</span>
+              {/* <Select
                 searchable
                 data={['project1', 'project2']}
                 name={'project'}
                 control={control}
-              />
+              /> */}
               {/*data from redux*/}
+              <Tooltip
+                color='red'
+                position='top'
+                label={'عنوان پروژه'}>
+                <span className='p-[5px] rounded-[10px] bg-green-300 font-semibold'>
+                  {project}
+                </span>
+              </Tooltip>
+
               <span>برای</span>
+
               <div>
                 <CircleButton
                   className='h-[34px] w-[34px] p-0'
