@@ -57,7 +57,7 @@ const DeleteTaskModal = () => {
           <Button
             loading={loading}
             onClick={handleConfirmDelete}
-            c='#000'
+            c='white'
             w='50%'
             bg='red'
             styles={{
