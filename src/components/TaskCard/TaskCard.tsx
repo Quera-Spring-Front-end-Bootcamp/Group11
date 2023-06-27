@@ -51,6 +51,8 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
 
+  const persianDate = toPersianDate(taskObject?.deadline);
+
   if (!taskObject) return;
 
   return (
@@ -109,7 +111,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         className='items-center mt-[18.5px]'>
         <FiFlag className='text-[#FB0606]' />
         <span className='text-[10px] text-[#343434] font-medium mr-[5px]'>
-          {toPersianDate(taskObject.deadline)}
+          {persianDate}
         </span>
         {/* <div className='flex flex-row items-center justify-center text-[#BDC0C6] mr-[8px] '>
           <BsCheckSquare className='text-[12px]' />

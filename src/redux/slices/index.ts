@@ -24,10 +24,8 @@ import {
 
 import {
   CreateProjectModalSlice,
-  CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
   CreateProjectModalSliceTypes,
-  CreateTaskModalSliceTypes,
   CreateWorkSpaceModalSliceTypes,
 } from './ModalSlices/CreateModalSlices';
 
@@ -46,7 +44,6 @@ export {
   DeleteTaskModalSlice,
   ShareProjectModalSlice,
   CreateProjectModalSlice,
-  CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
   ShareWorkspaceModalSlice,
   ///
@@ -62,7 +59,6 @@ export type {
   ShareProjectModalSliceTypes,
   ShareWorkspaceModalSliceTypes,
   CreateProjectModalSliceTypes,
-  CreateTaskModalSliceTypes,
   CreateWorkSpaceModalSliceTypes,
   ProjectSliceTypes,
   CalenderViewSliceTypes,

@@ -9,6 +9,9 @@ const CalenderProjectView = () => {
   const { month, startOfMonth, year } = useSelector(
     (state: storeStateTypes) => state.calenderView
   );
+  const firstBoardId = useSelector(
+    (state: storeStateTypes) => state.project.selectedProjectBoardData[0]?._id
+  );
 
   const dayOfMonth = (month: number, year: number) => {
     return month < 7
@@ -92,6 +95,7 @@ const CalenderProjectView = () => {
                 key={i}
                 index={i}
                 itemDate={dateCalculatorForDayItem(i)}
+                firstBoardId={firstBoardId}
               />
             );
           })}

@@ -4,7 +4,7 @@ import { usePersianNumberTransform } from '.';
 
 function useToPersianDate() {
   const toPersian = usePersianNumberTransform();
-  const toJalaliDate = (deadline: string) => {
+  const toJalaliDate = (deadline?: string) => {
     const datePersian = useMemo(() => {
       if (!deadline) return 'نامشخص';
       const date = new pda();
