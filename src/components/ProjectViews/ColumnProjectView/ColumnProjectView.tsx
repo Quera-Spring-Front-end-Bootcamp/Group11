@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CreateBoadCol from '../../Modal/CreateModal/CreateBoardCol';
+import { Button } from '../../';
 import { createPortal } from 'react-dom';
 import {
   CancelDrop,
@@ -160,6 +162,16 @@ export function ColumnProjectView({
   vertical = false,
 }: Props) {
   const dispatch = useDispatch();
+
+  const [modalBoard, setmodalBoard] = useState(false);
+
+  const openModal = () => {
+    setmodalBoard(true);
+  };
+
+  const closeModal = () => {
+    setmodalBoard(false);
+  };
 
   /**
    * get necessary data from redux store
@@ -511,7 +523,25 @@ export function ColumnProjectView({
             </DroppableContainer>
           ))}
           <div className='flex flex-row justify-start items-center p-3 gap-1 w-[250px] h-[40px] shadow-lg rounded-[6px] border border-t-green-600'>
-            + ساختن ستون جدید
+            <Button
+              onClick={openModal}
+              bg='#FAFBFC'
+              c='dark'
+              p='0'
+              h='auto'
+              styles={{
+                root: {
+                  '&:hover': {
+                    backgroundColor: '#FAFBFC',
+                  },
+                },
+              }}>
+              ساختن ستون جدید
+            </Button>
+            <CreateBoadCol
+              opened={modalBoard}
+              onClose={closeModal}
+            />
           </div>
         </SortableContext>
       </div>
