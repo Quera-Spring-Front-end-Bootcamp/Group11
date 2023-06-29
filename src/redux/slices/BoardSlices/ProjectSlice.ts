@@ -150,17 +150,16 @@ export const ProjectSlice = createSlice({
       });
     },
 
-    // addCreatedBoard: (
-    //   state: ProjectSliceTypes,
-    //   action: {
-    //     payload: { newBoard: any; prevData: Array<Board> };
-    //   }
-    // ) => {
-    //   state.selectedProjectBoardData = [
-    //     ...action.payload.prevData,
-    //     action.payload.newBoard,
-    //   ];
-    // },
+
+    addBoard: (
+      state: ProjectSliceTypes,
+      action: {
+        payload: { createdBoard: Board; prevBoardData: Array<Board> };
+      }
+    ) => {
+      const { createdBoard, prevBoardData } = action.payload;
+      state.selectedProjectBoardData = [...prevBoardData, createdBoard]
+    },
   },
 });
 
