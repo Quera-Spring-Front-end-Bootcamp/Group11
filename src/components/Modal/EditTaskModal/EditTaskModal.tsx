@@ -29,6 +29,7 @@ import {
   AiOutlineUserAdd,
   AiFillPlayCircle,
   AiOutlineShareAlt,
+  AiOutlineCheck,
 } from 'react-icons/ai';
 import { BiChevronLeft, BiEdit, BiPalette } from 'react-icons/bi';
 import {
@@ -85,23 +86,23 @@ const EditTaskModal = () => {
     if (pri == 'noPriority') return null;
   };
 
-  const handleAssign = async (id: string) => {
+  const handleAssign = async (member: any) => {
+    console.log(member);
     try {
-      const { data: apiData } = await assignTaskApi(taskId, id);
+      const { data: apiData } = await assignTaskApi(taskId, member._id);
 
       console.log(apiData);
       toast.success('اساین تسک با موفقیت ایجاد شد');
-      // dispatch(
-      //   EditTaskModalSlice.actions.setTaskAssigns({
-      //     newTag: {
-      //       _id: apiData.data.tag._id,
-      //       tagName: apiData.data.tag.name,
-      //       color: apiData.data.tag.color,
-      //     },
-      //     prevTags,
-      //   })
-      // );
-      console.log(apiData);
+      dispatch(
+        EditTaskModalSlice.actions.setTaskAssigns({
+          newTag: {
+            _id: apiData.data.tag._id,
+            tagName: apiData.data.tag.name,
+            color: apiData.data.tag.color,
+          },
+          prevTags,
+        })
+      );
     } catch (error) {
       console.log(error);
       toast.error('اساین تسک با مشکل مواجه شد');
@@ -153,7 +154,6 @@ const EditTaskModal = () => {
 
   const handleCloseModal = () => {
     dispatch(EditTaskModalSlice.actions.onClose());
-    dispatch(CommentSlice.actions.getComment({ comments: [] }));
   };
   const handleFocus = () => {
     setReadonly(false);
@@ -263,7 +263,7 @@ const EditTaskModal = () => {
                       color='teal'
                       transitionProps={{ transition: 'pop', duration: 300 }}
                       position='top'
-                      fz={'18px'}
+                      fz={'16px'}
                       label={'عنوان بورد'}>
                       <div
                         style={{
@@ -294,7 +294,7 @@ const EditTaskModal = () => {
                       size={'1.5rem'}
                     />
                   </div>
-                  <div>
+                  <div className='flex flex-row gap-[5px]'>
                     <Menu
                       position='bottom'
                       styles={() => ({
@@ -315,7 +315,7 @@ const EditTaskModal = () => {
                           return (
                             <Menu.Item
                               onClick={() => {
-                                handleAssign(member.user._id);
+                                handleAssign(member.user);
                               }}
                               id={member.user._id}
                               key={member.user._id}>
@@ -329,18 +329,31 @@ const EditTaskModal = () => {
                                   color='cyan'
                                   radius='xl'
                                 />
-                                {member.role === 'owner' ? (
+                                {member.user._id === currentId ? (
                                   <Text className='rounded-6 bg-[#A5E4F8] py-1 px-2 flex items-center justify-center text-xs'>
                                     شما
                                   </Text>
                                 ) : null}
                                 <Text>{`${member.user.firstname} ${member.user.lastname}`}</Text>
+                                <AiOutlineCheck
+                                  size={'1.1rem'}
+                                  color={'blue'}
+                                />
                               </Flex>
                             </Menu.Item>
                           );
                         })}
                       </Menu.Dropdown>
                     </Menu>
+                    {taskAssigns.map((item: any) => {
+                      return (
+                        <Avatar
+                          key={item._id}
+                          label={item.username}
+                          radius={'50%'}
+                        />
+                      );
+                    })}
                   </div>
                   <div>
                     <Menu

@@ -52,7 +52,6 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
       dispatch(
         EditTaskModalSlice.actions.setTaskTags({ taskTags: data.data.tags })
       );
-      console.log(data.data.tags);
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +63,7 @@ const TaskCard = ({ projectName, deadLine, taskId }: taskCardProps) => {
   const onClick = async () => {
     dispatch(EditTaskModalSlice.actions.setTaskDetail({ taskObject }));
     dispatch(EditTaskModalSlice.actions.setTaskDeadLine({ datePersian }));
-    console.log(taskObject);
+    dispatch(EditTaskModalSlice.actions.setTaskTags({ taskTags }));
 
     dispatch(EditTaskModalSlice.actions.onOpen());
   };
