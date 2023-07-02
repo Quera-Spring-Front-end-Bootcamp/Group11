@@ -5,10 +5,25 @@ import { Task, User } from '../../../util/types';
 import { useToPersianDate } from '../../../hook';
 import { useDispatch } from 'react-redux';
 import { EditTaskModalSlice } from '../../../redux/slices';
+import { getTaskTagsApi } from '../../../services/tagApi';
+import { useEffect, useState } from 'react';
 
 const TaskRow = ({ task }: { task: Task }) => {
+  const [taskTags, setTaskTags] = useState([]);
   const toJalaliDate = useToPersianDate();
   const dispatch = useDispatch();
+
+  const fetchTaskTags = async () => {
+    try {
+      const { data } = await getTaskTagsApi(task._id);
+      setTaskTags(data.data.tags);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchTaskTags();
+  }, []);
 
   const datePersian = toJalaliDate(task.deadline);
 
@@ -23,7 +38,7 @@ const TaskRow = ({ task }: { task: Task }) => {
         datePersian,
       })
     );
-    // dispatch(EditTaskModalSlice.actions.setTaskTags({ taskTags }));
+    dispatch(EditTaskModalSlice.actions.setTaskTags({ taskTags }));
 
     dispatch(EditTaskModalSlice.actions.onOpen());
   };
