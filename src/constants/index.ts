@@ -12,6 +12,18 @@ import {
   BsPersonCheck,
   BsGear,
 } from 'react-icons/bs';
+export const tagColors = [
+  '#FEE2E2',
+  '#FFEDD5',
+  '#FEF3C7',
+  '#FEF9C3',
+  '#ECFCCB',
+  '#DCFCE7',
+  '#D1FAE5',
+  '#CCFBF1',
+  '#E0E7FF',
+  '#F3E8FF',
+];
 
 export const workSpaceColors = [
   '#E46161',
