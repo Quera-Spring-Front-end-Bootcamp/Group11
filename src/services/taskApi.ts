@@ -23,6 +23,9 @@ const createTaskApi = async (body: createTaskBody) => {
 const deleteTaskApi = async (taskId: string) => {
   return apiCall.delete(`task/${taskId}`);
 };
+const getTaskApi = async (taskId: string) => {
+  return apiCall.delete(`task/${taskId}`);
+};
 const updateTaskInfoApi = async (taskId: string, body: updateTaskInfoBody) => {
   return apiCall.put(`task/${taskId}`, body);
 };
@@ -40,4 +43,5 @@ export {
   updateTaskInfoApi,
   assignTaskApi,
   unassignTaskApi,
+  getTaskApi,
 };

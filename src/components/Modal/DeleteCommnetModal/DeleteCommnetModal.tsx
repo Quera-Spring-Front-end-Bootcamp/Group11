@@ -1,56 +1,61 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex, Modal } from '@mantine/core';
-import { ProjectSlice, DeleteTaskModalSlice } from '../../../redux/slices';
+import {
+  DeleteCommentModalSlice,
+  EditTaskModalSlice,
+} from '../../../redux/slices';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { storeStateTypes } from '../../../util/types';
-import { deleteTaskApi } from '../../../services/taskApi';
 import { Button } from '../..';
+import { deleteCommentApi } from '../../../services/commentApi';
 
-const DeleteTaskModal = () => {
+const DeleteCommentModal = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const open = useSelector(
-    (state: storeStateTypes) => state.DeleteTaskModal.open
+    (state: storeStateTypes) => state.DeleteCommentModal.open
   );
-  const taskId = useSelector(
-    (state: storeStateTypes) => state.DeleteTaskModal.taskId
-  );
-  const prevBoardData = useSelector(
-    (state: storeStateTypes) => state.project.selectedProjectBoardData
+  const commentId = useSelector(
+    (state: storeStateTypes) => state.DeleteCommentModal.commentId
   );
 
   const handleClose = () => {
-    dispatch(DeleteTaskModalSlice.actions.onClose());
+    dispatch(DeleteCommentModalSlice.actions.onClose());
   };
-
+  const prevComments = useSelector(
+    (state: storeStateTypes) => state.EditTaskModal.comment
+  );
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {
-      await deleteTaskApi(taskId);
-      toast.success('تسک با موفقیت حذف شد');
+      await deleteCommentApi(commentId);
+      toast.success('کامنت با موفقیت حذف شد');
       dispatch(
-        ProjectSlice.actions.removeTaskFromBoard({ prevBoardData, taskId })
+        EditTaskModalSlice.actions.deleteComment({
+          commentId,
+          prevComments,
+        })
       );
+      setLoading(false);
       handleClose();
-      setTimeout(() => {
-        setLoading(false);
-      }, 300);
     } catch (error) {
       console.log(error);
       toast.error('مشکلی پیش آمده است، لطفا مجددا تلاش فرمایید.');
+      setLoading(false);
       handleClose();
     }
   };
   return (
     <Modal
+      zIndex={500}
       centered
       opened={open}
       onClose={handleClose}>
       <div className='flex flex-col justify-center items-center gap-[40px] rounded-[20px]'>
         <span className='text-rose-700 text-[25px] font-bold'>
-          از حذف تسک مطمئن هستید؟
+          از حذف کامنت مطمئن هستید؟
         </span>
         <Flex className='flex flex-row justify-center items-center gap-[20px] w-full'>
           <Button
@@ -90,4 +95,4 @@ const DeleteTaskModal = () => {
   );
 };
 
-export default DeleteTaskModal;
+export default DeleteCommentModal;

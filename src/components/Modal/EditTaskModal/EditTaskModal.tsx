@@ -1,52 +1,83 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, TextInput as MantineTextInput, Tooltip } from '@mantine/core';
-import { Indicator, Button as MantineBtn, Menu, Modal } from '@mantine/core';
-import { EditTaskModalSlice } from '../../../redux/slices';
+import {
+  Box,
+  TextInput as MantineTextInput,
+  Textarea as MantineTextArea,
+  Tooltip,
+  Flex,
+  Text,
+} from '@mantine/core';
+import { Indicator, Menu, Modal } from '@mantine/core';
+import {
+  CommentSlice,
+  DeleteTagModalSlice,
+  EditTaskModalSlice,
+} from '../../../redux/slices';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Button, CircleButton, TextArea, TextInput } from '../..';
+import {
+  Avatar,
+  Button,
+  CircleButton,
+  CommentTextArea,
+  UserCommentBox,
+} from '../..';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { AiOutlineEye, AiOutlineUserAdd } from 'react-icons/ai';
-import { BsFlag, BsSearch, BsTags, BsThreeDots } from 'react-icons/bs';
-import { priorityItem } from '../../../constants';
-import { createTaskApi } from '../../../services/taskApi';
+import {
+  AiOutlineEye,
+  AiOutlinePlusSquare,
+  AiOutlineUserAdd,
+  AiFillPlayCircle,
+  AiOutlineShareAlt,
+  AiOutlineCheck,
+} from 'react-icons/ai';
+import { BiChevronLeft, BiEdit, BiPalette } from 'react-icons/bi';
+import {
+  BsCheckSquare,
+  BsEmojiSmile,
+  BsFileEarmark,
+  BsFlag,
+  BsTags,
+} from 'react-icons/bs';
+import { priorityItem, tagColors } from '../../../constants';
+import { assignTaskApi, updateTaskInfoApi } from '../../../services/taskApi';
+import { FaRegCommentDots } from 'react-icons/fa';
+import { FiAtSign } from 'react-icons/fi';
+import { TiAttachment } from 'react-icons/ti';
+import { storeStateTypes } from '../../../util/types';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
+import { createCommentApi } from '../../../services/commentApi';
+import { createTagApi } from '../../../services/tagApi';
+import { DeleteCommnetModal } from '../DeleteCommnetModal';
+import { DeleteTagModal } from '../DeleteTagModal';
+import { RxCross2 } from 'react-icons/rx';
 
-type EditTaskModalprop = {
-  boardId: string;
-};
-
-const EditTaskModal = ({ boardId }: EditTaskModalprop) => {
+const EditTaskModal = () => {
   const [loading, setLoading] = useState(false);
-  const [disabled, setdisabled] = useState(true);
+  const [readonly, setReadonly] = useState(true);
+  const [showComment, setShowComment] = useState(false);
   const [priority, setpriority] = useState('noPriority');
-  const [selectedTags, setselectedTags] = useState<any>([]);
 
   const dispatch = useDispatch();
-  const open = useSelector((state: any) => state.EditTaskModal.open);
-
-  const tags = [
-    {
-      tagName: 'My Tag1',
-      id: '1',
-      color: '#0000FF',
-    },
-    {
-      tagName: 'My Tag2',
-      id: '2',
-      color: '#FB0606',
-    },
-    {
-      tagName: 'My Tag3',
-      id: '3',
-      color: '#09DBCE',
-    },
-    {
-      tagName: 'My Tag4',
-      id: '4',
-      color: '#B2ACAC',
-    },
-  ];
-
+  const {
+    taskId,
+    taskTitle,
+    taskDescription,
+    taskDeadLine,
+    comment,
+    board,
+    open,
+    taskTags,
+    taskAssigns,
+    projectMemberData,
+  } = useSelector((state: storeStateTypes) => state.EditTaskModal);
+  const boardData = useSelector((state: storeStateTypes) =>
+    state.board.selectedProjectBoardData.find((item) => item._id === board)
+  );
+  const currentId = useSelector((state: storeStateTypes) => state.user.id);
+  const members = projectMemberData;
+  const prevComments = comment;
+  const prevTags = taskTags;
   const priortyColor = (pri: string | null) => {
     if (pri == 'urgent') return '#FB0606';
     if (pri == 'high') return '#FFE605';
@@ -55,119 +86,274 @@ const EditTaskModal = ({ boardId }: EditTaskModalprop) => {
     if (pri == 'noPriority') return null;
   };
 
+  const handleAssign = async (member: any) => {
+    console.log(member);
+    try {
+      const { data: apiData } = await assignTaskApi(taskId, member._id);
+
+      console.log(apiData);
+      toast.success('اساین تسک با موفقیت ایجاد شد');
+      dispatch(
+        EditTaskModalSlice.actions.setTaskAssigns({
+          newTag: {
+            _id: apiData.data.tag._id,
+            tagName: apiData.data.tag.name,
+            color: apiData.data.tag.color,
+          },
+          prevTags,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error('اساین تسک با مشکل مواجه شد');
+    }
+  };
+  const handleCreateTag = async (name: string) => {
+    try {
+      const { data: apiData } = await createTagApi({
+        taskId,
+        name,
+        color: tagColors[Math.floor(Math.random() * tagColors.length)],
+      });
+
+      console.log(apiData);
+      toast.success('تگ با موفقیت ایجاد شد');
+      dispatch(
+        EditTaskModalSlice.actions.addTag({
+          newTag: {
+            _id: apiData.data.tag._id,
+            tagName: apiData.data.tag.name,
+            color: apiData.data.tag.color,
+          },
+          prevTags,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error('ایجاد تگ با مشکل مواجه شد');
+    }
+  };
+  const handleEnterKey = (event: any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      console.log('Enter');
+      handleCreateTag(event.target.value);
+
+      event.target.value = '';
+    }
+  };
   const {
-    control,
     register, //register function will pass to text inputs
     handleSubmit, //submit function
     setValue,
   } = useForm<FieldValues>({
     defaultValues: {
-      boardId: '',
-      taskTitle: '',
-      description: '',
-      project: '',
-      tags: [],
-      priority: '',
+      commentText: '',
     },
   });
 
   const handleCloseModal = () => {
     dispatch(EditTaskModalSlice.actions.onClose());
   };
-  const handleSelectTag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    selectedTags.length === 0
-      ? setselectedTags((prev: any) => [
-          ...prev,
-          tags.filter((item) => item.id === e.currentTarget.id)[0],
-        ])
-      : selectedTags.every(
-          (item: { id: string }) => item.id != e.currentTarget.id
-        ) &&
-        setselectedTags((prev: any) => [
-          ...prev,
-          tags.filter((item) => item.id === e.currentTarget.id)[0],
-        ]);
+  const handleFocus = () => {
+    setReadonly(false);
   };
+  const handleBlurTitleInput = async (
+    event: React.FocusEvent<HTMLInputElement, Element>
+  ) => {
+    try {
+      await updateTaskInfoApi(taskId, {
+        name: event.currentTarget.value,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error('تغییر عنوان تسک با مشکل مواجه شد');
+    }
+  };
+  const handleBlurDescriptionInput = async (
+    event: React.FocusEvent<HTMLTextAreaElement, Element>
+  ) => {
+    try {
+      await updateTaskInfoApi(taskId, {
+        description: event.currentTarget.value,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error('تغییر توضیحات تسک با مشکل مواجه شد');
+    }
+  };
+
   const handlePriorityClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     setpriority(e.currentTarget.id);
   };
 
-  const handleChange = () => {
-    setdisabled(false);
-  };
-
-  useEffect(() => {
-    setValue('tags', selectedTags);
-    setValue('priority', priority);
-    setValue('boardId', boardId);
-  }, [boardId, priority, selectedTags, setValue]);
-
-  const handleSelectedTag = (event) => {
-    const updateSelectedTags = selectedTags.filter((item) => {
-      item.id !== event.currentTarget.id;
-    });
-    setselectedTags(updateSelectedTags);
+  const handleDeleteTag = (tagName: string) => {
+    dispatch(DeleteTagModalSlice.actions.setTagName({ tagName }));
+    dispatch(DeleteTagModalSlice.actions.onOpen());
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
-    const { name, description, boardId } = data;
+    const { commentText } = data;
     setLoading(true);
     try {
-      const { data: apiData } = await createTaskApi({
-        name,
-        description,
-        boardId,
+      const { data: apiData } = await createCommentApi({
+        taskId,
+        text: commentText,
       });
-      // dispatch(
-      //   userSlice.actions.setUserPersonaInfo({ firstname, lastname, phone })
-      // );
+
+      dispatch(
+        EditTaskModalSlice.actions.addComment({
+          newComment: apiData.data,
+          prevComments,
+        })
+      );
       console.log(apiData);
-      toast.success('ایجاد تسک جدید با موفقیت انجام شد');
+      setShowComment(false);
+      setValue('commentText', '');
+
+      console.log(apiData);
+      toast.success('کامنت با موفقیت ثبت شد');
       setLoading(false);
-      setdisabled(true);
-      handleCloseModal();
     } catch (error) {
       console.log(error);
-      toast.error('ایجاد تسک جدید با مشکل مواجه شد');
+      toast.error('ایجاد کامنت با مشکل مواجه شد');
     }
   };
 
+  const handleShowCommnetBox = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    setShowComment(true);
+  };
+  const handleHideCommentBox = () => {
+    setShowComment(false);
+  };
   return (
-    <Modal
-      closeOnClickOutside={false}
-      onClose={handleChange}
-      centered={true}
-      size='auto'
-      radius='20px'
-      withCloseButton={false}
-      opened={open}
-      dir='rtl'>
-      <Modal.Header className='flex items-center mb-[35px]'>
-        <Modal.CloseButton
-          onClick={handleCloseModal}
-          size={'1.5rem'}
-        />
-      </Modal.Header>
-      <Modal.Body>
+    <>
+      <DeleteCommnetModal />
+      <DeleteTagModal />
+      <Modal
+        onClick={handleHideCommentBox}
+        onClose={handleCloseModal}
+        centered={true}
+        size='auto'
+        radius='20px'
+        withCloseButton={false}
+        opened={open}
+        dir='rtl'
+        styles={() => ({
+          body: {
+            padding: '30px 36px 0 0 ',
+          },
+        })}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='flex flex-row items-center w-[1350px]'>
+          <div className='flex flex-row items-start w-[1345px] h-[596px] overflow-hidden'>
             {/* Right Side */}
-            <div className='pt-[14px] border-solid border-l-[1px] border-[#ff0000] items-center w-[50%]'>
+            <div className='border-solid border-l-[1px] border-[#F4F4F4] w-[50%] h-full'>
               {/* Right Side top */}
-              <div className='flex flex-row gap-[128px] px-[20px] pb-[38px] pt-[14px] items-center border-solid border-b-[1px] border-[#ff0000]'>
+              <div className='flex flex-row items-center justify-between mt-[60px] py-[12px] px-[20px]'>
                 {/* Right Side top right*/}
                 <div className='flex flex-row gap-[24px] items-center'>
-                  <div>open</div>
-                  <div>checkBox</div>
+                  <div className='flex flex-row items-center gap-[2px]'>
+                    <Tooltip
+                      color='teal'
+                      transitionProps={{ transition: 'pop', duration: 300 }}
+                      position='top'
+                      fz={'16px'}
+                      label={'عنوان بورد'}>
+                      <div
+                        style={{
+                          backgroundColor: `${
+                            boardData?.color ? boardData.color : 'red'
+                          }`,
+                        }}
+                        className='flex flex-col justify-center items-center text-12 font-medium leading-19 text-[#FFFFFF] h-[30px] w-[110px]'>
+                        {boardData?.name}
+                      </div>
+                    </Tooltip>
+                    <div
+                      style={{
+                        backgroundColor: `${
+                          boardData?.color ? boardData.color : 'red'
+                        }`,
+                      }}
+                      className='flex flex-col justify-center items-center rounded-[3px_0px_0px_3px] h-[30px] w-[25px]'>
+                      <BiChevronLeft
+                        color={'#FFFFFF'}
+                        size={'1rem'}
+                      />
+                    </div>
+                  </div>
                   <div>
-                    <CircleButton
-                      className='h-[34px] w-[34px] p-0'
-                      borderColor={undefined}>
-                      <AiOutlineUserAdd size={'1rem'} />
-                    </CircleButton>
+                    <BsCheckSquare
+                      color={'#BDBDBD'}
+                      size={'1.5rem'}
+                    />
+                  </div>
+                  <div className='flex flex-row gap-[5px]'>
+                    <Menu
+                      position='bottom'
+                      styles={() => ({
+                        itemLabel: {
+                          textAlign: 'right',
+                        },
+                      })}>
+                      <Menu.Target>
+                        <CircleButton
+                          className='h-[34px] w-[34px] p-0'
+                          borderColor={undefined}>
+                          <AiOutlineUserAdd size={'1rem'} />
+                        </CircleButton>
+                      </Menu.Target>
+
+                      <Menu.Dropdown>
+                        {members.map((member: any) => {
+                          return (
+                            <Menu.Item
+                              onClick={() => {
+                                handleAssign(member.user);
+                              }}
+                              id={member.user._id}
+                              key={member.user._id}>
+                              <Flex
+                                direction={'row'}
+                                align={'center'}
+                                gap={'12px'}>
+                                <Avatar
+                                  userId={member.user._id}
+                                  label={`${member.user.firstname} ${member.user.lastname}`}
+                                  color='cyan'
+                                  radius='xl'
+                                />
+                                {member.user._id === currentId ? (
+                                  <Text className='rounded-6 bg-[#A5E4F8] py-1 px-2 flex items-center justify-center text-xs'>
+                                    شما
+                                  </Text>
+                                ) : null}
+                                <Text>{`${member.user.firstname} ${member.user.lastname}`}</Text>
+                                <AiOutlineCheck
+                                  size={'1.1rem'}
+                                  color={'blue'}
+                                />
+                              </Flex>
+                            </Menu.Item>
+                          );
+                        })}
+                      </Menu.Dropdown>
+                    </Menu>
+                    {taskAssigns.map((item: any) => {
+                      return (
+                        <Avatar
+                          key={item._id}
+                          label={item.username}
+                          radius={'50%'}
+                        />
+                      );
+                    })}
                   </div>
                   <div>
                     <Menu
@@ -180,9 +366,11 @@ const EditTaskModal = ({ boardId }: EditTaskModalprop) => {
                         },
                       })}>
                       <Menu.Target>
-                        <CircleButton borderColor={priortyColor(priority)}>
+                        <CircleButton
+                          className='h-[34px] w-[34px] p-0'
+                          borderColor={priortyColor(priority)}>
                           <BsFlag
-                            size={'1.5rem'}
+                            size={'1rem'}
                             color={priortyColor(priority)}
                           />
                         </CircleButton>
@@ -213,18 +401,33 @@ const EditTaskModal = ({ boardId }: EditTaskModalprop) => {
                 </div>
                 {/* Right Side top left*/}
                 <div className='flex flex-row gap-[20px] items-center'>
-                  <div>share</div>
-                  <div>3dot</div>
+                  <div className='flex flex-row gap-[10px]'>
+                    <AiOutlineShareAlt
+                      size={'1.2rem'}
+                      color={'#BDBDBD'}
+                    />
+                    <div className='text-16 font-medium leading-[25px]'>
+                      اشتراک گذاری
+                    </div>
+                  </div>
+                  <div>
+                    <HiOutlineDotsHorizontal
+                      size={'1.2rem'}
+                      color={'#BDBDBD'}
+                    />
+                  </div>
                 </div>
               </div>
+              {/*middle line*/}
+              <hr className='mt-[24px] border-solid border-[1px] border-[#F4F4F4]' />
+              {/* Right Side bottom */}
               <div className='flex flex-col gap-[24px] mt-[24px]'>
-                <div>
-                  <Menu
-                    closeOnItemClick={false}
-                    position='top'
-                    width={'175px'}>
+                <div className='flex flex-row items-center gap-[5px]'>
+                  <Menu position='top-start'>
                     <Menu.Target>
-                      <CircleButton borderColor={undefined}>
+                      <CircleButton
+                        borderColor={undefined}
+                        className='h-[50px] w-[50px] p-0'>
                         <BsTags
                           size={'1.5rem'}
                           color={'##C1C1C1'}
@@ -233,55 +436,35 @@ const EditTaskModal = ({ boardId }: EditTaskModalprop) => {
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                      <div className='flex flex-wrap gap-2'>
-                        {selectedTags.map((item) => {
-                          return (
-                            <Tooltip label='برای حذف تگ کلیک کن'>
-                              <Box
-                                onClick={handleSelectedTag}
-                                key={item.id}
-                                sx={() => ({
-                                  backgroundColor: item.color,
-                                  color: 'white',
-                                  height: '31px',
-                                  padding: '5px 8px',
-                                  borderRadius: '6px',
-                                })}
-                                className='w-fit cursor-pointer'>
-                                {item.tagName}
-                              </Box>
-                            </Tooltip>
-                          );
-                        })}
-                      </div>
-                      <Menu.Item>
+                      <div className='flex flex-col gap-[16px] p-[12px]'>
                         <MantineTextInput
-                          rightSection={<BsSearch />}
+                          onKeyDown={handleEnterKey}
                           styles={() => ({
                             input: {
                               textAlign: 'right',
-                              paddingRight: '30px',
                               paddingLeft: '0px',
                               fontSize: '12px',
                             },
                           })}
-                          placeholder='جستجو یا ساختن تگ'
+                          placeholder='عنوان تگ را وارد کنید'
                         />
-                      </Menu.Item>
-                      <div className='flex flex-col gap-[12px] mt-[12px] h-[100px] scrollbar-none overflow-y-auto'>
-                        {tags.map((item) => {
-                          return (
-                            <Menu.Item
-                              key={item.id}
-                              py={'0px'}
-                              px={'12px'}>
-                              <div className='flex flex-row justify-between items-center'>
+                        <div className='text-12 font-normal leading-19 text-center'>
+                          برای ساختن تگ جدید اینتر بزنید
+                        </div>
+                      </div>
+                    </Menu.Dropdown>
+                  </Menu>
+                  {taskTags && (
+                    <div className='flex flex-row gap-[10px] items-center'>
+                      {taskTags?.map((item: any) => {
+                        return (
+                          <div key={item._id}>
+                            <Menu>
+                              <Menu.Target>
                                 <Box
-                                  id={item.id}
-                                  onClick={handleSelectTag}
+                                  id={item._id}
                                   sx={() => ({
                                     backgroundColor: item.color,
-                                    color: 'white',
                                     height: '31px',
                                     padding: '5px 8px',
                                     borderRadius: '6px',
@@ -289,83 +472,285 @@ const EditTaskModal = ({ boardId }: EditTaskModalprop) => {
                                   className='w-fit'>
                                   {item.tagName}
                                 </Box>
-                                <div>
-                                  <Menu width={'80px'}>
-                                    <Menu.Target>
-                                      <BsThreeDots />
-                                    </Menu.Target>
+                              </Menu.Target>
 
-                                    <Menu.Dropdown className='absolute '>
-                                      <Menu.Item>سلام</Menu.Item>
-                                      <Menu.Item>سلام</Menu.Item>
-                                    </Menu.Dropdown>
-                                  </Menu>
-                                </div>
-                              </div>
-                            </Menu.Item>
-                          );
-                        })}
-                      </div>
-                    </Menu.Dropdown>
-                  </Menu>
+                              <Menu.Dropdown>
+                                <Menu.Item
+                                  onClick={() => {
+                                    handleDeleteTag(item.tagName);
+                                  }}>
+                                  <div className='flex flex-row items-center gap-[4px]'>
+                                    <RxCross2
+                                      size={'1.1rem'}
+                                      color={'#BDBDBD'}
+                                    />
+                                    <div className='text-[12px] font-normal leading-[16px]'>
+                                      حذف تگ
+                                    </div>
+                                  </div>
+                                </Menu.Item>
+                                <Menu.Item>
+                                  <div className='flex flex-row items-center gap-[4px]'>
+                                    <BiEdit
+                                      size={'1.1rem'}
+                                      color={'#BDBDBD'}
+                                    />
+                                    <div className='text-[12px] font-normal leading-[16px]'>
+                                      ویرایش تگ
+                                    </div>
+                                  </div>
+                                </Menu.Item>
+                                <Menu.Item>
+                                  <div className='flex flex-row items-center gap-[4px]'>
+                                    <BiPalette
+                                      size={'1rem'}
+                                      color={'#BDBDBD'}
+                                    />
+                                    <div className='text-[12px] font-normal leading-[16px]'>
+                                      ویرایش رنگ
+                                    </div>
+                                  </div>
+                                </Menu.Item>
+                              </Menu.Dropdown>
+                            </Menu>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
                 <div>
-                  TAsk title
-                  <TextArea
-                    w='620px'
+                  <div className='mb-[12px]'>
+                    <MantineTextInput
+                      readOnly={readonly}
+                      onBlur={handleBlurTitleInput}
+                      onFocus={handleFocus}
+                      defaultValue={taskTitle}
+                      id={'name'}
+                      placeholder='عنوان تسک'
+                      styles={() => ({
+                        wrapper: {
+                          paddingLeft: '20px',
+                        },
+                        input: {
+                          padding: '5px',
+                          border: 'none',
+                          fontSize: '24px',
+                          fontWeight: '600',
+                          textAlign: 'right',
+                          '&:focus': {
+                            backgroundColor: '#FAFAF9',
+                            border: '1px solid blue',
+                          },
+                        },
+                      })}
+                    />
+                  </div>
+                  <MantineTextArea
+                    onBlur={handleBlurDescriptionInput}
+                    defaultValue={taskDescription}
                     minRows={3}
-                    onChange={handleChange}
                     id='description'
-                    register={register}
                     placeholder='توضیحاتی برای این تسک بنویسید'
+                    styles={() => ({
+                      wrapper: {
+                        paddingLeft: '20px',
+                      },
+                      input: {
+                        padding: '12px',
+                        border: '1px solid #C1C1C1',
+                        fontSize: '16px',
+                        fontWeight: '400',
+                        lineHeight: '25px',
+                        textAlign: 'right',
+                        '&:focus': {
+                          backgroundColor: '#FAFAF9',
+                          border: '1px solid blue',
+                        },
+                      },
+                    })}
                   />
                 </div>
-                <div>checklist</div>
-                <div>پیوست</div>
+                <div className='flex items-center gap-[8px] text-[#208D8E]'>
+                  <AiOutlinePlusSquare size={'1.2rem'} />
+                  <span className='text-12 font-medium leading-19'>
+                    اضافه کردن چک لیست
+                  </span>
+                </div>
+                <div className='flex items-center gap-[8px] text-[#208D8E]'>
+                  <AiOutlinePlusSquare size={'1.2rem'} />
+                  <span className='text-12 font-medium leading-19'>
+                    اضافه کردن پیوست
+                  </span>
+                </div>
               </div>
             </div>
 
             {/* Left Side */}
-            <div className='px-[20px] w-[50%]'>
-              <div className='flex flex-row gap-[128px] px-[20px] pb-[38px] pt-[14px] items-center border-solid border-b-[1px] border-[#ff0000]'>
-                {/* Left Side top right*/}
-                <div className='flex flex-row gap-[24px] items-center'>
-                  <div>ساخته شده در</div>
-                  <div>زمان</div>
-                  <div>ددلاین</div>
+            <div className='w-[50%] h-full flex flex-col justify-between relative'>
+              <div>
+                <div className='pt-[3px] pl-[33px]'>
+                  <Modal.CloseButton
+                    className='mr-auto'
+                    m={'0px'}
+                    p={'0px'}
+                    onClick={handleCloseModal}
+                    size={'1.2rem'}
+                  />
                 </div>
-                {/* Right Side top left*/}
-                <div className='flex flex-row gap-[20px] items-center'>
-                  <Indicator
-                    offset={3}
-                    label={'۲'}
-                    size={16}>
-                    <AiOutlineEye
-                      color={'#BDBDBD'}
-                      size={'2rem'}
-                    />
-                  </Indicator>
+                {/* Left Side top*/}
+                <div className='flex flex-row items-center justify-between pr-[20px] pl-[36px] pt-[33px]'>
+                  {/* Left Side top right*/}
+                  <div className='flex flex-row items-center pt-[4.5px]'>
+                    <div className='flex flex-col gap-[5px] pl-[28px] border-solid border-l-[1px] border-[#F4F4F4]'>
+                      <div className='text-12 text-[#BBBBBB] font-medium leading-19'>
+                        ساخته شده در
+                      </div>
+                      <div className='text-16 font-medium leading-25'>
+                        1 اردیبهشت 1402
+                      </div>
+                    </div>
+                    <div className='flex flex-col gap-[5px] px-[28px] border-solid border-l-[1px] border-[#F4F4F4]'>
+                      <div className='text-12 text-[#BBBBBB] font-medium leading-19'>
+                        زمان
+                      </div>
+                      <div className='flex flex-row items-center gap-[7px]'>
+                        <AiFillPlayCircle
+                          color={'#80C959'}
+                          size={'1.1rem'}
+                        />
+                        <div className='text-16 font-medium'>00:00:00</div>
+                      </div>
+                    </div>
+                    <div className='flex flex-col gap-[5px] pr-[28px]'>
+                      <div className='text-12 text-[#BBBBBB] font-medium leading-19'>
+                        ددلاین
+                      </div>
+                      <div className='text-16 font-medium leading-25'>
+                        {taskDeadLine}
+                      </div>
+                    </div>
+                  </div>
+                  {/* Left Side top left*/}
+                  <div className='flex flex-row items-center '>
+                    <Indicator
+                      offset={3}
+                      label={'۲'}
+                      size={16}>
+                      <AiOutlineEye
+                        color={'#BDBDBD'}
+                        size={'2rem'}
+                      />
+                    </Indicator>
+                  </div>
+                </div>
+
+                {/*middle line*/}
+                <hr className='mt-[34.5px] border-solid border-[1px] border-[#F4F4F4]' />
+                <div className='flex flex-col justify-between mt-[24px]'>
+                  <div className='flex flex-col pl-[36px] pr-[20px] h-[360px] overflow-auto scrollbar-none'>
+                    {comment.length > 0 &&
+                      comment.map((item: any) => {
+                        return (
+                          <UserCommentBox
+                            currentId={currentId}
+                            key={item._id}
+                            commentId={item._id}
+                            user={item.user}
+                            comment={item.text}
+                            createdTime={item.createdAt}
+                          />
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={handleShowCommnetBox}
+                className={
+                  'transition-all duration-300 absolute bottom-0 left-0 right-0 bg-[white] overflow-hidden' +
+                  (showComment
+                    ? ` h-[200px] rounded-t-[12px]
+              drop-shadow-[0px_-4px_12px_rgba(0,0,0,0.25)]`
+                    : ' h-[67px]')
+                }>
+                <hr
+                  className={
+                    'border-solid border-[1px] border-[#F4F4F4]' +
+                    (showComment && ' invisible')
+                  }
+                />
+                <div className='flex flex-col justify-between  pr-[16px] pl-[36px]'>
+                  <div className='flex flex-row justify-between overflow-hidden'>
+                    <div className='grow '>
+                      <CommentTextArea
+                        minRows={!showComment ? 1 : 6}
+                        id='commentText'
+                        placeholder='کامنت'
+                        register={register}
+                      />
+                    </div>
+                    <div className='pt-[13px] pr-[20px]'>
+                      <FaRegCommentDots
+                        size={'1.2rem'}
+                        color={'#AEAEAE'}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      'flex flex-row justify-between items-center mb-[20px] h-fit ' +
+                      (!showComment && 'hidden')
+                    }>
+                    <div className='flex flex-row items-center gap-[20px]'>
+                      <div>
+                        <FiAtSign
+                          size={'1.2rem'}
+                          color={'#AEAEAE'}
+                        />
+                      </div>
+                      <div>
+                        <TiAttachment
+                          size={'1.5rem'}
+                          color={'#AEAEAE'}
+                        />
+                      </div>
+                      <div>
+                        <BsFileEarmark
+                          size={'1.2rem'}
+                          color={'#AEAEAE'}
+                        />
+                      </div>
+                      <div>
+                        <BsEmojiSmile
+                          size={'1.2rem'}
+                          color={'#AEAEAE'}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Button
+                        py={'6px'}
+                        px={'12px'}
+                        loading={loading}
+                        type='submit'
+                        fz={'12px'}
+                        fw={'600'}
+                        lh={'18px'}
+                        radius={'4px'}
+                        h={'31px'}>
+                        ثبت کامنت
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </form>
-
-        <Button
-          py={'7px'}
-          disabled={disabled}
-          loading={loading}
-          type='submit'
-          fz={'12px'}
-          fw={'500'}
-          lh={'18px'}
-          radius={'4px'}
-          h={'32px'}
-          w={'125px'}>
-          ساختن تسک
-        </Button>
-      </Modal.Body>
-    </Modal>
+      </Modal>
+    </>
   );
 };
 

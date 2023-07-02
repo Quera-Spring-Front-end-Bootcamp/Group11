@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
 import { User, storeStateTypes } from '../../util/types';
 import { Avatar } from '..';
+import { usePersianNumberTransform } from '../../hook';
+import { getTaskTagsApi } from '../../services/tagApi';
 import { useToPersianDate } from '../../hook';
 
 interface TagProp {
@@ -28,10 +30,12 @@ interface taskCardProps {
   projectName?: string;
   deadLine?: string;
   taskId: string;
+  taskTitle: string;
 }
 
 const TaskCard = ({ projectName, taskId }: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
+  const [taskTags, setTaskTags] = useState([]);
   const [isCheckList, setIsCheckList] = useState(true);
   const dispatch = useDispatch();
   const toPersianDate = useToPersianDate();
@@ -41,8 +45,26 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
       .find((board) => board.tasks.some((task) => task._id === taskId))
       ?.tasks.find((task) => task._id === taskId)
   );
+  const fetchTaskTags = async () => {
+    try {
+      const { data } = await getTaskTagsApi(taskId);
+      setTaskTags(data.data.tags);
+      dispatch(
+        EditTaskModalSlice.actions.setTaskTags({ taskTags: data.data.tags })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchTaskTags();
+  }, []);
 
-  const onClick = () => {
+  const onClick = async () => {
+    dispatch(EditTaskModalSlice.actions.setTaskDetail({ taskObject }));
+    dispatch(EditTaskModalSlice.actions.setTaskDeadLine({ datePersian }));
+    dispatch(EditTaskModalSlice.actions.setTaskTags({ taskTags }));
+
     dispatch(EditTaskModalSlice.actions.onOpen());
   };
   const handleDeleteTask = (e: { stopPropagation: () => void }) => {
@@ -76,7 +98,8 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         </span>
         {taskObject.taskAssigns.length ? (
           <MantineAvatar.Group spacing='sm'>
-            {taskObject.taskAssigns.map((user: User, i: number) => {
+            {taskObject?.taskAssigns?.map((user: User, i: number) => {
+
               return (
                 <Avatar
                   key={user._id}
@@ -118,10 +141,17 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
           <span className='text-[10px] font-medium mr-[4px]'>۱۲ / ۲</span>
         </div> */}
       </Flex>
-      <div className='flex flex-row items-center mt-[20px]'>
-        <Tag tagColor={'#BFFDE3'}>پروژه</Tag>
-        <Tag tagColor={'#EEDFF7'}>درس</Tag>
-      </div>
+      {taskTags.length > 0 && (
+        <div className='flex flex-row items-center mt-[20px]'>
+          {taskTags.map((item: any) => (
+            <Tag
+              key={item._id}
+              tagColor={item.color}>
+              {item.tagName}
+            </Tag>
+          ))}
+        </div>
+      )}
       <div
         className={
           'border-solid border-[1px] border-[#EFF0F0] mt-[18px] w-[100%]' +
@@ -136,15 +166,17 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         <FiCheckCircle />
         <Tooltip
           label='حذف تسک'
-          color='blue'
+          color='red'
           withArrow
-          position='left'>
-          <RiDeleteBinLine
-            title='حذف تسک'
-            size={'1.2rem'}
-            className='hover:text-[red] cursor-pointer'
-            onClick={handleDeleteTask}
-          />
+          transitionProps={{ transition: 'scale-x', duration: 300 }}
+          position='right'>
+          <div>
+            <RiDeleteBinLine
+              size={'1.2rem'}
+              className='hover:text-[red] cursor-pointer'
+              onClick={handleDeleteTask}
+            />
+          </div>
         </Tooltip>
       </div>
     </Card>

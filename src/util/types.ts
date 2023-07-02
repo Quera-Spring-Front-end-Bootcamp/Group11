@@ -10,7 +10,10 @@ import {
   ProjectSliceTypes,
   NewTaskModalSliceTypes,
   EditTaskModalSliceTypes,
+  CommentSliceTypes,
   DeleteTaskModalSliceTypes,
+  DeleteCommentModalSliceTypes,
+  DeleteTagModalSliceTypes,
   CalenderViewSliceTypes,
 } from '../redux/slices';
 
@@ -89,5 +92,8 @@ export type storeStateTypes = {
   CreateProjectModal: CreateProjectModalSliceTypes;
   NewTaskModal: NewTaskModalSliceTypes;
   EditTaskModal: EditTaskModalSliceTypes;
+  Comments: CommentSliceTypes;
   DeleteTaskModal: DeleteTaskModalSliceTypes;
+  DeleteCommentModal: DeleteCommentModalSliceTypes;
+  DeleteTagModal: DeleteTagModalSliceTypes;
 };
