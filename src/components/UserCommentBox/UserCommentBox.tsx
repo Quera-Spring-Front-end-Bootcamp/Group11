@@ -54,12 +54,11 @@ const UserCommentBox = ({
       direction={'row'}
       align={'start'}
       gap={'12px'}
-      styles={() => ({})}
       {...otherProps}>
       <Avatar
         label={user.username}
         radius={'50%'}
-        userId={user._id}
+        userId={user._id || (user as unknown as string)}
       />
       <Flex
         className='rounded-[16px] border-[1px] border-solid border-[#F4F4F4]'

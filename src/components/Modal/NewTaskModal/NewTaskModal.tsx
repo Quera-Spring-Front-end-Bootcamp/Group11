@@ -49,7 +49,7 @@ const NewTaskModal = () => {
     (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
   const project = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectName
+    (state: storeStateTypes) => state.project.selectedProjectName
   );
   const tags = [
     {

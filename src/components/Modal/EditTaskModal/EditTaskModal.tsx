@@ -7,11 +7,11 @@ import {
   Flex,
   Text,
 } from '@mantine/core';
-import { Indicator, Menu, Modal } from '@mantine/core';
+import { Indicator, Menu, Modal, Avatar as MantineAvatar } from '@mantine/core';
 import {
-  CommentSlice,
   DeleteTagModalSlice,
   EditTaskModalSlice,
+  ProjectSlice,
 } from '../../../redux/slices';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -40,15 +40,19 @@ import {
   BsTags,
 } from 'react-icons/bs';
 import { priorityItem, tagColors } from '../../../constants';
-import { assignTaskApi, updateTaskInfoApi } from '../../../services/taskApi';
+import {
+  assignTaskApi,
+  getCommentsApi,
+  updateTaskInfoApi,
+} from '../../../services/taskApi';
 import { FaRegCommentDots } from 'react-icons/fa';
 import { FiAtSign } from 'react-icons/fi';
 import { TiAttachment } from 'react-icons/ti';
-import { storeStateTypes } from '../../../util/types';
+import { Comment, User, storeStateTypes } from '../../../util/types';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { createCommentApi } from '../../../services/commentApi';
 import { createTagApi } from '../../../services/tagApi';
-import { DeleteCommnetModal } from '../DeleteCommnetModal';
+import { DeleteCommentModal } from '../DeleteCommentModal';
 import { DeleteTagModal } from '../DeleteTagModal';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -57,6 +61,7 @@ const EditTaskModal = () => {
   const [readonly, setReadonly] = useState(true);
   const [showComment, setShowComment] = useState(false);
   const [priority, setpriority] = useState('noPriority');
+  const [comment, setComment] = useState<Array<Comment>>([]);
 
   const dispatch = useDispatch();
   const {
@@ -64,20 +69,43 @@ const EditTaskModal = () => {
     taskTitle,
     taskDescription,
     taskDeadLine,
-    comment,
-    board,
+    boardId,
     open,
     taskTags,
     taskAssigns,
     projectMemberData,
   } = useSelector((state: storeStateTypes) => state.EditTaskModal);
-  const boardData = useSelector((state: storeStateTypes) =>
-    state.board.selectedProjectBoardData.find((item) => item._id === board)
+
+  useEffect(() => {
+    if (!taskId) return;
+    const fetchComments = async () => {
+      const {
+        data: { data: comments },
+      } = await getCommentsApi(taskId);
+      setComment(comments);
+    };
+    fetchComments();
+  }, [open]);
+
+  const prevBoardData = useSelector(
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
+
+  const boardData = prevBoardData.find((board) => board._id === boardId);
   const currentId = useSelector((state: storeStateTypes) => state.user.id);
   const members = projectMemberData;
-  const prevComments = comment;
   const prevTags = taskTags;
+
+  const {
+    register, //register function will pass to text inputs
+    handleSubmit, //submit function
+    setValue,
+  } = useForm<FieldValues>({
+    defaultValues: {
+      commentText: '',
+    },
+  });
+
   const priortyColor = (pri: string | null) => {
     if (pri == 'urgent') return '#FB0606';
     if (pri == 'high') return '#FFE605';
@@ -86,23 +114,29 @@ const EditTaskModal = () => {
     if (pri == 'noPriority') return null;
   };
 
-  const handleAssign = async (member: any) => {
-    console.log(member);
+  const handleAssign = async (member: User) => {
     try {
-      const { data: apiData } = await assignTaskApi(taskId, member._id);
+      const {
+        data: {
+          data: { user },
+        },
+      } = await assignTaskApi(taskId, member._id);
 
-      console.log(apiData);
-      toast.success('اساین تسک با موفقیت ایجاد شد');
       dispatch(
-        EditTaskModalSlice.actions.setTaskAssigns({
-          newTag: {
-            _id: apiData.data.tag._id,
-            tagName: apiData.data.tag.name,
-            color: apiData.data.tag.color,
-          },
-          prevTags,
+        EditTaskModalSlice.actions.addTaskAssigns({
+          newAssignee: user,
+          prevData: taskAssigns,
         })
       );
+      dispatch(
+        ProjectSlice.actions.addTaskAssignee({
+          taskId,
+          boardId,
+          prevBoardData,
+          newAssignee: user,
+        })
+      );
+      toast.success('اساین تسک با موفقیت انجام شد');
     } catch (error) {
       console.log(error);
       toast.error('اساین تسک با مشکل مواجه شد');
@@ -136,21 +170,11 @@ const EditTaskModal = () => {
   const handleEnterKey = (event: any) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      console.log('Enter');
       handleCreateTag(event.target.value);
 
       event.target.value = '';
     }
   };
-  const {
-    register, //register function will pass to text inputs
-    handleSubmit, //submit function
-    setValue,
-  } = useForm<FieldValues>({
-    defaultValues: {
-      commentText: '',
-    },
-  });
 
   const handleCloseModal = () => {
     dispatch(EditTaskModalSlice.actions.onClose());
@@ -162,9 +186,21 @@ const EditTaskModal = () => {
     event: React.FocusEvent<HTMLInputElement, Element>
   ) => {
     try {
-      await updateTaskInfoApi(taskId, {
+      const {
+        data: {
+          data: { name: newName },
+        },
+      } = await updateTaskInfoApi(taskId, {
         name: event.currentTarget.value,
       });
+      dispatch(
+        ProjectSlice.actions.renameTask({
+          boardId,
+          newName,
+          prevBoardData,
+          taskId,
+        })
+      );
     } catch (error) {
       console.log(error);
       toast.error('تغییر عنوان تسک با مشکل مواجه شد');
@@ -174,9 +210,22 @@ const EditTaskModal = () => {
     event: React.FocusEvent<HTMLTextAreaElement, Element>
   ) => {
     try {
-      await updateTaskInfoApi(taskId, {
+      const {
+        data: {
+          data: { description: newDescription },
+        },
+      } = await updateTaskInfoApi(taskId, {
         description: event.currentTarget.value,
       });
+      console.log(newDescription);
+      dispatch(
+        ProjectSlice.actions.editDescriptionOfTask({
+          boardId,
+          newDescription,
+          prevBoardData,
+          taskId,
+        })
+      );
     } catch (error) {
       console.log(error);
       toast.error('تغییر توضیحات تسک با مشکل مواجه شد');
@@ -194,27 +243,22 @@ const EditTaskModal = () => {
     dispatch(DeleteTagModalSlice.actions.onOpen());
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+  const onCommentSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { commentText } = data;
     setLoading(true);
     try {
-      const { data: apiData } = await createCommentApi({
+      const {
+        data: { data: newComment },
+      } = await createCommentApi({
         taskId,
         text: commentText,
       });
 
-      dispatch(
-        EditTaskModalSlice.actions.addComment({
-          newComment: apiData.data,
-          prevComments,
-        })
-      );
-      console.log(apiData);
+      setComment([...comment, newComment]);
+
       setShowComment(false);
       setValue('commentText', '');
 
-      console.log(apiData);
       toast.success('کامنت با موفقیت ثبت شد');
       setLoading(false);
     } catch (error) {
@@ -234,7 +278,7 @@ const EditTaskModal = () => {
   };
   return (
     <>
-      <DeleteCommnetModal />
+      <DeleteCommentModal />
       <DeleteTagModal />
       <Modal
         onClick={handleHideCommentBox}
@@ -250,7 +294,7 @@ const EditTaskModal = () => {
             padding: '30px 36px 0 0 ',
           },
         })}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onCommentSubmit)}>
           <div className='flex flex-row items-start w-[1345px] h-[596px] overflow-hidden'>
             {/* Right Side */}
             <div className='border-solid border-l-[1px] border-[#F4F4F4] w-[50%] h-full'>
@@ -345,15 +389,18 @@ const EditTaskModal = () => {
                         })}
                       </Menu.Dropdown>
                     </Menu>
-                    {taskAssigns.map((item: any) => {
-                      return (
-                        <Avatar
-                          key={item._id}
-                          label={item.username}
-                          radius={'50%'}
-                        />
-                      );
-                    })}
+                    <MantineAvatar.Group>
+                      {taskAssigns.map((user: User) => {
+                        return (
+                          <Avatar
+                            key={user._id}
+                            userId={user._id}
+                            label={user.username}
+                            radius={'50%'}
+                          />
+                        );
+                      })}
+                    </MantineAvatar.Group>
                   </div>
                   <div>
                     <Menu
@@ -536,7 +583,7 @@ const EditTaskModal = () => {
                           padding: '5px',
                           border: 'none',
                           fontSize: '24px',
-                          fontWeight: '600',
+                          fontWeight: 'bold',
                           textAlign: 'right',
                           '&:focus': {
                             backgroundColor: '#FAFAF9',
@@ -560,7 +607,7 @@ const EditTaskModal = () => {
                         padding: '12px',
                         border: '1px solid #C1C1C1',
                         fontSize: '16px',
-                        fontWeight: '400',
+                        fontWeight: 'normal',
                         lineHeight: '25px',
                         textAlign: 'right',
                         '&:focus': {
@@ -606,9 +653,7 @@ const EditTaskModal = () => {
                       <div className='text-12 text-[#BBBBBB] font-medium leading-19'>
                         ساخته شده در
                       </div>
-                      <div className='text-16 font-medium leading-25'>
-                        1 اردیبهشت 1402
-                      </div>
+                      <div className='text-16 font-medium leading-25'>----</div>
                     </div>
                     <div className='flex flex-col gap-[5px] px-[28px] border-solid border-l-[1px] border-[#F4F4F4]'>
                       <div className='text-12 text-[#BBBBBB] font-medium leading-19'>
@@ -650,18 +695,16 @@ const EditTaskModal = () => {
                 <div className='flex flex-col justify-between mt-[24px]'>
                   <div className='flex flex-col pl-[36px] pr-[20px] h-[360px] overflow-auto scrollbar-none'>
                     {comment.length > 0 &&
-                      comment.map((item: any) => {
-                        return (
-                          <UserCommentBox
-                            currentId={currentId}
-                            key={item._id}
-                            commentId={item._id}
-                            user={item.user}
-                            comment={item.text}
-                            createdTime={item.createdAt}
-                          />
-                        );
-                      })}
+                      comment.map((item: Comment) => (
+                        <UserCommentBox
+                          currentId={currentId}
+                          key={item._id}
+                          commentId={item._id}
+                          user={item.user}
+                          comment={item.text}
+                          createdTime={item.createdAt}
+                        />
+                      ))}
                   </div>
                 </div>
               </div>

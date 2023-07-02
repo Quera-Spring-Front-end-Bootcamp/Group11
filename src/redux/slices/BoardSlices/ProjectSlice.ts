@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { arrayMove } from '@dnd-kit/sortable';
-import { Board, Task } from '../../../util/types';
+import { Board, Task, User } from '../../../util/types';
 
 export type ProjectSliceTypes = {
   loading: boolean;
@@ -77,6 +77,15 @@ export const ProjectSlice = createSlice({
         })
       );
     },
+    addBoard: (
+      state: ProjectSliceTypes,
+      action: {
+        payload: { createdBoard: Board; prevBoardData: Array<Board> };
+      }
+    ) => {
+      const { createdBoard, prevBoardData } = action.payload;
+      state.selectedProjectBoardData = [...prevBoardData, createdBoard];
+    },
     removeBoard: (
       state: ProjectSliceTypes,
       action: {
@@ -149,16 +158,97 @@ export const ProjectSlice = createSlice({
         };
       });
     },
-
-
-    addBoard: (
+    addTaskAssignee: (
       state: ProjectSliceTypes,
       action: {
-        payload: { createdBoard: Board; prevBoardData: Array<Board> };
+        payload: {
+          boardId: string;
+          taskId: string;
+          newAssignee: User;
+          prevBoardData: Array<Board>;
+        };
       }
     ) => {
-      const { createdBoard, prevBoardData } = action.payload;
-      state.selectedProjectBoardData = [...prevBoardData, createdBoard]
+      const { boardId, taskId, newAssignee, prevBoardData } = action.payload;
+
+      state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+        if (board._id === boardId) {
+          return {
+            ...board,
+            tasks: board.tasks.map((task) => {
+              if (task._id === taskId) {
+                return {
+                  ...task,
+                  taskAssigns: [...task.taskAssigns, newAssignee],
+                };
+              }
+              return task;
+            }),
+          };
+        }
+        return board;
+      });
+    },
+    renameTask: (
+      state: ProjectSliceTypes,
+      action: {
+        payload: {
+          boardId: string;
+          taskId: string;
+          newName: string;
+          prevBoardData: Array<Board>;
+        };
+      }
+    ) => {
+      const { boardId, taskId, newName, prevBoardData } = action.payload;
+      state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+        if (board._id === boardId) {
+          return {
+            ...board,
+            tasks: board.tasks.map((task) => {
+              if (task._id === taskId) {
+                return {
+                  ...task,
+                  name: newName,
+                };
+              }
+              return task;
+            }),
+          };
+        }
+        return board;
+      });
+    },
+    editDescriptionOfTask: (
+      state: ProjectSliceTypes,
+      action: {
+        payload: {
+          boardId: string;
+          taskId: string;
+          newDescription: string;
+          prevBoardData: Array<Board>;
+        };
+      }
+    ) => {
+      const { boardId, taskId, newDescription, prevBoardData } = action.payload;
+      console.log(action.payload);
+      state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+        if (board._id === boardId) {
+          return {
+            ...board,
+            tasks: board.tasks.map((task) => {
+              if (task._id === taskId) {
+                return {
+                  ...task,
+                  description: newDescription,
+                };
+              }
+              return task;
+            }),
+          };
+        }
+        return board;
+      });
     },
   },
 });

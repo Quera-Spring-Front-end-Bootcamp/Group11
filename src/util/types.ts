@@ -5,7 +5,6 @@ import {
   CreateWorkSpaceModalSliceTypes,
   ShareProjectModalSliceTypes,
   ShareWorkspaceModalSliceTypes,
-  CreateTaskModalSliceTypes,
   CreateProjectModalSliceTypes,
   ProjectSliceTypes,
   NewTaskModalSliceTypes,
@@ -55,7 +54,7 @@ export interface Task {
   board: string;
   comments: Array<Comment>;
   description: string;
-  label: Array<Label>;
+  label: string;
   name: string;
   position: NumberInputStylesParams;
   taskAssigns: User[];
@@ -65,9 +64,9 @@ export interface Task {
 
 export type Comment = {
   text: string;
-};
-export type Label = {
-  text: string;
+  createdAt: string;
+  user: User;
+  _id: string;
 };
 
 export interface Board {
@@ -88,7 +87,6 @@ export type storeStateTypes = {
   createWorkSpaceModal: CreateWorkSpaceModalSliceTypes;
   ShareProjectModal: ShareProjectModalSliceTypes;
   ShareWorkspaceModal: ShareWorkspaceModalSliceTypes;
-  CreateTaskModal: CreateTaskModalSliceTypes;
   CreateProjectModal: CreateProjectModalSliceTypes;
   NewTaskModal: NewTaskModalSliceTypes;
   EditTaskModal: EditTaskModalSliceTypes;
