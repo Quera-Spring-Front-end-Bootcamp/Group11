@@ -1,9 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex, Modal } from '@mantine/core';
-import {
-  DeleteCommentModalSlice,
-  EditTaskModalSlice,
-} from '../../../redux/slices';
+import { DeleteCommentModalSlice } from '../../../redux/slices';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { storeStateTypes } from '../../../util/types';
@@ -30,9 +27,7 @@ const DeleteCommentModal = ({ setComment }: DeleteCommentModal) => {
   const handleClose = () => {
     dispatch(DeleteCommentModalSlice.actions.onClose());
   };
-  const prevComments = useSelector(
-    (state: storeStateTypes) => state.EditTaskModal.comment
-  );
+
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {

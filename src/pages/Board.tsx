@@ -3,7 +3,6 @@ import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import {
   CreateProjectModal,
   CreateWorkSpaceModal,
-  DatePickerModal,
   ShareProjectModal,
   ShareWorkspaceModal,
 } from '../components/Modal';

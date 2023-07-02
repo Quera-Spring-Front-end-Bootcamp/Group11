@@ -5,7 +5,6 @@ import { usePersianNumberTransform } from '../../hook';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { DeleteCommentModalSlice } from '../../redux/slices';
-import React from 'react';
 
 interface UserCommentBoxProps {
   user: { _id: string; username: string };
