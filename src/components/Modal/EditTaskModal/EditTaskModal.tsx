@@ -90,7 +90,7 @@ const EditTaskModal = () => {
   const prevBoardData = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
-
+  console.log(prevBoardData);
   const boardData = prevBoardData.find((board) => board._id === boardId);
   const currentId = useSelector((state: storeStateTypes) => state.user.id);
   const members = projectMemberData;
@@ -106,7 +106,7 @@ const EditTaskModal = () => {
     },
   });
 
-  const priortyColor = (pri: string | null) => {
+  const priorityColor = (pri: string | null) => {
     if (pri == 'urgent') return '#FB0606';
     if (pri == 'high') return '#FFE605';
     if (pri == 'medium') return '#09DBCE';
@@ -144,24 +144,39 @@ const EditTaskModal = () => {
   };
   const handleCreateTag = async (name: string) => {
     try {
-      const { data: apiData } = await createTagApi({
+      const {
+        data: {
+          data: { tag },
+        },
+      } = await createTagApi({
         taskId,
         name,
         color: tagColors[Math.floor(Math.random() * tagColors.length)],
       });
 
-      console.log(apiData);
       toast.success('تگ با موفقیت ایجاد شد');
       dispatch(
         EditTaskModalSlice.actions.addTag({
           newTag: {
-            _id: apiData.data.tag._id,
-            tagName: apiData.data.tag.name,
-            color: apiData.data.tag.color,
+            _id: tag._id,
+            tagName: tag.name,
+            color: tag.color,
           },
           prevTags,
         })
       );
+
+      console.log(tag);
+      // dispatch(
+      //   ProjectSlice.actions.addTag({
+      //     newTag: {
+      //       _id: tag._id,
+      //       tagName: tag.name,
+      //       color: tag.color,
+      //     },
+      //     prevTags,
+      //   })
+      // );
     } catch (error) {
       console.log(error);
       toast.error('ایجاد تگ با مشکل مواجه شد');
@@ -267,7 +282,7 @@ const EditTaskModal = () => {
     }
   };
 
-  const handleShowCommnetBox = (
+  const handleShowCommentBox = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
@@ -415,10 +430,10 @@ const EditTaskModal = () => {
                       <Menu.Target>
                         <CircleButton
                           className='h-[34px] w-[34px] p-0'
-                          borderColor={priortyColor(priority)}>
+                          borderColor={priorityColor(priority)}>
                           <BsFlag
                             size={'1rem'}
-                            color={priortyColor(priority)}
+                            color={priorityColor(priority)}
                           />
                         </CircleButton>
                       </Menu.Target>
@@ -711,7 +726,7 @@ const EditTaskModal = () => {
               </div>
 
               <div
-                onClick={handleShowCommnetBox}
+                onClick={handleShowCommentBox}
                 className={
                   'transition-all duration-300 absolute bottom-0 left-0 right-0 bg-[white] overflow-hidden' +
                   (showComment

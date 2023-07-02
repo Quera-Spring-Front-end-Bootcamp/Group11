@@ -8,7 +8,7 @@ import { WorkSpaceAccordion } from '..';
 import { storeStateTypes, workspaceObj } from '../../../util/types';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Flex, Text } from '@mantine/core';
+import { Flex, Loader, Text } from '@mantine/core';
 
 import { BsSearch, BsFillCaretDownFill } from 'react-icons/bs';
 
@@ -29,6 +29,8 @@ const SideBar = () => {
       toast.error('مشکل در برقراری ارتباط با سرور');
     }
   }, []);
+
+  const handleWsSearch = () => {};
 
   return (
     <div className='flex flex-col justify-between mt-[31px] bg-[#FAFBFC] w-[100%] h-[calc(100%-100px)] border-l-[#AAAAAA] '>
@@ -55,7 +57,10 @@ const SideBar = () => {
           </Flex>
         </Flex>
         <div className=''>
-          <SearchInput pholder='جستجو در ورک‌اسپیس‌ها' />
+          <SearchInput
+            // onChange={handleWsSearch}
+            pholder='جستجو در ورک‌اسپیس‌ها'
+          />
         </div>
         <div className='mb-[16px]'>
           <Button
@@ -76,11 +81,17 @@ const SideBar = () => {
         </div>
       </Flex>
       <hr />
-      <div className='relative overflow-y-auto scrollbar-hide py-4 h-full'>
-        <Flex
-          direction='column'
-          gap='30px'
-          className={`
+      {workspaces.length === 0 ? (
+        <div className='w-full h-full grid justify-center items-center '>
+          <Loader />
+        </div>
+      ) : (
+        <>
+          <div className='relative overflow-y-auto scrollbar-hide py-4 h-full'>
+            <Flex
+              direction='column'
+              gap='30px'
+              className={`
             scrollbar-hide  
             transition-all
             ${
@@ -89,28 +100,30 @@ const SideBar = () => {
                 : 'h-0 overflow-hidden opacity-0'
             }
             `}>
-          {workspaces.map((ws: workspaceObj, i: number) => (
-            <WorkSpaceAccordion
-              key={ws._id}
-              i={i}
-              _id={ws._id}
-              members={ws.members}
-              projects={ws.projects}
-              name={ws.name}
-              color={ws.color}
-            />
-          ))}
-        </Flex>
-      </div>
-      <hr />
-      <div className='mt-[20px]'>
-        <div className='mb-[20px]'>
-          <MiniProfile />
-        </div>
-        <div>
-          <LogOutButton />
-        </div>
-      </div>
+              {workspaces.map((ws: workspaceObj, i: number) => (
+                <WorkSpaceAccordion
+                  key={ws._id}
+                  i={i}
+                  _id={ws._id}
+                  members={ws.members}
+                  projects={ws.projects}
+                  name={ws.name}
+                  color={ws.color}
+                />
+              ))}
+            </Flex>
+          </div>
+          <hr />
+          <div className='mt-[20px]'>
+            <div className='mb-[20px]'>
+              <MiniProfile />
+            </div>
+            <div>
+              <LogOutButton />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

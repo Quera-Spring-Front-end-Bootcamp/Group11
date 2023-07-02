@@ -1,22 +1,57 @@
-import { useMemo } from 'react';
 import { Flex, Text, Avatar as MantineAvatar } from '@mantine/core';
-import pda from '@alireza-ab/persian-date';
 import { BsFlag, BsTextRight } from 'react-icons/bs';
 import { Avatar, ColorInput } from '../..';
 import { Task, User } from '../../../util/types';
-import { usePersianNumberTransform, useToPersianDate } from '../../../hook';
+import { useToPersianDate } from '../../../hook';
+import { useDispatch } from 'react-redux';
+import { EditTaskModalSlice } from '../../../redux/slices';
+import { getTaskTagsApi } from '../../../services/tagApi';
+import { useEffect, useState } from 'react';
 
 const TaskRow = ({ task }: { task: Task }) => {
-  const toPersian = usePersianNumberTransform();
+  const [taskTags, setTaskTags] = useState([]);
   const toJalaliDate = useToPersianDate();
+  const dispatch = useDispatch();
+
+  const fetchTaskTags = async () => {
+    try {
+      const { data } = await getTaskTagsApi(task._id);
+      setTaskTags(data.data.tags);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchTaskTags();
+  }, []);
+
+  const datePersian = toJalaliDate(task.deadline);
+
+  const onTaskClickHandler = () => {
+    dispatch(
+      EditTaskModalSlice.actions.setTaskDetail({
+        taskDetail: task,
+      })
+    );
+    dispatch(
+      EditTaskModalSlice.actions.setTaskDeadLine({
+        datePersian,
+      })
+    );
+    dispatch(EditTaskModalSlice.actions.setTaskTags({ taskTags }));
+
+    dispatch(EditTaskModalSlice.actions.onOpen());
+  };
 
   return (
     <Flex
+      onClick={onTaskClickHandler}
       key={task._id}
       justify='space-between'
       align='center'
       my='20px'
-      py='7px'>
+      py='7px'
+      className='cursor-pointer rounded-lg hover:bg-neutral-200/70'>
       <Flex
         gap='10px'
         align='center'
@@ -24,7 +59,6 @@ const TaskRow = ({ task }: { task: Task }) => {
         <ColorInput
           height='16px'
           width='16px'
-          notClickable
           radius='4px'
           bg='#00000080'
         />
@@ -32,7 +66,7 @@ const TaskRow = ({ task }: { task: Task }) => {
       </Flex>
       <Flex
         w='50%'
-        justify='stretch'>
+        align='center'>
         <Flex className='relative w-full justify-center'>
           {task.taskAssigns.length ? (
             <MantineAvatar.Group spacing='sm'>
@@ -59,7 +93,7 @@ const TaskRow = ({ task }: { task: Task }) => {
             </div>
           )}
         </Flex>
-        <div className='w-full text-center'>{toJalaliDate(task.deadline)}</div>
+        <div className='w-full text-center'>{datePersian}</div>
         <div className='w-full grid justify-center'>
           <BsFlag color='#ff0000' />
         </div>

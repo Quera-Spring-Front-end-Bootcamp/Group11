@@ -16,12 +16,11 @@ interface TagProp {
 }
 const Tag = ({ children, tagColor }: TagProp) => {
   return (
-    <span
+    <div
       style={{ backgroundColor: tagColor }}
-      className={`ml-[12px] text-[10px] font-medium text-[#323232] leading-[15px]
-         py-[2px] px-[4px] h-[19px] rounded-e-[10px] `}>
+      className='ml-[12px] grid justify-center items-center pt-[0.2rem] text-[10px] font-medium text-[#323232] rounded-e-[10px]'>
       {children}
-    </span>
+    </div>
   );
 };
 
@@ -48,9 +47,6 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
     try {
       const { data } = await getTaskTagsApi(taskId);
       setTaskTags(data.data.tags);
-      dispatch(
-        EditTaskModalSlice.actions.setTaskTags({ taskTags: data.data.tags })
-      );
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +57,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
 
   const persianDate = toPersianDate(taskObject?.deadline);
 
-  const onClick = async () => {
+  const onClick = () => {
     dispatch(
       EditTaskModalSlice.actions.setTaskDetail({
         taskDetail: taskObject as Task,
@@ -140,13 +136,9 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         <span className='text-[10px] text-[#343434] font-medium mr-[5px]'>
           {persianDate}
         </span>
-        {/* <div className='flex flex-row items-center justify-center text-[#BDC0C6] mr-[8px] '>
-          <BsCheckSquare className='text-[12px]' />
-          <span className='text-[10px] font-medium mr-[4px]'>۱۲ / ۲</span>
-        </div> */}
       </Flex>
       {taskTags.length > 0 && (
-        <div className='flex flex-row items-center mt-[20px]'>
+        <div className='grid grid-cols-4 items-center mt-[20px] flex-wrap gap-y-3'>
           {taskTags.map((item: any) => (
             <Tag
               key={item._id}

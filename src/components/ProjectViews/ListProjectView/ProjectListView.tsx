@@ -11,19 +11,22 @@ const ProjectListView = () => {
   }));
 
   return (
-    <div className='w-full h-full overflow-auto pt-[35px]'>
-      <Flex gap={11}>
-        <AiOutlineDownCircle size={26} />
+    <Flex
+      direction='column'
+      className='w-full h-full overflow-auto pt-[25px]'>
+      <Flex className='h-[40px]'>
         <Text
           fz='20px'
-          fw='bold'>
+          fw='bold'
+          className='bg-blue-500/30 pt-2 pb-[0.24rem] px-3 rounded-lg mr-2'>
           {projectName}
         </Text>
       </Flex>
       <Flex
         direction={'column'}
         gap={'30px'}
-        mt={'36px'}>
+        mt={'20px'}
+        className='h-full overflow-y-auto'>
         {data.map((board: Board) => (
           <BoardOverviewRow
             key={board._id}
@@ -33,7 +36,7 @@ const ProjectListView = () => {
           />
         ))}
       </Flex>
-    </div>
+    </Flex>
   );
 };
 

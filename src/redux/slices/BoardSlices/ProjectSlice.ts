@@ -250,6 +250,68 @@ export const ProjectSlice = createSlice({
         return board;
       });
     },
+    // addTask: (
+    //   state: ProjectSliceTypes,
+    //   action: {
+    //     payload: {
+    //       newTag: Tag;
+    //       taskId: string;
+    //       boardId: string;
+    //       prevBoardData: Array<Board>;
+    //     };
+    //   }
+    // ) => {
+    //   const { boardId, taskId, newDescription, prevBoardData } = action.payload;
+    //   console.log(action.payload);
+    //   state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+    //     if (board._id === boardId) {
+    //       return {
+    //         ...board,
+    //         tasks: board.tasks.map((task) => {
+    //           if (task._id === taskId) {
+    //             return {
+    //               ...task,
+    //               description: newDescription,
+    //             };
+    //           }
+    //           return task;
+    //         }),
+    //       };
+    //     }
+    //     return board;
+    //   });
+    // },
+    // removeTag: (
+    //   state: ProjectSliceTypes,
+    //   action: {
+    //     payload: {
+    //       boardId: string;
+    //       taskId: string;
+    //       newDescription: string;
+    //       prevBoardData: Array<Board>;
+    //     };
+    //   }
+    // ) => {
+    //   const { boardId, taskId, newDescription, prevBoardData } = action.payload;
+    //   console.log(action.payload);
+    //   state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+    //     if (board._id === boardId) {
+    //       return {
+    //         ...board,
+    //         tasks: board.tasks.map((task) => {
+    //           if (task._id === taskId) {
+    //             return {
+    //               ...task,
+    //               description: newDescription,
+    //             };
+    //           }
+    //           return task;
+    //         }),
+    //       };
+    //     }
+    //     return board;
+    //   });
+    // },
   },
 });
 

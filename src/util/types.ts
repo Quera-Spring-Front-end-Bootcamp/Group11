@@ -69,6 +69,8 @@ export type Comment = {
   _id: string;
 };
 
+export type Tag = { _id: string; name: string; color: string };
+
 export interface Board {
   name: string;
   position: number;
