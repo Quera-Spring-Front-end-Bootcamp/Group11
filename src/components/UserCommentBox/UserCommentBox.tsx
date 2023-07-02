@@ -5,6 +5,7 @@ import { usePersianNumberTransform } from '../../hook';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { DeleteCommentModalSlice } from '../../redux/slices';
+import React from 'react';
 
 interface UserCommentBoxProps {
   user: { _id: string; username: string };
@@ -12,6 +13,7 @@ interface UserCommentBoxProps {
   createdTime: string;
   commentId: string;
   currentId: string;
+  // setComment: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
 const UserCommentBox = ({
@@ -20,6 +22,7 @@ const UserCommentBox = ({
   createdTime,
   commentId,
   currentId,
+  // setComment,
   ...otherProps
 }: UserCommentBoxProps) => {
   const toPersian = usePersianNumberTransform();
