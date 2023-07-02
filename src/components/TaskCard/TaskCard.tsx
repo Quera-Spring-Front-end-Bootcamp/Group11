@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { VscChecklist } from 'react-icons/vsc';
 import { FiFlag, FiCheckCircle } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DeleteTaskModalSlice, EditTaskModalSlice } from '../../redux/slices';
-import { User, storeStateTypes } from '../../util/types';
+import { Task, User, storeStateTypes } from '../../util/types';
 import { Avatar } from '..';
-import { usePersianNumberTransform } from '../../hook';
 import { getTaskTagsApi } from '../../services/tagApi';
 import { useToPersianDate } from '../../hook';
 
@@ -60,9 +59,17 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
     fetchTaskTags();
   }, []);
 
+  const persianDate = toPersianDate(taskObject?.deadline);
+
   const onClick = async () => {
-    dispatch(EditTaskModalSlice.actions.setTaskDetail({ taskObject }));
-    dispatch(EditTaskModalSlice.actions.setTaskDeadLine({ datePersian }));
+    dispatch(
+      EditTaskModalSlice.actions.setTaskDetail({
+        taskDetail: taskObject as Task,
+      })
+    );
+    dispatch(
+      EditTaskModalSlice.actions.setTaskDeadLine({ datePersian: persianDate })
+    );
     dispatch(EditTaskModalSlice.actions.setTaskTags({ taskTags }));
 
     dispatch(EditTaskModalSlice.actions.onOpen());
@@ -72,8 +79,6 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
     dispatch(DeleteTaskModalSlice.actions.onOpen());
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
-
-  const persianDate = toPersianDate(taskObject?.deadline);
 
   if (!taskObject) return;
 
@@ -99,7 +104,6 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         {taskObject.taskAssigns.length ? (
           <MantineAvatar.Group spacing='sm'>
             {taskObject?.taskAssigns?.map((user: User, i: number) => {
-
               return (
                 <Avatar
                   key={user._id}

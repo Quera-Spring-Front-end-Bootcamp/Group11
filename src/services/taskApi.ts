@@ -35,6 +35,9 @@ const assignTaskApi = async (taskId: string, usernameOrId: string) => {
 const unassignTaskApi = async (taskId: string, usernameOrId: string) => {
   return apiCall.delete(`task/${taskId}/assign/${usernameOrId}`);
 };
+const getCommentsApi = async (taskId: string) => {
+  return apiCall.get(`/comments/task/${taskId}`);
+};
 export {
   changeTaskBoardApi,
   changeTaskPositionApi,
@@ -44,4 +47,5 @@ export {
   assignTaskApi,
   unassignTaskApi,
   getTaskApi,
+  getCommentsApi,
 };
