@@ -11,7 +11,7 @@ import HeaderBoard from '../components/HeaderBoard';
 import { BaseSideBar, BoardSideBar } from '../components/SideBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import boardSlice from '../redux/slices/BoardSlices/BoardSlice';
+import boardSlice from '../redux/slices/BoardSlices/ProjectSlice';
 import { toast } from 'react-hot-toast';
 import { getAllProjectBoardsApi } from '../services/boardApi';
 import { getProjectByIdApi } from '../services/projectApi';
@@ -30,7 +30,9 @@ const Board = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
-  const loading = useSelector((state: storeStateTypes) => state.board.loading);
+  const loading = useSelector(
+    (state: storeStateTypes) => state.project.loading
+  );
 
   const selectedProject = searchParams.get('projectId');
 
@@ -100,10 +102,6 @@ const Board = () => {
       <ShareProjectModal />
       <ShareWorkspaceModal />
       <CreateProjectModal />
-      <DatePickerModal
-        // opened={true}
-        onClose={() => {}}
-      />
       <div className='flex flex-row h-screen w-screen'>
         <div className='bg-[#FAFBFC] h-[100%] w-[23%] order-1'>
           <BaseSideBar>

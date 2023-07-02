@@ -6,8 +6,8 @@ import { Board, storeStateTypes } from '../../../util/types';
 
 const ProjectListView = () => {
   const { data, projectName } = useSelector((state: storeStateTypes) => ({
-    data: state.board.selectedProjectBoardData,
-    projectName: state.board.selectedProjectName,
+    data: state.project.selectedProjectBoardData,
+    projectName: state.project.selectedProjectName,
   }));
 
   return (

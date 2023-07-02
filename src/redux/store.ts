@@ -4,9 +4,8 @@ import {
   userSlice,
   ShareProjectModalSlice,
   CreateWorkSpaceModalSlice,
-  CreateTaskModalSlice,
   CreateProjectModalSlice,
-  BoardSlice,
+  ProjectSlice,
   ShareWorkspaceModalSlice,
   NewTaskModalSlice,
   EditTaskModalSlice,
@@ -14,6 +13,7 @@ import {
   CommentSlice,
   DeleteCommentModalSlice,
   DeleteTagModalSlice,
+  CalenderViewSlice,
 } from './slices';
 
 export default configureStore({
@@ -23,7 +23,6 @@ export default configureStore({
     createWorkSpaceModal: CreateWorkSpaceModalSlice.reducer,
     ShareProjectModal: ShareProjectModalSlice.reducer,
     ShareWorkspaceModal: ShareWorkspaceModalSlice.reducer,
-    CreateTaskModal: CreateTaskModalSlice.reducer,
     CreateProjectModal: CreateProjectModalSlice.reducer,
     NewTaskModal: NewTaskModalSlice.reducer,
     EditTaskModal: EditTaskModalSlice.reducer,
@@ -32,6 +31,7 @@ export default configureStore({
     DeleteTagModal: DeleteTagModalSlice.reducer,
     Comments: CommentSlice.reducer,
     ////Board
-    board: BoardSlice.reducer,
+    project: ProjectSlice.reducer,
+    calenderView: CalenderViewSlice.reducer,
   },
 });

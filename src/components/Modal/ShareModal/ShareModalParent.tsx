@@ -44,8 +44,9 @@ const ShareModalParent = ({
             errors={errorForm}
           />
           <Button
-            p='10px 30px'
+            p='0px 30px'
             radius='8px 0 0 8px'
+            h='35px'
             onClick={submit}
             loading={loading}
             className='absolute -left-1 bottom-0'>

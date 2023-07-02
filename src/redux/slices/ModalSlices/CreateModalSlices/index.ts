@@ -3,22 +3,10 @@ import CreateProjectModalSlice, {
 } from './CreateProjectModalSlice';
 
 //
-import CreateTaskModalSlice, {
-  CreateTaskModalSliceTypes,
-} from './CreateTaskModalSlice';
-//
 import CreateWorkSpaceModalSlice, {
   CreateWorkSpaceModalSliceTypes,
 } from './CreateWorkSpaceModalSlice';
 
-export {
-  CreateProjectModalSlice,
-  CreateTaskModalSlice,
-  CreateWorkSpaceModalSlice,
-};
+export { CreateProjectModalSlice, CreateWorkSpaceModalSlice };
 
-export type {
-  CreateProjectModalSliceTypes,
-  CreateTaskModalSliceTypes,
-  CreateWorkSpaceModalSliceTypes,
-};
+export type { CreateProjectModalSliceTypes, CreateWorkSpaceModalSliceTypes };

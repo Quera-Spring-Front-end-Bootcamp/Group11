@@ -26,10 +26,8 @@ import { CommentSlice, CommentSliceTypes } from './CommentSlice';
 
 import {
   CreateProjectModalSlice,
-  CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
   CreateProjectModalSliceTypes,
-  CreateTaskModalSliceTypes,
   CreateWorkSpaceModalSliceTypes,
 } from './ModalSlices/CreateModalSlices';
 
@@ -39,6 +37,12 @@ import {
   DeleteCommentModalSliceTypes,
 } from './ModalSlices/DeleteCommentModalSlice';
 import { DeleteTagModalSlice, DeleteTagModalSliceTypes } from './ModalSlices/DeleteTagModalSlice';
+import {
+  CalenderViewSlice,
+  CalenderViewSliceTypes,
+} from './BoardSlices/CalenderViewSlice';
+
+import { ProjectSlice, ProjectSliceTypes } from './BoardSlices';
 
 export {
   userSlice,
@@ -51,12 +55,11 @@ export {
   CommentSlice,
   ShareProjectModalSlice,
   CreateProjectModalSlice,
-  CreateTaskModalSlice,
   CreateWorkSpaceModalSlice,
   ShareWorkspaceModalSlice,
-
   ///
-  BoardSlice,
+  ProjectSlice,
+  CalenderViewSlice,
 };
 
 export type {
@@ -70,7 +73,7 @@ export type {
   ShareProjectModalSliceTypes,
   ShareWorkspaceModalSliceTypes,
   CreateProjectModalSliceTypes,
-  CreateTaskModalSliceTypes,
   CreateWorkSpaceModalSliceTypes,
-  BoardSliceTypes,
+  ProjectSliceTypes,
+  CalenderViewSliceTypes,
 };

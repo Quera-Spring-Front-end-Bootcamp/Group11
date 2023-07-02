@@ -55,7 +55,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
 
     const color = useSelector(
       (state: storeStateTypes) =>
-        state.board.selectedProjectBoardData.find(
+        state.project.selectedProjectBoardData.find(
           (board) => board._id === boardId
         )?.color
     );

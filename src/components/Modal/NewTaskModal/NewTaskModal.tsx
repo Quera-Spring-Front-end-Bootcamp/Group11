@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { Select } from 'react-hook-form-mantine';
 import { Indicator, Button as MantineBtn, Menu, Modal } from '@mantine/core';
-import { BoardSlice, NewTaskModalSlice } from '../../../redux/slices';
+import { ProjectSlice, NewTaskModalSlice } from '../../../redux/slices';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Button, CircleButton, TextArea, TextInput } from '../..';
 import { useEffect, useMemo, useState } from 'react';
@@ -46,7 +46,7 @@ const NewTaskModal = () => {
     (state: storeStateTypes) => state.NewTaskModal.boardId
   );
   const prevBoardData = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectBoardData
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
   const project = useSelector(
     (state: storeStateTypes) => state.board.selectedProjectName
@@ -117,6 +117,19 @@ const NewTaskModal = () => {
 
   const handleClose = () => {
     dispatch(NewTaskModalSlice.actions.onClose());
+
+    //empty all data on close modal
+    setTimeout(function () {
+      setValue('tags', []);
+      setValue('priority', '');
+      setValue('deadline', '');
+      dispatch(
+        NewTaskModalSlice.actions.setDeadline({
+          deadline: 0,
+          deadLinePersianFormatted: '',
+        })
+      );
+    }, 300);
   };
 
   const handleChange = () => {
@@ -151,14 +164,18 @@ const NewTaskModal = () => {
       });
 
       toast.success('تسک جدید با موفقیت ایجاد شد');
-      console.log(createdTask);
       setLoading(false);
       setDisabled(true);
 
       dispatch(NewTaskModalSlice.actions.onClose());
-      dispatch(NewTaskModalSlice.actions.setDeadline({ deadline: 0 }));
       dispatch(
-        BoardSlice.actions.addCreatedTaskToBoard({
+        NewTaskModalSlice.actions.setDeadline({
+          deadline: 0,
+          deadLinePersianFormatted: '',
+        })
+      );
+      dispatch(
+        ProjectSlice.actions.addCreatedTaskToBoard({
           boardId,
           createdTask,
           prevBoardData,

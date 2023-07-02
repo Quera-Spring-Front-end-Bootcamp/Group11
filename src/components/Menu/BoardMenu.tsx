@@ -17,7 +17,7 @@ import { RxCross2 } from 'react-icons/rx';
 
 import { ConfirmationButton } from './Components';
 
-import { BoardSlice } from '../../redux/slices/';
+import { ProjectSlice } from '../../redux/slices/';
 import { ClickOutsideWrapper, TextInput } from '..';
 
 import { storeStateTypes } from '../../util/types';
@@ -35,7 +35,7 @@ export const BoardMenu = ({ open, setOpen, boardId }: MenuProps) => {
   const [deleting, setDeleting] = useState(false);
 
   const prevBoardData = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectBoardData
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
   const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ export const BoardMenu = ({ open, setOpen, boardId }: MenuProps) => {
       setValue('name', '');
       await renameBoardApi(boardId, name);
       dispatch(
-        BoardSlice.actions.renameBoard({
+        ProjectSlice.actions.renameBoard({
           boardId,
           newName: name,
           prevBoardData,
@@ -87,7 +87,7 @@ export const BoardMenu = ({ open, setOpen, boardId }: MenuProps) => {
     try {
       await deleteBoardApi(boardId);
 
-      dispatch(BoardSlice.actions.removeBoard({ boardId, prevBoardData }));
+      dispatch(ProjectSlice.actions.removeBoard({ boardId, prevBoardData }));
 
       toast.success('ستون مورد نظر با موفقیت حذف گردید');
       setOpen(false);

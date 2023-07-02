@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Flex, Button as MantineBtn, Modal } from '@mantine/core';
-import { BoardSlice, DeleteTaskModalSlice } from '../../../redux/slices';
+import { Flex, Modal } from '@mantine/core';
+import { ProjectSlice, DeleteTaskModalSlice } from '../../../redux/slices';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { storeStateTypes } from '../../../util/types';
 import { deleteTaskApi } from '../../../services/taskApi';
-import Board from '../../../pages/Board';
 import { Button } from '../..';
 
 const DeleteTaskModal = () => {
@@ -19,7 +18,7 @@ const DeleteTaskModal = () => {
     (state: storeStateTypes) => state.DeleteTaskModal.taskId
   );
   const prevBoardData = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectBoardData
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
 
   const handleClose = () => {
@@ -32,7 +31,7 @@ const DeleteTaskModal = () => {
       await deleteTaskApi(taskId);
       toast.success('تسک با موفقیت حذف شد');
       dispatch(
-        BoardSlice.actions.removeTaskFromBoard({ prevBoardData, taskId })
+        ProjectSlice.actions.removeTaskFromBoard({ prevBoardData, taskId })
       );
       handleClose();
       setTimeout(() => {

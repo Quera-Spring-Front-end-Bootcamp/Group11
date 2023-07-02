@@ -23,11 +23,10 @@ const DayItem = ({ isEmpty, year, month, day, today }: DayItemProps) => {
       <div
         onClick={() => {
           const dateOfItemInstance = new pda([year, month, day], 'jalali');
-          const dateTS = dateOfItemInstance.valueOf();
 
           dispatch(
             NewTaskModalSlice.actions.setDeadline({
-              deadline: dateTS,
+              deadline: dateOfItemInstance.valueOf(),
               deadLinePersianFormatted: toPersian(
                 dateOfItemInstance.toString('jddd jD jMMMM jYYYY')
               ),

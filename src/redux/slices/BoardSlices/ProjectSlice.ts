@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Board, Task } from '../../../util/types';
 
-export type BoardSliceTypes = {
+export type ProjectSliceTypes = {
   loading: boolean;
   selectedWorkspaceId: string;
   selectedProjectName: string;
@@ -10,7 +10,7 @@ export type BoardSliceTypes = {
   selectedProjectBoardData: Board[];
 };
 
-export const BoardSlice = createSlice({
+export const ProjectSlice = createSlice({
   name: 'board',
   initialState: {
     loading: true,
@@ -20,21 +20,21 @@ export const BoardSlice = createSlice({
     selectedProjectBoardData: [],
   },
   reducers: {
-    setProjectName: (state: BoardSliceTypes, action: { payload: string }) => {
+    setProjectName: (state: ProjectSliceTypes, action: { payload: string }) => {
       state.selectedProjectName = action.payload;
     },
     setProjectData: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: { payload: { id: string; boardData: Board[] } }
     ) => {
       state.selectedProjectBoardData = action.payload.boardData;
       state.selectedProjectId = action.payload.id;
     },
-    setLoading: (state: BoardSliceTypes, action: { payload: boolean }) => {
+    setLoading: (state: ProjectSliceTypes, action: { payload: boolean }) => {
       state.loading = action.payload;
     },
     setSelectedProjectData: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: {
         payload: { wsId: string; name: string; id: string; boardData: Board[] };
       }
@@ -48,7 +48,7 @@ export const BoardSlice = createSlice({
       state.selectedProjectName = name;
     },
     updateBoardPosition: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: { payload: { activeBoard: string; overBoard: string } }
     ) => {
       const activeBoardIndex = state.selectedProjectBoardData.findIndex(
@@ -65,7 +65,7 @@ export const BoardSlice = createSlice({
       );
     },
     updateBoardTaskPositions: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: {
         payload: { newData: Record<string, Task[]>; prevData: Array<Board> };
       }
@@ -78,7 +78,7 @@ export const BoardSlice = createSlice({
       );
     },
     removeBoard: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: {
         payload: { boardId: string; prevBoardData: Array<Board> };
       }
@@ -89,7 +89,7 @@ export const BoardSlice = createSlice({
       );
     },
     renameBoard: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: {
         payload: {
           newName: string;
@@ -111,7 +111,7 @@ export const BoardSlice = createSlice({
       });
     },
     addCreatedTaskToBoard: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: {
         payload: {
           boardId: string;
@@ -133,7 +133,7 @@ export const BoardSlice = createSlice({
       });
     },
     removeTaskFromBoard: (
-      state: BoardSliceTypes,
+      state: ProjectSliceTypes,
       action: {
         payload: {
           taskId: string;
@@ -150,18 +150,17 @@ export const BoardSlice = createSlice({
       });
     },
 
-    // addCreatedBoard: (
-    //   state: BoardSliceTypes,
-    //   action: {
-    //     payload: { newBoard: any; prevData: Array<Board> };
-    //   }
-    // ) => {
-    //   state.selectedProjectBoardData = [
-    //     ...action.payload.prevData,
-    //     action.payload.newBoard,
-    //   ];
-    // },
+
+    addBoard: (
+      state: ProjectSliceTypes,
+      action: {
+        payload: { createdBoard: Board; prevBoardData: Array<Board> };
+      }
+    ) => {
+      const { createdBoard, prevBoardData } = action.payload;
+      state.selectedProjectBoardData = [...prevBoardData, createdBoard]
+    },
   },
 });
 
-export default BoardSlice;
+export default ProjectSlice;

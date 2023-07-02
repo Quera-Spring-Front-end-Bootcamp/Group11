@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CreateBoadCol from '../../Modal/CreateModal/CreateBoardCol';
+import { Button } from '../../';
 import { createPortal } from 'react-dom';
 import {
   CancelDrop,
@@ -38,7 +40,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Item, Container, ContainerProps } from './components';
 import { Board, Task, storeStateTypes } from '../../../util/types';
 import { useDispatch, useSelector } from 'react-redux';
-import boardSlice from '../../../redux/slices/BoardSlices/BoardSlice';
+import boardSlice from '../../../redux/slices/BoardSlices/ProjectSlice';
 import { changeBoardPositionApi } from '../../../services/boardApi';
 import {
   changeTaskBoardApi,
@@ -161,14 +163,24 @@ export function ColumnProjectView({
 }: Props) {
   const dispatch = useDispatch();
 
+  const [modalBoard, setmodalBoard] = useState(false);
+
+  const openModal = () => {
+    setmodalBoard(true);
+  };
+
+  const closeModal = () => {
+    setmodalBoard(false);
+  };
+
   /**
    * get necessary data from redux store
    */
   const data = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectBoardData
+    (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
   const projectName = useSelector(
-    (state: storeStateTypes) => state.board.selectedProjectName
+    (state: storeStateTypes) => state.project.selectedProjectName
   );
 
   ///boards
@@ -511,7 +523,25 @@ export function ColumnProjectView({
             </DroppableContainer>
           ))}
           <div className='flex flex-row justify-start items-center p-3 gap-1 w-[250px] h-[40px] shadow-lg rounded-[6px] border border-t-green-600'>
-            + ساختن ستون جدید
+            <Button
+              onClick={openModal}
+              bg='#FAFBFC'
+              c='dark'
+              p='0'
+              h='auto'
+              styles={{
+                root: {
+                  '&:hover': {
+                    backgroundColor: '#FAFBFC',
+                  },
+                },
+              }}>
+              ساختن ستون جدید
+            </Button>
+            <CreateBoadCol
+              opened={modalBoard}
+              onClose={closeModal}
+            />
           </div>
         </SortableContext>
       </div>
