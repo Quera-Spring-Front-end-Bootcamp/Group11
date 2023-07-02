@@ -61,7 +61,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
 
   const persianDate = toPersianDate(taskObject?.deadline);
 
-  const onClick = async () => {
+  const onClick = () => {
     dispatch(
       EditTaskModalSlice.actions.setTaskDetail({
         taskDetail: taskObject as Task,
