@@ -222,16 +222,10 @@ const NewTaskModal = () => {
             onSubmit={handleSubmit(onSubmit)}>
             <div className='flex flex-row items-center gap-[8px] '>
               <span>در</span>
-              {/* <Select
-                searchable
-                data={['project1', 'project2']}
-                name={'project'}
-                control={control}
-              /> */}
-              {/*data from redux*/}
               <Tooltip
                 color='red'
                 position='top'
+                transitionProps={{ transition: 'pop', duration: 300 }}
                 label={'عنوان پروژه'}>
                 <span className='p-[5px] rounded-[10px] bg-green-300 font-semibold'>
                   {project}
