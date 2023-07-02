@@ -26,6 +26,8 @@ import { Accordion } from './Accordion';
 import { TaskCard } from './TaskCard';
 import { ClickOutsideWrapper } from './ClickOutsideWrapper';
 import { DeleteTaskModal, EditTaskModal, NewTaskModal } from './Modal';
+import { CommentTextArea } from './CommentTextArea';
+import { UserCommentBox } from './UserCommentBox';
 
 export {
   ///
@@ -46,6 +48,8 @@ export {
   Title,
   Checkbox,
   ColorInput,
+  CommentTextArea,
+  UserCommentBox,
   ////
   Avatar,
   MiniProfile,

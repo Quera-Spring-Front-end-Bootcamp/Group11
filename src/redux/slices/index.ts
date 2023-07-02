@@ -22,6 +22,8 @@ import {
   DeleteTaskModalSliceTypes,
 } from './ModalSlices/DeleteTaskModalSlice';
 
+import { CommentSlice, CommentSliceTypes } from './CommentSlice';
+
 import {
   CreateProjectModalSlice,
   CreateTaskModalSlice,
@@ -32,6 +34,11 @@ import {
 } from './ModalSlices/CreateModalSlices';
 
 import { BoardSlice, BoardSliceTypes } from './BoardSlices';
+import {
+  DeleteCommentModalSlice,
+  DeleteCommentModalSliceTypes,
+} from './ModalSlices/DeleteCommentModalSlice';
+import { DeleteTagModalSlice, DeleteTagModalSliceTypes } from './ModalSlices/DeleteTagModalSlice';
 
 export {
   userSlice,
@@ -39,6 +46,9 @@ export {
   NewTaskModalSlice,
   EditTaskModalSlice,
   DeleteTaskModalSlice,
+  DeleteCommentModalSlice,
+  DeleteTagModalSlice,
+  CommentSlice,
   ShareProjectModalSlice,
   CreateProjectModalSlice,
   CreateTaskModalSlice,
@@ -53,6 +63,9 @@ export type {
   NewTaskModalSliceTypes,
   EditTaskModalSliceTypes,
   DeleteTaskModalSliceTypes,
+  DeleteCommentModalSliceTypes,
+  DeleteTagModalSliceTypes,
+  CommentSliceTypes,
   userSliceTypes,
   ShareProjectModalSliceTypes,
   ShareWorkspaceModalSliceTypes,

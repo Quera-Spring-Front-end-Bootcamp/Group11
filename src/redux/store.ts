@@ -11,6 +11,9 @@ import {
   NewTaskModalSlice,
   EditTaskModalSlice,
   DeleteTaskModalSlice,
+  CommentSlice,
+  DeleteCommentModalSlice,
+  DeleteTagModalSlice,
 } from './slices';
 
 export default configureStore({
@@ -25,6 +28,9 @@ export default configureStore({
     NewTaskModal: NewTaskModalSlice.reducer,
     EditTaskModal: EditTaskModalSlice.reducer,
     DeleteTaskModal: DeleteTaskModalSlice.reducer,
+    DeleteCommentModal: DeleteCommentModalSlice.reducer,
+    DeleteTagModal: DeleteTagModalSlice.reducer,
+    Comments: CommentSlice.reducer,
     ////Board
     board: BoardSlice.reducer,
   },
