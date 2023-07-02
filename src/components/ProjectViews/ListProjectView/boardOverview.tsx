@@ -3,6 +3,7 @@ import { AiOutlineDownCircle } from 'react-icons/ai';
 import { Task } from '../../../util/types';
 import { usePersianNumberTransform } from '../../../hook';
 import TaskRow from './TaskRow';
+import { useState } from 'react';
 
 interface BoardOverviewRow {
   name: string;
@@ -11,6 +12,7 @@ interface BoardOverviewRow {
 }
 
 const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
+  const [open, setOpen] = useState(true);
   const toPersianNumeric = usePersianNumberTransform();
 
   return (
@@ -22,7 +24,13 @@ const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
           gap='8px'
           w='50%'
           align='center'>
-          <AiOutlineDownCircle size={20} />
+          <div
+            onClick={() => setOpen(!open)}
+            style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)' }}
+            className='transition-all'>
+            <AiOutlineDownCircle size={20} />
+          </div>
+
           <div
             style={{ backgroundColor: color || '#000' }}
             className='px-[6px] py-[4px] rounded-4'>
@@ -39,12 +47,16 @@ const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
           <div className='w-full text-center'>توضیحات</div>
         </Flex>
       </Flex>
-      {tasks.map((task) => (
-        <TaskRow
-          key={task._id}
-          task={task}
-        />
-      ))}
+      <div
+        style={{ maxHeight: open ? `${tasks.length * 100}px` : 0 }}
+        className='overflow-hidden transition-all'>
+        {tasks.map((task) => (
+          <TaskRow
+            key={task._id}
+            task={task}
+          />
+        ))}
+      </div>
     </div>
   );
 };
