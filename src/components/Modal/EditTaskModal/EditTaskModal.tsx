@@ -278,7 +278,7 @@ const EditTaskModal = () => {
   };
   return (
     <>
-      <DeleteCommentModal />
+      <DeleteCommentModal setComment={setComment} />
       <DeleteTagModal />
       <Modal
         onClick={handleHideCommentBox}
@@ -697,6 +697,7 @@ const EditTaskModal = () => {
                     {comment.length > 0 &&
                       comment.map((item: Comment) => (
                         <UserCommentBox
+                          // setComment={setComment}
                           currentId={currentId}
                           key={item._id}
                           commentId={item._id}

@@ -12,6 +12,7 @@ interface UserCommentBoxProps {
   createdTime: string;
   commentId: string;
   currentId: string;
+  // setComment: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
 const UserCommentBox = ({
@@ -20,6 +21,7 @@ const UserCommentBox = ({
   createdTime,
   commentId,
   currentId,
+  // setComment,
   ...otherProps
 }: UserCommentBoxProps) => {
   const toPersian = usePersianNumberTransform();

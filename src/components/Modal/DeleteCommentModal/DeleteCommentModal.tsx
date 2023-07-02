@@ -1,16 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex, Modal } from '@mantine/core';
-import {
-  DeleteCommentModalSlice,
-  EditTaskModalSlice,
-} from '../../../redux/slices';
+import { DeleteCommentModalSlice } from '../../../redux/slices';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { storeStateTypes } from '../../../util/types';
 import { Button } from '../..';
 import { deleteCommentApi } from '../../../services/commentApi';
+import React from 'react';
+import { Comment } from '../../../util/types';
 
-const DeleteCommentModal = () => {
+type DeleteCommentModal = {
+  setComment: React.Dispatch<React.SetStateAction<Comment[]>>;
+};
+
+const DeleteCommentModal = ({ setComment }: DeleteCommentModal) => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -24,19 +27,20 @@ const DeleteCommentModal = () => {
   const handleClose = () => {
     dispatch(DeleteCommentModalSlice.actions.onClose());
   };
-  const prevComments = useSelector(
-    (state: storeStateTypes) => state.EditTaskModal.comment
-  );
+
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {
       await deleteCommentApi(commentId);
       toast.success('کامنت با موفقیت حذف شد');
-      dispatch(
-        EditTaskModalSlice.actions.deleteComment({
-          commentId,
-          prevComments,
-        })
+      // dispatch(
+      //   EditTaskModalSlice.actions.deleteComment({
+      //     commentId,
+      //     prevComments,
+      //   })
+      // );
+      setComment((prevComments: Comment[]) =>
+        prevComments.filter((comment: Comment) => comment._id !== commentId)
       );
       setLoading(false);
       handleClose();
