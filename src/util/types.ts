@@ -10,7 +10,10 @@ import {
   BoardSliceTypes,
   NewTaskModalSliceTypes,
   EditTaskModalSliceTypes,
+  CommentSliceTypes,
   DeleteTaskModalSliceTypes,
+  DeleteCommentModalSliceTypes,
+  DeleteTagModalSliceTypes,
 } from '../redux/slices';
 
 export interface tabObject {
@@ -87,5 +90,8 @@ export type storeStateTypes = {
   CreateProjectModal: CreateProjectModalSliceTypes;
   NewTaskModal: NewTaskModalSliceTypes;
   EditTaskModal: EditTaskModalSliceTypes;
+  Comments: CommentSliceTypes;
   DeleteTaskModal: DeleteTaskModalSliceTypes;
+  DeleteCommentModal: DeleteCommentModalSliceTypes;
+  DeleteTagModal: DeleteTagModalSliceTypes;
 };

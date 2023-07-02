@@ -23,6 +23,7 @@ import {
   EditTaskModal,
   DeleteTaskModal,
 } from '../components/Modal';
+import { EditTaskModalSlice } from '../redux/slices';
 
 const Board = () => {
   const { search: queryParams } = useLocation();
@@ -46,7 +47,7 @@ const Board = () => {
         //get selected project data
         const {
           data: {
-            data: { workspace, name: projectName, _id: id },
+            data: { workspace, name: projectName, _id: id, members },
           },
         } = await getProjectByIdApi(selectedProject);
 
@@ -59,7 +60,11 @@ const Board = () => {
             wsId: workspace,
           })
         );
-
+        dispatch(
+          EditTaskModalSlice.actions.setProjectMemberData({
+            projectMemberData: members,
+          })
+        );
         dispatch(boardSlice.actions.setLoading(false));
       } catch (error) {
         console.log(error);
@@ -88,7 +93,7 @@ const Board = () => {
   return (
     <>
       <NewTaskModal />
-      <EditTaskModal boardId={''} />
+      <EditTaskModal />
       <DeleteTaskModal />
 
       <CreateWorkSpaceModal />
