@@ -189,6 +189,40 @@ export const ProjectSlice = createSlice({
         return board;
       });
     },
+    deleteTaskAssignee: (
+      state: ProjectSliceTypes,
+      action: {
+        payload: {
+          boardId: string;
+          taskId: string;
+          deleteAssigneeId: string;
+          prevBoardData: Array<Board>;
+        };
+      }
+    ) => {
+      const { boardId, taskId, deleteAssigneeId, prevBoardData } =
+        action.payload;
+
+      state.selectedProjectBoardData = prevBoardData.map((board: Board) => {
+        if (board._id === boardId) {
+          return {
+            ...board,
+            tasks: board.tasks.map((task) => {
+              if (task._id === taskId) {
+                return {
+                  ...task,
+                  taskAssigns: task.taskAssigns.filter(
+                    (item) => item._id !== deleteAssigneeId
+                  ),
+                };
+              }
+              return task;
+            }),
+          };
+        }
+        return board;
+      });
+    },
     renameTask: (
       state: ProjectSliceTypes,
       action: {
