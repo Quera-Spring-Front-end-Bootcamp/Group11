@@ -28,7 +28,6 @@ import {
 import { storeStateTypes } from '../../util/types';
 import { deleteProjectApi, updateProjectApi } from '../../services/projectApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -45,10 +44,8 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
   const prevWorkspacesData = useSelector(
     (state: storeStateTypes) => state.user.allWorkspaces
   );
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [URLSearchParams] = useSearchParams();
   const projectIdInUrl = URLSearchParams.get('projectId');
 
   const onCreateClickHandler = () => {
