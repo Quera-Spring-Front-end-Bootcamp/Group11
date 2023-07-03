@@ -34,7 +34,6 @@ interface taskCardProps {
 const TaskCard = ({ projectName, taskId }: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
   const [taskTags, setTaskTags] = useState([]);
-  const [isCheckList, setIsCheckList] = useState(true);
   const dispatch = useDispatch();
   const toPersianDate = useToPersianDate();
 
@@ -99,7 +98,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         </span>
         {taskObject.taskAssigns.length ? (
           <MantineAvatar.Group spacing='sm'>
-            {taskObject?.taskAssigns?.map((user: User, i: number) => {
+            {taskObject?.taskAssigns?.map((user: User) => {
               return (
                 <Avatar
                   key={user._id}
@@ -123,11 +122,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         <span className='text-[12px] font-medium text-[#0E0E0E] leading-[18px] whitespace-break-spaces'>
           {taskObject?.name}
         </span>
-        <VscChecklist
-          className={
-            'text-[#BDC0C6] mr-[4px]' + (isCheckList ? ' block' : ' hidden')
-          }
-        />
+        <VscChecklist className='text-[#BDC0C6] mr-[4px] block' />
       </div>
       <Flex
         dir='rtl'

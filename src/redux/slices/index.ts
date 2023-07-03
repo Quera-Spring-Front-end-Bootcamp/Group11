@@ -31,12 +31,14 @@ import {
   CreateWorkSpaceModalSliceTypes,
 } from './ModalSlices/CreateModalSlices';
 
-import { BoardSlice, BoardSliceTypes } from './BoardSlices';
 import {
   DeleteCommentModalSlice,
   DeleteCommentModalSliceTypes,
 } from './ModalSlices/DeleteCommentModalSlice';
-import { DeleteTagModalSlice, DeleteTagModalSliceTypes } from './ModalSlices/DeleteTagModalSlice';
+import {
+  DeleteTagModalSlice,
+  DeleteTagModalSliceTypes,
+} from './ModalSlices/DeleteTagModalSlice';
 import {
   CalenderViewSlice,
   CalenderViewSliceTypes,

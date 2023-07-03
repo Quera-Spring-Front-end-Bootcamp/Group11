@@ -70,7 +70,7 @@ const TaskRow = ({ task }: { task: Task }) => {
         <Flex className='relative w-full justify-center'>
           {task.taskAssigns.length ? (
             <MantineAvatar.Group spacing='sm'>
-              {task.taskAssigns.map((user: User, i: number) => {
+              {task.taskAssigns.map((user: User) => {
                 return (
                   <Avatar
                     key={user._id}

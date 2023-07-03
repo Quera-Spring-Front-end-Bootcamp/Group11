@@ -11,10 +11,13 @@ import {
   addMemberToWorkspaceApi,
   getWorkspacesByIdApi,
 } from '../../../services/workspaceApi';
+import { Loader } from '@mantine/core';
 
 const ShareWorkspaceModal = () => {
   const [data, setData] = useState<workspaceObj>();
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+
   const dispatch = useDispatch();
   const { open, selectedWs } = useSelector((state: storeStateTypes) => ({
     open: state.ShareWorkspaceModal.open,
@@ -25,10 +28,12 @@ const ShareWorkspaceModal = () => {
 
   //to fetch data and updated modal state
   const fetchWorkspaceData = useCallback(async () => {
+    setLoadingData(true);
     const {
       data: { data },
     } = await getWorkspacesByIdApi(selectedWs);
     setData(data);
+    setLoadingData(false);
   }, [selectedWs]);
 
   useEffect(() => {
@@ -71,16 +76,22 @@ const ShareWorkspaceModal = () => {
     members = [{ user: data.user }, ...data.members];
   }
 
-  const memberRow = members.map((member: { user: User }, i) => (
-    <MemberRow
-      key={member.user._id}
-      username={member.user.username}
-      email={member.user.email}
-      currentUserId={currentId}
-      role={i === 0 ? 'owner' : 'member'}
-      userId={member.user._id}
-    />
-  ));
+  const memberRow = !loadingData ? (
+    members.map((member: { user: User }, i) => (
+      <MemberRow
+        key={member.user._id}
+        username={member.user.username}
+        email={member.user.email}
+        currentUserId={currentId}
+        role={i === 0 ? 'owner' : 'member'}
+        userId={member.user._id}
+      />
+    ))
+  ) : (
+    <div className='w-full flex justify-center'>
+      <Loader />
+    </div>
+  );
 
   return (
     <ShareModalParent
