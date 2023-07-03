@@ -8,6 +8,7 @@ interface AvatarProps extends MantineAvatarProps {
   fontSize?: string;
   userId?: string;
   label?: string;
+  labelColor?: string;
 }
 
 const Avatar = ({
@@ -17,6 +18,7 @@ const Avatar = ({
   onClick,
   userId,
   label,
+  labelColor,
   ...otherProps
 }: AvatarProps) => {
   const [profileUrl, setProfileUrl] = useState();
@@ -41,6 +43,7 @@ const Avatar = ({
 
   return (
     <Tooltip
+      color={labelColor}
       label={label}
       withArrow>
       <MantineAvatar
