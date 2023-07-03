@@ -35,7 +35,9 @@ const TaskCard = ({ taskId }: taskCardProps) => {
   const [taskTags, setTaskTags] = useState([]);
   const dispatch = useDispatch();
   const toPersianDate = useToPersianDate();
-
+  const fetchTagTrigger = useSelector(
+    (state: storeStateTypes) => state.EditTaskModal.fetchTagTrigger
+  );
   const taskObject = useSelector((state: storeStateTypes) =>
     state.project.selectedProjectBoardData
       .find((board) => board.tasks.some((task) => task._id === taskId))
@@ -55,7 +57,7 @@ const TaskCard = ({ taskId }: taskCardProps) => {
   };
   useEffect(() => {
     fetchTaskTags();
-  }, []);
+  }, [fetchTagTrigger]);
 
   const persianDate = toPersianDate(taskObject?.deadline);
 

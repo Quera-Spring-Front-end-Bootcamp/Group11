@@ -52,7 +52,7 @@ const CreateProjectModal = () => {
       toast.success('پروژه با موفقیت ایجاد شد');
 
       dispatch(onClose());
-      setValue('projectNameValue', '');
+      setValue('name', '');
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -65,7 +65,10 @@ const CreateProjectModal = () => {
     <CreateModal
       title='ساختن پروژه جدید'
       open={open}
-      onClose={() => dispatch(onClose())}
+      onClose={() => {
+        dispatch(onClose());
+        setValue('name', '');
+      }}
       inputId='name'
       registerForm={register}
       errorForm={errors}

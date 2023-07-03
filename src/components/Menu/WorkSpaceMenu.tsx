@@ -32,6 +32,7 @@ import {
 } from '../../services/workspaceApi';
 import { storeStateTypes } from '../../util/types';
 import { ChangeColorModal } from '../Modal';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -51,6 +52,9 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId, wsColor }: MenuProps) => {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [URLSearchParams] = useSearchParams();
+  const workspaceIdInUrl = URLSearchParams.get('workspaceId');
 
   const onCreateClickHandler = () => {
     dispatch(CreateProjectModalSlice.actions.onOpen());
@@ -149,6 +153,9 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId, wsColor }: MenuProps) => {
 
       dispatch(userSlice.actions.deleteWorkspace({ wsId, prevWorkspacesData }));
       toast.success('ورک اسپیس مورد نظر با موفقیت حذف گردید');
+      {
+        wsId === workspaceIdInUrl && navigate('/board');
+      }
       setOpen(false);
       setDeleteLoading(false);
     } catch (error) {

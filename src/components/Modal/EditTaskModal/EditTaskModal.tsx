@@ -44,12 +44,13 @@ import { priorityItem, tagColors } from '../../../constants';
 import {
   assignTaskApi,
   getCommentsApi,
+  unassignTaskApi,
   updateTaskInfoApi,
 } from '../../../services/taskApi';
 import { FaRegCommentDots } from 'react-icons/fa';
 import { FiAtSign } from 'react-icons/fi';
 import { TiAttachment } from 'react-icons/ti';
-import { Comment, User, storeStateTypes } from '../../../util/types';
+import { Comment, Tag, User, storeStateTypes } from '../../../util/types';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { createCommentApi } from '../../../services/commentApi';
 import { createTagApi } from '../../../services/tagApi';
@@ -90,6 +91,7 @@ const EditTaskModal = () => {
     setLoadingComments(true);
     fetchComments();
   }, [taskId]);
+
 
   const prevBoardData = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectBoardData
@@ -145,6 +147,31 @@ const EditTaskModal = () => {
       toast.error('اساین تسک با مشکل مواجه شد');
     }
   };
+  const handleUnassign = async (userID: string) => {
+    try {
+      const { data: apiData } = await unassignTaskApi(taskId, userID);
+
+      dispatch(
+        EditTaskModalSlice.actions.deleteTaskAssigns({
+          deleteAssigneeId: userID,
+          prevData: taskAssigns,
+        })
+      );
+      console.log(apiData);
+      // dispatch(
+      //   ProjectSlice.actions.addTaskAssignee({
+      //     taskId,
+      //     boardId,
+      //     prevBoardData,
+      //     newAssignee: user,
+      //   })
+      // );
+      toast.success('حذف اساین با موفقیت انجام شد');
+    } catch (error) {
+      console.log(error);
+      toast.error('حذف اساین با مشکل مواجه شد');
+    }
+  };
   const handleCreateTag = async (name: string) => {
     try {
       const {
@@ -185,16 +212,21 @@ const EditTaskModal = () => {
       toast.error('ایجاد تگ با مشکل مواجه شد');
     }
   };
-  const handleEnterKey = (event: any) => {
+  const handleEnterKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleCreateTag(event.target.value);
+      handleCreateTag(event.currentTarget.value);
 
-      event.target.value = '';
+      event.currentTarget.value = '';
     }
   };
 
   const handleCloseModal = () => {
+    dispatch(
+      EditTaskModalSlice.actions.setFetchTagTrigger({
+        fetchTagTrigger: Date.now(),
+      })
+    );
     dispatch(EditTaskModalSlice.actions.onClose());
   };
   const handleFocus = () => {
@@ -365,15 +397,22 @@ const EditTaskModal = () => {
                         },
                       })}>
                       <Menu.Target>
-                        <CircleButton
-                          className='h-[34px] w-[34px] p-0'
-                          borderColor={undefined}>
-                          <AiOutlineUserAdd size={'1rem'} />
-                        </CircleButton>
+                        <Tooltip
+                          color='teal'
+                          transitionProps={{ transition: 'pop', duration: 300 }}
+                          position='top'
+                          fz={'16px'}
+                          label={'اساین تسک'}>
+                          <CircleButton
+                            className='h-[38px] w-[38px] p-0'
+                            borderColor={undefined}>
+                            <AiOutlineUserAdd size={'1rem'} />
+                          </CircleButton>
+                        </Tooltip>
                       </Menu.Target>
 
                       <Menu.Dropdown>
-                        {members.map((member: any) => {
+                        {members.map((member) => {
                           return (
                             <Menu.Item
                               onClick={() => {
@@ -397,28 +436,38 @@ const EditTaskModal = () => {
                                   </Text>
                                 ) : null}
                                 <Text>{`${member.user.firstname} ${member.user.lastname}`}</Text>
-                                <AiOutlineCheck
-                                  size={'1.1rem'}
-                                  color={'blue'}
-                                />
+                                {taskAssigns.some(
+                                  (item) => item._id === member.user._id
+                                ) && (
+                                  <AiOutlineCheck
+                                    size={'1.1rem'}
+                                    color={'blue'}
+                                  />
+                                )}
                               </Flex>
                             </Menu.Item>
                           );
                         })}
                       </Menu.Dropdown>
                     </Menu>
-                    <MantineAvatar.Group>
-                      {taskAssigns.map((user: User) => {
-                        return (
-                          <Avatar
-                            key={user._id}
-                            userId={user._id}
-                            label={user.username}
-                            radius={'50%'}
-                          />
-                        );
-                      })}
-                    </MantineAvatar.Group>
+                    {taskAssigns.length > 0 && (
+                      <MantineAvatar.Group>
+                        {taskAssigns.map((user: User) => {
+                          return (
+                            <Avatar
+                              onClick={() => {
+                                handleUnassign(user._id);
+                              }}
+                              labelColor='#BE123C'
+                              key={user._id}
+                              userId={user._id}
+                              label={'برای حذف اساین کلیک کنید'}
+                              radius={'50%'}
+                            />
+                          );
+                        })}
+                      </MantineAvatar.Group>
+                    )}
                   </div>
                   <div>
                     <Menu
@@ -431,14 +480,21 @@ const EditTaskModal = () => {
                         },
                       })}>
                       <Menu.Target>
-                        <CircleButton
-                          className='h-[34px] w-[34px] p-0'
-                          borderColor={priorityColor(priority)}>
-                          <BsFlag
-                            size={'1rem'}
-                            color={priorityColor(priority)}
-                          />
-                        </CircleButton>
+                        <Tooltip
+                          color='teal'
+                          transitionProps={{ transition: 'pop', duration: 300 }}
+                          position='top'
+                          fz={'16px'}
+                          label={'تعیین اولویت'}>
+                          <CircleButton
+                            className='h-[38px] w-[38px] p-0'
+                            borderColor={priorityColor(priority)}>
+                            <BsFlag
+                              size={'1rem'}
+                              color={priorityColor(priority)}
+                            />
+                          </CircleButton>
+                        </Tooltip>
                       </Menu.Target>
 
                       <Menu.Dropdown>
@@ -490,14 +546,21 @@ const EditTaskModal = () => {
                 <div className='flex flex-row items-center gap-[5px]'>
                   <Menu position='top-start'>
                     <Menu.Target>
-                      <CircleButton
-                        borderColor={undefined}
-                        className='h-[50px] w-[50px] p-0'>
-                        <BsTags
-                          size={'1.5rem'}
-                          color={'##C1C1C1'}
-                        />
-                      </CircleButton>
+                      <Tooltip
+                        color='teal'
+                        transitionProps={{ transition: 'pop', duration: 300 }}
+                        position='top'
+                        fz={'16px'}
+                        label={'تگ های تسک'}>
+                        <CircleButton
+                          borderColor={undefined}
+                          className='h-[50px] w-[50px] p-0'>
+                          <BsTags
+                            size={'1.5rem'}
+                            color={'##C1C1C1'}
+                          />
+                        </CircleButton>
+                      </Tooltip>
                     </Menu.Target>
 
                     <Menu.Dropdown>
@@ -521,7 +584,7 @@ const EditTaskModal = () => {
                   </Menu>
                   {taskTags && (
                     <div className='flex flex-row gap-[10px] items-center'>
-                      {taskTags?.map((item: any) => {
+                      {taskTags?.map((item: Tag) => {
                         return (
                           <div key={item._id}>
                             <Menu>

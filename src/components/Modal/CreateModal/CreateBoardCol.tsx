@@ -7,7 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { storeStateTypes } from '../../../util/types';
 import { ProjectSlice } from '../../../redux/slices';
 
-function CreateBoadCol({ opened, onClose }) {
+type CreateBoadColProp = {
+  opened: boolean;
+  onClose: () => void;
+};
+function CreateBoadCol({ opened, onClose }: CreateBoadColProp) {
   const { selectedProjectBoardData: prevBoardData, selectedProjectId } =
     useSelector((state: storeStateTypes) => state.project);
   const dispatch = useDispatch();
@@ -31,7 +35,7 @@ function CreateBoadCol({ opened, onClose }) {
         data: { data: createdBoard },
       } = await createBoardApi(name, selectedProjectId, color);
       dispatch(ProjectSlice.actions.addBoard({ createdBoard, prevBoardData }));
-      toast.success('تسک جدید با موفقیت ایجاد شد');
+      toast.success('ستون جدید با موفقیت ایجاد شد');
       setValue('name', '');
       setValue('projectId', '');
       setValue('color', '');

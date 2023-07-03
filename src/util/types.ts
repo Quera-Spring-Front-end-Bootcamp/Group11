@@ -48,7 +48,7 @@ export interface Project {
 
 export type Member = {
   user: User;
-  role: 'member' | 'owner';
+  role?: 'member' | 'owner';
 };
 
 export interface Task {
@@ -70,7 +70,12 @@ export type Comment = {
   _id: string;
 };
 
-export type Tag = { _id: string; name: string; color: string };
+export type Tag = {
+  _id: string;
+  name?: string;
+  color: string;
+  tagName: string;
+};
 
 export interface Board {
   name: string;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Comment, Task, User } from '../../../../util/types';
+import { Comment, Member, Tag, Task, User } from '../../../../util/types';
 
 export interface EditTaskModalSliceTypes {
   open: boolean;
@@ -10,10 +10,11 @@ export interface EditTaskModalSliceTypes {
   boardId: string;
   comment: Comment[];
   projectId: string;
-  projectMemberData: User[];
+  projectMemberData: Member[];
   label: string;
-  taskTags: any[];
+  taskTags: Tag[];
   taskAssigns: User[];
+  fetchTagTrigger: number;
 }
 
 export const EditTaskModalSlice = createSlice({
@@ -31,6 +32,7 @@ export const EditTaskModalSlice = createSlice({
     comment: [],
     projectId: '',
     projectMemberData: [],
+    fetchTagTrigger: 0,
   },
   reducers: {
     onOpen: (state: EditTaskModalSliceTypes) => {
@@ -86,7 +88,7 @@ export const EditTaskModalSlice = createSlice({
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          projectMemberData: User[];
+          projectMemberData: Member[];
         };
       }
     ) => {
@@ -99,7 +101,7 @@ export const EditTaskModalSlice = createSlice({
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          taskTags: object[];
+          taskTags: Tag[];
         };
       }
     ) => {
@@ -134,16 +136,14 @@ export const EditTaskModalSlice = createSlice({
       const {
         payload: { commentId, prevComments },
       } = action;
-      state.comment = prevComments.filter(
-        (item: any) => item._id !== commentId
-      );
+      state.comment = prevComments.filter((item) => item._id !== commentId);
     },
     addTag: (
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          newTag: object;
-          prevTags: object[];
+          newTag: Tag;
+          prevTags: Tag[];
         };
       }
     ) => {
@@ -157,14 +157,14 @@ export const EditTaskModalSlice = createSlice({
       action: {
         payload: {
           tagName: string;
-          prevTags: object[];
+          prevTags: Tag[];
         };
       }
     ) => {
       const {
         payload: { tagName, prevTags },
       } = action;
-      state.taskTags = prevTags.filter((item: any) => item.tagName !== tagName);
+      state.taskTags = prevTags.filter((item) => item.tagName !== tagName);
     },
     addTaskAssigns: (
       state: EditTaskModalSliceTypes,
@@ -178,6 +178,31 @@ export const EditTaskModalSlice = createSlice({
       const { newAssignee, prevData } = action.payload;
       state.taskAssigns = [...prevData, newAssignee];
     },
+    deleteTaskAssigns: (
+      state: EditTaskModalSliceTypes,
+      action: {
+        payload: {
+          deleteAssigneeId: string;
+          prevData: User[];
+        };
+      }
+    ) => {
+      const { deleteAssigneeId, prevData } = action.payload;
+      state.taskAssigns = prevData.filter(
+        (item) => item._id !== deleteAssigneeId
+      );
+    },
+    setFetchTagTrigger: (
+      state: EditTaskModalSliceTypes,
+      action: {
+        payload: {
+          fetchTagTrigger: number;
+        };
+      }
+    ) => {
+      const { fetchTagTrigger } = action.payload;
+      state.fetchTagTrigger = fetchTagTrigger;
+    },
   },
 });
 
@@ -190,6 +215,8 @@ export const {
   setProjectId,
   setTaskTags,
   addComment,
+  deleteTaskAssigns,
+  addTaskAssigns,
   addTag,
   deleteTag,
 } = EditTaskModalSlice.actions;

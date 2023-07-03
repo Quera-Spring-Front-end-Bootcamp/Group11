@@ -27,6 +27,7 @@ import {
 
 import { storeStateTypes } from '../../util/types';
 import { deleteProjectApi, updateProjectApi } from '../../services/projectApi';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 
 interface MenuProps extends MantineMenuProps {
@@ -46,6 +47,9 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [URLSearchParams] = useSearchParams();
+  const projectIdInUrl = URLSearchParams.get('projectId');
 
   const onCreateClickHandler = () => {
     //create task logic here
@@ -85,14 +89,14 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
         dispatch(ProjectSlice.actions.setProjectName(name));
       }
 
-      toast.success('نام ورک‌اسپیس با موفقیت تغییر یافت');
+      toast.success('نام پروژه با موفقیت تغییر یافت');
 
       setValue('name', '');
       setLoading(false);
       setEditingName(false);
     } catch (error) {
       console.log(error);
-      toast.error('ساخت پروژه با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
+      toast.error('تغییر نام پروژه با خطا مواجه شد،‌لطفا مجددا تلاش فرمایید');
       setLoading(false);
     }
   };
@@ -119,6 +123,9 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
       );
 
       toast.success('پروژه مورد نظر با موفقیت حذف گردید');
+      {
+        projectId === projectIdInUrl && navigate('/board');
+      }
       setOpen(false);
       setDeleteLoading(false);
     } catch (error) {
