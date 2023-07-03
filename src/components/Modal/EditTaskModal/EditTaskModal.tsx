@@ -6,6 +6,7 @@ import {
   Tooltip,
   Flex,
   Text,
+  Loader,
 } from '@mantine/core';
 import { Indicator, Menu, Modal, Avatar as MantineAvatar } from '@mantine/core';
 import {
@@ -59,6 +60,7 @@ import { RxCross2 } from 'react-icons/rx';
 
 const EditTaskModal = () => {
   const [loading, setLoading] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const [readonly, setReadonly] = useState(true);
   const [showComment, setShowComment] = useState(false);
   const [priority, setpriority] = useState('noPriority');
@@ -84,14 +86,16 @@ const EditTaskModal = () => {
         data: { data: comments },
       } = await getCommentsApi(taskId);
       setComment(comments);
+      setLoadingComments(false);
     };
+    setLoadingComments(true);
     fetchComments();
-  }, [open, taskId]);
+  }, [taskId]);
+
 
   const prevBoardData = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
-  console.log(prevBoardData);
   const boardData = prevBoardData.find((board) => board._id === boardId);
   const currentId = useSelector((state: storeStateTypes) => state.user.id);
   const members = projectMemberData;
@@ -309,7 +313,7 @@ const EditTaskModal = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
-      toast.error('ایجاد کامنت با مشکل مواجه شد');
+      toast.error('ثبت کامنت با مشکل مواجه شد');
     }
   };
 
@@ -771,10 +775,10 @@ const EditTaskModal = () => {
                 <hr className='mt-[34.5px] border-solid border-[1px] border-[#F4F4F4]' />
                 <div className='flex flex-col justify-between mt-[24px]'>
                   <div className='flex flex-col pl-[36px] pr-[20px] h-[360px] overflow-auto scrollbar-none'>
-                    {comment.length > 0 &&
+                    {!loadingComments ? (
+                      comment.length > 0 &&
                       comment.map((item: Comment) => (
                         <UserCommentBox
-                          // setComment={setComment}
                           currentId={currentId}
                           key={item._id}
                           commentId={item._id}
@@ -782,7 +786,12 @@ const EditTaskModal = () => {
                           comment={item.text}
                           createdTime={item.createdAt}
                         />
-                      ))}
+                      ))
+                    ) : (
+                      <div className='w-full h-full grid justify-center items-center'>
+                        <Loader />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

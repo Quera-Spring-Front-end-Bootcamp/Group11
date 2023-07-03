@@ -5,7 +5,6 @@ import {
   TextInput as MantineTextInput,
   Tooltip,
 } from '@mantine/core';
-import { Select } from 'react-hook-form-mantine';
 import { Indicator, Button as MantineBtn, Menu, Modal } from '@mantine/core';
 import { ProjectSlice, NewTaskModalSlice } from '../../../redux/slices';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -32,7 +31,7 @@ const NewTaskModal = () => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [priority, setpriority] = useState('noPriority');
-  const [selectedTags, setselectedTags] = useState<any>([]);
+  const [selectedTags, setSelectedTags] = useState<any>([]);
   const [openDatePicker, setOpenDatePicker] = useState(false);
 
   const toPersian = usePersianNumberTransform();
@@ -83,7 +82,6 @@ const NewTaskModal = () => {
   };
 
   const {
-    control,
     register, //register function will pass to text inputs
     handleSubmit, //submit function
     setValue,
@@ -97,14 +95,14 @@ const NewTaskModal = () => {
 
   const handleSelectTag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     selectedTags.length === 0
-      ? setselectedTags((prev: any) => [
+      ? setSelectedTags((prev: any) => [
           ...prev,
           tags.filter((item) => item.id === e.currentTarget.id)[0],
         ])
       : selectedTags.every(
           (item: { id: string }) => item.id != e.currentTarget.id
         ) &&
-        setselectedTags((prev: any) => [
+        setSelectedTags((prev: any) => [
           ...prev,
           tags.filter((item) => item.id === e.currentTarget.id)[0],
         ]);
@@ -146,7 +144,7 @@ const NewTaskModal = () => {
     const updateSelectedTags = selectedTags.filter((item: any) => {
       item.id !== event.currentTarget.id;
     });
-    setselectedTags(updateSelectedTags);
+    setSelectedTags(updateSelectedTags);
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {

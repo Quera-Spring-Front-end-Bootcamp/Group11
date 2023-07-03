@@ -11,14 +11,21 @@ import {
   shareProjectApi,
 } from '../../../services/projectApi';
 import MemberRow from './MemberRow';
+import { useSearchParams } from 'react-router-dom';
+import { Loader } from '@mantine/core';
 
 const ShareProjectModal = () => {
   const [data, setData] = useState<Project>();
   const [loading, setLoading] = useState(false);
-  const selectedProject = useSelector(
-    (state: storeStateTypes) => state.ShareProjectModal.projectId
-  );
+  const [loadingData, setLoadingData] = useState(false);
+  const [URLSearchParams] = useSearchParams();
   const dispatch = useDispatch();
+
+  const selectedProject =
+    useSelector(
+      (state: storeStateTypes) => state.ShareProjectModal.projectId
+    ) || URLSearchParams.get('projectId');
+
   const open = useSelector(
     (state: storeStateTypes) => state.ShareProjectModal.open
   );
@@ -26,10 +33,12 @@ const ShareProjectModal = () => {
 
   //to fetch data and updated modal state
   const fetchProjectData = async (projectId: string) => {
+    setLoadingData(true);
     const {
       data: { data },
     } = await getProjectByIdApi(projectId);
     setData(data);
+    setLoadingData(false);
   };
 
   useEffect(() => {
@@ -70,18 +79,24 @@ const ShareProjectModal = () => {
     }
   };
 
-  const membersRow = data?.members?.map((member: Member) => (
-    <MemberRow
-      key={member.user._id}
-      currentUserId={currentId}
-      email={member.user.email}
-      firstname={member.user.firstname}
-      lastname={member.user.lastname}
-      role={member.role}
-      userId={member.user._id}
-      username={member.user.username}
-    />
-  ));
+  const membersRow = !loadingData ? (
+    data?.members?.map((member: Member) => (
+      <MemberRow
+        key={member.user._id}
+        currentUserId={currentId}
+        email={member.user.email}
+        firstname={member.user.firstname}
+        lastname={member.user.lastname}
+        role={member.role}
+        userId={member.user._id}
+        username={member.user.username}
+      />
+    ))
+  ) : (
+    <div className='w-full flex justify-center'>
+      <Loader />
+    </div>
+  );
 
   return (
     <ShareModalParent

@@ -1,9 +1,10 @@
 import { Flex, Text } from '@mantine/core';
 import { AiOutlineDownCircle } from 'react-icons/ai';
-import { Task } from '../../../util/types';
+import { Task, storeStateTypes } from '../../../util/types';
 import { usePersianNumberTransform } from '../../../hook';
 import TaskRow from './TaskRow';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 interface BoardOverviewRow {
   name: string;
@@ -14,6 +15,10 @@ interface BoardOverviewRow {
 const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
   const [open, setOpen] = useState(true);
   const toPersianNumeric = usePersianNumberTransform();
+
+  const searchedTask = useSelector(
+    (state: storeStateTypes) => state.boardHeader.searchValue
+  );
 
   return (
     <div className='mr-[30px]'>
@@ -50,12 +55,25 @@ const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
       <div
         style={{ maxHeight: open ? `${tasks.length * 100}px` : 0 }}
         className='overflow-hidden transition-all'>
-        {tasks.map((task) => (
-          <TaskRow
-            key={task._id}
-            task={task}
-          />
-        ))}
+        {tasks.map((task) => {
+          if (searchedTask.length > 0) {
+            if (task.name.includes(searchedTask)) {
+              return (
+                <TaskRow
+                  key={task._id}
+                  task={task}
+                />
+              );
+            }
+          } else {
+            return (
+              <TaskRow
+                key={task._id}
+                task={task}
+              />
+            );
+          }
+        })}
       </div>
     </div>
   );

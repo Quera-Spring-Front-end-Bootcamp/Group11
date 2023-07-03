@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 const Profile = () => {
   const navigate = useNavigate();
   const profileSection = useLocation().pathname.split('/').pop();
-  console.log(profileSection);
   useEffect(() => {
     if (profileSection === 'profile' || profileSection === '')
       navigate('personalInfo');

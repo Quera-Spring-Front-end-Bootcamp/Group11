@@ -60,8 +60,9 @@ const UserCommentBox = ({
       <Avatar
         label={user.username}
         radius={'50%'}
-        userId={user._id || (user as unknown as string)}
-      />
+        userId={user._id || (user as unknown as string)}>
+        {user.username[0]}
+      </Avatar>
       <Flex
         className='rounded-[16px] border-[1px] border-solid border-[#F4F4F4]'
         direction={'column'}

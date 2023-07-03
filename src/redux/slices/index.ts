@@ -31,18 +31,23 @@ import {
   CreateWorkSpaceModalSliceTypes,
 } from './ModalSlices/CreateModalSlices';
 
-import { BoardSlice, BoardSliceTypes } from './BoardSlices';
 import {
   DeleteCommentModalSlice,
   DeleteCommentModalSliceTypes,
 } from './ModalSlices/DeleteCommentModalSlice';
-import { DeleteTagModalSlice, DeleteTagModalSliceTypes } from './ModalSlices/DeleteTagModalSlice';
 import {
+  DeleteTagModalSlice,
+  DeleteTagModalSliceTypes,
+} from './ModalSlices/DeleteTagModalSlice';
+
+import {
+  ProjectSlice,
+  ProjectSliceTypes,
+  BoardHeaderSlice,
+  BoardHeaderSliceTypes,
   CalenderViewSlice,
   CalenderViewSliceTypes,
-} from './BoardSlices/CalenderViewSlice';
-
-import { ProjectSlice, ProjectSliceTypes } from './BoardSlices';
+} from './BoardSlices';
 
 export {
   userSlice,
@@ -60,6 +65,7 @@ export {
   ///
   ProjectSlice,
   CalenderViewSlice,
+  BoardHeaderSlice,
 };
 
 export type {
@@ -76,4 +82,5 @@ export type {
   CreateWorkSpaceModalSliceTypes,
   ProjectSliceTypes,
   CalenderViewSliceTypes,
+  BoardHeaderSliceTypes,
 };
