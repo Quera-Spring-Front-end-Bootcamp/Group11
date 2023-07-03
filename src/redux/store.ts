@@ -14,6 +14,7 @@ import {
   DeleteCommentModalSlice,
   DeleteTagModalSlice,
   CalenderViewSlice,
+  BoardHeaderSlice,
 } from './slices';
 
 export default configureStore({
@@ -33,5 +34,6 @@ export default configureStore({
     ////Board
     project: ProjectSlice.reducer,
     calenderView: CalenderViewSlice.reducer,
+    boardHeader: BoardHeaderSlice.reducer,
   },
 });

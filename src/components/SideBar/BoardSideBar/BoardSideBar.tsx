@@ -14,6 +14,7 @@ import { BsSearch, BsFillCaretDownFill } from 'react-icons/bs';
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
+  const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const workspaces = useSelector(
     (state: storeStateTypes) => state.user.allWorkspaces
@@ -30,7 +31,9 @@ const SideBar = () => {
     }
   }, []);
 
-  const handleWsSearch = () => {};
+  const handleWsSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
 
   return (
     <div className='flex flex-col justify-between mt-[31px] bg-[#FAFBFC] w-[100%] h-[calc(100%-100px)] border-l-[#AAAAAA] '>
@@ -58,7 +61,7 @@ const SideBar = () => {
         </Flex>
         <div className=''>
           <SearchInput
-            // onChange={handleWsSearch}
+            onChange={handleWsSearch}
             pholder='جستجو در ورک‌اسپیس‌ها'
           />
         </div>
@@ -100,17 +103,34 @@ const SideBar = () => {
                 : 'h-0 overflow-hidden opacity-0'
             }
             `}>
-              {workspaces.map((ws: workspaceObj, i: number) => (
-                <WorkSpaceAccordion
-                  key={ws._id}
-                  i={i}
-                  _id={ws._id}
-                  members={ws.members}
-                  projects={ws.projects}
-                  name={ws.name}
-                  color={ws.color}
-                />
-              ))}
+              {workspaces.map((ws: workspaceObj, i: number) => {
+                if (searchValue.length > 0) {
+                  if (ws.name.includes(searchValue)) {
+                    return (
+                      <WorkSpaceAccordion
+                        key={ws._id}
+                        i={i}
+                        _id={ws._id}
+                        members={ws.members}
+                        projects={ws.projects}
+                        name={ws.name}
+                        color={ws.color}
+                      />
+                    );
+                  }
+                } else
+                  return (
+                    <WorkSpaceAccordion
+                      key={ws._id}
+                      i={i}
+                      _id={ws._id}
+                      members={ws.members}
+                      projects={ws.projects}
+                      name={ws.name}
+                      color={ws.color}
+                    />
+                  );
+              })}
             </Flex>
           </div>
           <hr />

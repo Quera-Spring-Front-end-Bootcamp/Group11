@@ -7,6 +7,7 @@ import { tabValues } from '../../constants';
 import { Button } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeStateTypes } from '../../util/types';
+import { BoardHeaderSlice } from '../../redux/slices';
 
 export default function HeaderBoard() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function HeaderBoard() {
   const selectedProject = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectName
   );
+
   return (
     <>
       <header className='flex flex-col items-center justify-between h-full border-b-[0.5px] border-b-[#AAAAAA]'>
