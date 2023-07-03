@@ -143,25 +143,25 @@ const EditTaskModal = () => {
       toast.error('اساین تسک با مشکل مواجه شد');
     }
   };
-  const handleUnassign = async (userID: string) => {
+  const handleUnassign = async (user: User) => {
     try {
-      const { data: apiData } = await unassignTaskApi(taskId, userID);
+      const { data: apiData } = await unassignTaskApi(taskId, user._id);
 
       dispatch(
         EditTaskModalSlice.actions.deleteTaskAssigns({
-          deleteAssigneeId: userID,
+          deleteAssigneeId: user._id,
           prevData: taskAssigns,
         })
       );
       console.log(apiData);
-      // dispatch(
-      //   ProjectSlice.actions.addTaskAssignee({
-      //     taskId,
-      //     boardId,
-      //     prevBoardData,
-      //     newAssignee: user,
-      //   })
-      // );
+      dispatch(
+        ProjectSlice.actions.deleteTaskAssignee({
+          taskId,
+          boardId,
+          prevBoardData,
+          deleteAssigneeId: user._id,
+        })
+      );
       toast.success('حذف اساین با موفقیت انجام شد');
     } catch (error) {
       console.log(error);
@@ -412,7 +412,11 @@ const EditTaskModal = () => {
                           return (
                             <Menu.Item
                               onClick={() => {
-                                handleAssign(member.user);
+                                taskAssigns.some(
+                                  (item) => item._id === member.user._id
+                                )
+                                  ? toast.error('قبلا اساین شده')
+                                  : handleAssign(member.user);
                               }}
                               id={member.user._id}
                               key={member.user._id}>
@@ -435,10 +439,22 @@ const EditTaskModal = () => {
                                 {taskAssigns.some(
                                   (item) => item._id === member.user._id
                                 ) && (
-                                  <AiOutlineCheck
-                                    size={'1.1rem'}
-                                    color={'blue'}
-                                  />
+                                  <Tooltip
+                                    color='teal'
+                                    transitionProps={{
+                                      transition: 'pop',
+                                      duration: 300,
+                                    }}
+                                    position='top'
+                                    fz={'14'}
+                                    label={'اساین شده'}>
+                                    <div>
+                                      <AiOutlineCheck
+                                        size={'1.1rem'}
+                                        color={'blue'}
+                                      />
+                                    </div>
+                                  </Tooltip>
                                 )}
                               </Flex>
                             </Menu.Item>
@@ -452,7 +468,7 @@ const EditTaskModal = () => {
                           return (
                             <Avatar
                               onClick={() => {
-                                handleUnassign(user._id);
+                                handleUnassign(user);
                               }}
                               labelColor='#BE123C'
                               key={user._id}
