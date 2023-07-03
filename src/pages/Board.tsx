@@ -1,4 +1,9 @@
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useOutlet,
+  useSearchParams,
+} from 'react-router-dom';
 
 import {
   CreateProjectModal,
@@ -24,10 +29,13 @@ import {
 } from '../components/Modal';
 import { EditTaskModalSlice } from '../redux/slices';
 
+import boardImage from '../assets/img/boardImage.svg';
+
 const Board = () => {
   const { search: queryParams } = useLocation();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const outlet = useOutlet();
 
   const loading = useSelector(
     (state: storeStateTypes) => state.project.loading
@@ -118,7 +126,17 @@ const Board = () => {
                 <HeaderBoard />
               </div>
               <div className='h-[calc(100vh-170px)] mx-4 overflow-x-auto'>
-                <Outlet />
+                {outlet ? (
+                  <Outlet />
+                ) : (
+                  <div className='w-full h-full grid justify-center items-center'>
+                    <img
+                      src={boardImage}
+                      alt='board image'
+                      className='opacity-40'
+                    />
+                  </div>
+                )}
               </div>
             </div>
           )}
