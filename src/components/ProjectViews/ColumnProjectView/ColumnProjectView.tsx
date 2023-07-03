@@ -163,6 +163,10 @@ export function ColumnProjectView({
 }: Props) {
   const dispatch = useDispatch();
 
+  const searchedTask = useSelector(
+    (state: storeStateTypes) => state.boardHeader.searchValue
+  );
+
   const [modalBoard, setmodalBoard] = useState(false);
 
   const openModal = () => {
@@ -498,7 +502,7 @@ export function ColumnProjectView({
                 }
                 strategy={strategy}>
                 {items[container[1]].map((task: Task, index: number) => {
-                  return (
+                  const sortableItem = (
                     <SortableItem
                       disabled={isSortingContainer}
                       key={task._id}
@@ -518,6 +522,14 @@ export function ColumnProjectView({
                       }}
                     />
                   );
+
+                  if (searchedTask.length > 0) {
+                    if (task.name.includes(searchedTask)) {
+                      return sortableItem;
+                    }
+                  } else {
+                    return sortableItem;
+                  }
                 })}
               </SortableContext>
             </DroppableContainer>
