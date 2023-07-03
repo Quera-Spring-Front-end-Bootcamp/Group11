@@ -23,7 +23,7 @@ import { ShareProjectModalSlice, userSlice } from '../../redux/slices/';
 
 import { storeStateTypes } from '../../util/types';
 import { deleteProjectApi, updateProjectApi } from '../../services/projectApi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -42,6 +42,9 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [URLSearchParams] = useSearchParams();
+  const projectIdInUrl = URLSearchParams.get('projectId');
+
   const onCreateClickHandler = () => {
     //create task logic here
   };
@@ -111,7 +114,9 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
       );
 
       toast.success('پروژه مورد نظر با موفقیت حذف گردید');
-      navigate('/board');
+      {
+        projectId === projectIdInUrl && navigate('/board');
+      }
       setOpen(false);
       setDeleteLoading(false);
     } catch (error) {
