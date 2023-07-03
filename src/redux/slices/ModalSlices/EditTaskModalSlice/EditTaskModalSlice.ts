@@ -14,7 +14,7 @@ export interface EditTaskModalSliceTypes {
   label: string;
   taskTags: Tag[];
   taskAssigns: User[];
-  fetchTagTrigger: string;
+  fetchTagTrigger: number;
 }
 
 export const EditTaskModalSlice = createSlice({
@@ -32,7 +32,7 @@ export const EditTaskModalSlice = createSlice({
     comment: [],
     projectId: '',
     projectMemberData: [],
-    fetchTagTrigger: '',
+    fetchTagTrigger: 0,
   },
   reducers: {
     onOpen: (state: EditTaskModalSliceTypes) => {
@@ -178,11 +178,25 @@ export const EditTaskModalSlice = createSlice({
       const { newAssignee, prevData } = action.payload;
       state.taskAssigns = [...prevData, newAssignee];
     },
+    deleteTaskAssigns: (
+      state: EditTaskModalSliceTypes,
+      action: {
+        payload: {
+          deleteAssigneeId: string;
+          prevData: User[];
+        };
+      }
+    ) => {
+      const { deleteAssigneeId, prevData } = action.payload;
+      state.taskAssigns = prevData.filter(
+        (item) => item._id !== deleteAssigneeId
+      );
+    },
     setFetchTagTrigger: (
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          fetchTagTrigger: string;
+          fetchTagTrigger: number;
         };
       }
     ) => {
@@ -201,6 +215,8 @@ export const {
   setProjectId,
   setTaskTags,
   addComment,
+  deleteTaskAssigns,
+  addTaskAssigns,
   addTag,
   deleteTag,
 } = EditTaskModalSlice.actions;
