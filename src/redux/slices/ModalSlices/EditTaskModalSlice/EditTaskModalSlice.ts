@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Comment, Task, User } from '../../../../util/types';
+import { Comment, Member, Tag, Task, User } from '../../../../util/types';
 
 export interface EditTaskModalSliceTypes {
   open: boolean;
@@ -10,9 +10,9 @@ export interface EditTaskModalSliceTypes {
   boardId: string;
   comment: Comment[];
   projectId: string;
-  projectMemberData: User[];
+  projectMemberData: Member[];
   label: string;
-  taskTags: any[];
+  taskTags: Tag[];
   taskAssigns: User[];
 }
 
@@ -86,7 +86,7 @@ export const EditTaskModalSlice = createSlice({
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          projectMemberData: User[];
+          projectMemberData: Member[];
         };
       }
     ) => {
@@ -99,7 +99,7 @@ export const EditTaskModalSlice = createSlice({
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          taskTags: object[];
+          taskTags: Tag[];
         };
       }
     ) => {
@@ -135,15 +135,15 @@ export const EditTaskModalSlice = createSlice({
         payload: { commentId, prevComments },
       } = action;
       state.comment = prevComments.filter(
-        (item: any) => item._id !== commentId
+        (item) => item._id !== commentId
       );
     },
     addTag: (
       state: EditTaskModalSliceTypes,
       action: {
         payload: {
-          newTag: object;
-          prevTags: object[];
+          newTag: Tag;
+          prevTags: Tag[];
         };
       }
     ) => {
@@ -157,14 +157,14 @@ export const EditTaskModalSlice = createSlice({
       action: {
         payload: {
           tagName: string;
-          prevTags: object[];
+          prevTags: Tag[];
         };
       }
     ) => {
       const {
         payload: { tagName, prevTags },
       } = action;
-      state.taskTags = prevTags.filter((item: any) => item.tagName !== tagName);
+      state.taskTags = prevTags.filter((item) => item.tagName !== tagName);
     },
     addTaskAssigns: (
       state: EditTaskModalSliceTypes,

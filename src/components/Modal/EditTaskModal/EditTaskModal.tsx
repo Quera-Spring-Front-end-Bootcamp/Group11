@@ -48,7 +48,7 @@ import {
 import { FaRegCommentDots } from 'react-icons/fa';
 import { FiAtSign } from 'react-icons/fi';
 import { TiAttachment } from 'react-icons/ti';
-import { Comment, User, storeStateTypes } from '../../../util/types';
+import { Comment, Tag, User, storeStateTypes } from '../../../util/types';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { createCommentApi } from '../../../services/commentApi';
 import { createTagApi } from '../../../services/tagApi';
@@ -85,7 +85,7 @@ const EditTaskModal = () => {
       setComment(comments);
     };
     fetchComments();
-  }, [open]);
+  }, [open, taskId]);
 
   const prevBoardData = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectBoardData
@@ -182,12 +182,12 @@ const EditTaskModal = () => {
       toast.error('ایجاد تگ با مشکل مواجه شد');
     }
   };
-  const handleEnterKey = (event: any) => {
+  const handleEnterKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleCreateTag(event.target.value);
+      handleCreateTag(event.currentTarget.value);
 
-      event.target.value = '';
+      event.currentTarget.value = '';
     }
   };
 
@@ -370,7 +370,7 @@ const EditTaskModal = () => {
                       </Menu.Target>
 
                       <Menu.Dropdown>
-                        {members.map((member: any) => {
+                        {members.map((member) => {
                           return (
                             <Menu.Item
                               onClick={() => {
@@ -518,7 +518,7 @@ const EditTaskModal = () => {
                   </Menu>
                   {taskTags && (
                     <div className='flex flex-row gap-[10px] items-center'>
-                      {taskTags?.map((item: any) => {
+                      {taskTags?.map((item: Tag) => {
                         return (
                           <div key={item._id}>
                             <Menu>
