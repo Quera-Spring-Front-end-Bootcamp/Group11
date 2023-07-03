@@ -47,6 +47,7 @@ const Avatar = ({
       label={label}
       withArrow>
       <MantineAvatar
+        className='cursor-pointer'
         src={profileUrl}
         styles={() => ({
           root: {

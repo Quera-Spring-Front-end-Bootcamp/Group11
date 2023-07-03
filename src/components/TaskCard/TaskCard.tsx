@@ -94,7 +94,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
       maw='250px'
       radius={'4px'}
       shadow=' 0px 6px 8px rgba(0, 0, 0, 0.14)'
-      className=''>
+      className='cursor-pointer'>
       <div className='flex flex-row items-center	justify-between'>
         <span className='text-[10px] font-medium text-[#534D60]'>
           {projectName}
@@ -118,7 +118,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
             })}
           </MantineAvatar.Group>
         ) : (
-          <div className='grid justify-center text-xs'>تخصیص داده نشده</div>
+          <div className='grid justify-center text-xs'>اساین نشده</div>
         )}
       </div>
       <div className='flex flex-row items-center mt-[9px]'>
