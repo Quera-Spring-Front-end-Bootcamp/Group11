@@ -192,6 +192,11 @@ const EditTaskModal = () => {
   };
 
   const handleCloseModal = () => {
+    dispatch(
+      EditTaskModalSlice.actions.setFetchTagTrigger({
+        fetchTagTrigger: Date.now().toString(),
+      })
+    );
     dispatch(EditTaskModalSlice.actions.onClose());
   };
   const handleFocus = () => {

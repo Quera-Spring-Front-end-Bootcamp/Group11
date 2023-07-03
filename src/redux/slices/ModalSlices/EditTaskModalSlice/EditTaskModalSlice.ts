@@ -14,6 +14,7 @@ export interface EditTaskModalSliceTypes {
   label: string;
   taskTags: Tag[];
   taskAssigns: User[];
+  fetchTagTrigger: string;
 }
 
 export const EditTaskModalSlice = createSlice({
@@ -31,6 +32,7 @@ export const EditTaskModalSlice = createSlice({
     comment: [],
     projectId: '',
     projectMemberData: [],
+    fetchTagTrigger: '',
   },
   reducers: {
     onOpen: (state: EditTaskModalSliceTypes) => {
@@ -134,9 +136,7 @@ export const EditTaskModalSlice = createSlice({
       const {
         payload: { commentId, prevComments },
       } = action;
-      state.comment = prevComments.filter(
-        (item) => item._id !== commentId
-      );
+      state.comment = prevComments.filter((item) => item._id !== commentId);
     },
     addTag: (
       state: EditTaskModalSliceTypes,
@@ -177,6 +177,17 @@ export const EditTaskModalSlice = createSlice({
     ) => {
       const { newAssignee, prevData } = action.payload;
       state.taskAssigns = [...prevData, newAssignee];
+    },
+    setFetchTagTrigger: (
+      state: EditTaskModalSliceTypes,
+      action: {
+        payload: {
+          fetchTagTrigger: string;
+        };
+      }
+    ) => {
+      const { fetchTagTrigger } = action.payload;
+      state.fetchTagTrigger = fetchTagTrigger;
     },
   },
 });
