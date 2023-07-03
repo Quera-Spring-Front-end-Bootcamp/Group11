@@ -10,7 +10,6 @@ import { TaskCard } from '../../../..';
 
 export interface ItemProps {
   taskDetail: {
-    projectName: string;
     taskTitle: string;
     deadLine: string;
     taskId: string;
@@ -151,7 +150,6 @@ export const Item = React.forwardRef<HTMLLIElement, ItemProps>(
           </span>
           <TaskCard
             deadLine={taskDetail?.deadLine}
-            projectName={taskDetail?.projectName}
             taskTitle={taskDetail?.taskTitle}
             taskId={value}
           />

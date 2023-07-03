@@ -1,4 +1,9 @@
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useOutlet,
+  useSearchParams,
+} from 'react-router-dom';
 
 import {
   CreateProjectModal,
@@ -24,10 +29,13 @@ import {
 } from '../components/Modal';
 import { EditTaskModalSlice } from '../redux/slices';
 
+import boardImage from '../assets/img/boardImage.svg';
+
 const Board = () => {
   const { search: queryParams } = useLocation();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const outlet = useOutlet();
 
   const loading = useSelector(
     (state: storeStateTypes) => state.project.loading
@@ -107,7 +115,7 @@ const Board = () => {
             <BoardSideBar />
           </BaseSideBar>
         </div>
-        <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
+        <div className='bg-[#fafbfc]/60 h-[100%] w-[77%] order-2'>
           {!selectedProject ? (
             welcomeState
           ) : loading ? (
@@ -118,7 +126,23 @@ const Board = () => {
                 <HeaderBoard />
               </div>
               <div className='h-[calc(100vh-170px)] mx-4 overflow-x-auto'>
-                <Outlet />
+                {/* {outlet ? (
+                  
+                ) : (
+
+                )} */}
+
+                <div className='w-full h-full relative overflow-hidden'>
+                  <div className='bg-[#FAFBFC] absolute -z-50 w-full h-full grid justify-center items-center'>
+                    <img
+                      style={{ opacity: outlet ? 0.4 : 1 }}
+                      src={boardImage}
+                      alt='board image'
+                      className='w-[80vh] transition'
+                    />
+                  </div>
+                  <Outlet />
+                </div>
               </div>
             </div>
           )}

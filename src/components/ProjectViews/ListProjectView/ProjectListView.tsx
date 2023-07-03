@@ -1,6 +1,5 @@
 import { Flex, Text } from '@mantine/core';
 import { useSelector } from 'react-redux';
-import { AiOutlineDownCircle } from 'react-icons/ai';
 import BoardOverviewRow from './boardOverview';
 import { Board, storeStateTypes } from '../../../util/types';
 
@@ -13,7 +12,7 @@ const ProjectListView = () => {
   return (
     <Flex
       direction='column'
-      className='w-full h-full overflow-auto pt-[25px]'>
+      className='w-full h-full overflow-auto pt-[25px] select-none'>
       <Flex className='h-[40px]'>
         <Text
           fz='20px'

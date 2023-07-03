@@ -56,6 +56,7 @@ const Avatar = ({
         })}
         size={size}
         onClick={onClick}
+        color='cyan'
         {...otherProps}>
         {children}
       </MantineAvatar>

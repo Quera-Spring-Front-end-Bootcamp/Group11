@@ -25,16 +25,14 @@ const Tag = ({ children, tagColor }: TagProp) => {
 };
 
 interface taskCardProps {
-  projectName?: string;
   deadLine?: string;
   taskId: string;
   taskTitle: string;
 }
 
-const TaskCard = ({ projectName, taskId }: taskCardProps) => {
+const TaskCard = ({ taskId }: taskCardProps) => {
   const [isHover, setIsHover] = useState(false);
   const [taskTags, setTaskTags] = useState([]);
-  const [isCheckList, setIsCheckList] = useState(true);
   const dispatch = useDispatch();
   const toPersianDate = useToPersianDate();
 
@@ -43,6 +41,10 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
       .find((board) => board.tasks.some((task) => task._id === taskId))
       ?.tasks.find((task) => task._id === taskId)
   );
+  const selectedProjectName = useSelector(
+    (state: storeStateTypes) => state.project.selectedProjectName
+  );
+
   const fetchTaskTags = async () => {
     try {
       const { data } = await getTaskTagsApi(taskId);
@@ -76,7 +78,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
     dispatch(DeleteTaskModalSlice.actions.setTaskId({ taskId }));
   };
 
-  if (!taskObject) return;
+  if (!taskObject) return <></>;
 
   return (
     <Card
@@ -95,11 +97,11 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
       className=''>
       <div className='flex flex-row items-center	justify-between'>
         <span className='text-[10px] font-medium text-[#534D60]'>
-          {projectName}
+          {selectedProjectName}
         </span>
         {taskObject.taskAssigns.length ? (
           <MantineAvatar.Group spacing='sm'>
-            {taskObject?.taskAssigns?.map((user: User, i: number) => {
+            {taskObject?.taskAssigns?.map((user: User) => {
               return (
                 <Avatar
                   key={user._id}
@@ -123,11 +125,7 @@ const TaskCard = ({ projectName, taskId }: taskCardProps) => {
         <span className='text-[12px] font-medium text-[#0E0E0E] leading-[18px] whitespace-break-spaces'>
           {taskObject?.name}
         </span>
-        <VscChecklist
-          className={
-            'text-[#BDC0C6] mr-[4px]' + (isCheckList ? ' block' : ' hidden')
-          }
-        />
+        <VscChecklist className='text-[#BDC0C6] mr-[4px] block' />
       </div>
       <Flex
         dir='rtl'

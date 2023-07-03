@@ -51,7 +51,7 @@ const TaskRow = ({ task }: { task: Task }) => {
       align='center'
       my='20px'
       py='7px'
-      className='cursor-pointer rounded-lg hover:bg-neutral-200/70'>
+      className='cursor-pointer rounded-lg hover:bg-neutral-300/70 hover:backdrop-blur-sm h-14 transition duration-75'>
       <Flex
         gap='10px'
         align='center'
@@ -70,7 +70,7 @@ const TaskRow = ({ task }: { task: Task }) => {
         <Flex className='relative w-full justify-center'>
           {task.taskAssigns.length ? (
             <MantineAvatar.Group spacing='sm'>
-              {task.taskAssigns.map((user: User, i: number) => {
+              {task.taskAssigns.map((user: User) => {
                 return (
                   <Avatar
                     key={user._id}

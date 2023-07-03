@@ -163,6 +163,10 @@ export function ColumnProjectView({
 }: Props) {
   const dispatch = useDispatch();
 
+  const searchedTask = useSelector(
+    (state: storeStateTypes) => state.boardHeader.searchValue
+  );
+
   const [modalBoard, setmodalBoard] = useState(false);
 
   const openModal = () => {
@@ -178,9 +182,6 @@ export function ColumnProjectView({
    */
   const data = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectBoardData
-  );
-  const projectName = useSelector(
-    (state: storeStateTypes) => state.project.selectedProjectName
   );
 
   ///boards
@@ -498,7 +499,7 @@ export function ColumnProjectView({
                 }
                 strategy={strategy}>
                 {items[container[1]].map((task: Task, index: number) => {
-                  return (
+                  const sortableItem = (
                     <SortableItem
                       disabled={isSortingContainer}
                       key={task._id}
@@ -512,12 +513,19 @@ export function ColumnProjectView({
                       getIndex={getIndex}
                       taskDetail={{
                         deadLine: 'N/A',
-                        projectName: projectName,
                         taskTitle: task.name,
                         taskId: task._id,
                       }}
                     />
                   );
+
+                  if (searchedTask.length > 0) {
+                    if (task.name.includes(searchedTask)) {
+                      return sortableItem;
+                    }
+                  } else {
+                    return sortableItem;
+                  }
                 })}
               </SortableContext>
             </DroppableContainer>
@@ -584,7 +592,6 @@ export function ColumnProjectView({
         dragOverlay
         taskDetail={{
           deadLine: 'N/A',
-          projectName: projectName,
           taskTitle: task.name,
           taskId: id,
         }}
@@ -625,7 +632,6 @@ export function ColumnProjectView({
             renderItem={renderItem}
             taskDetail={{
               deadLine: 'N/A',
-              projectName: projectName,
               taskTitle: task.name,
               taskId: task._id,
             }}
@@ -634,24 +640,6 @@ export function ColumnProjectView({
       </Container>
     );
   }
-
-  // function handleAddColumn() {
-  // const newContainerId = getNextContainerId();
-  // unstable_batchedUpdates(() => {
-  //   setContainers((containers: any) => [...containers, newContainerId]);
-  //   setItems((_: any) => ({
-  //     ...items,
-  //     [newContainerId]: [],
-  //   }));
-  // });
-  // }
-
-  // function getNextContainerId() {
-  //   const containerIds = Object.keys(items);
-  //   const lastContainerId = containerIds[containerIds.length - 1];
-
-  //   return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
-  // }
 }
 
 interface SortableItemProps {
@@ -665,7 +653,6 @@ interface SortableItemProps {
   renderItem(): React.ReactElement;
   wrapperStyle({ index }: { index: number }): React.CSSProperties;
   taskDetail: {
-    projectName: string;
     taskTitle: string;
     deadLine: string;
     taskId: string;

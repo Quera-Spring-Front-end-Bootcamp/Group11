@@ -5,15 +5,29 @@ import { SearchInput } from '../../SearchInput';
 import { HiOutlineFilter } from 'react-icons/hi';
 import CalenderControl from './CalenderControl';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { BoardHeaderSlice } from '../../../redux/slices';
 
 const HeaderControls = () => {
   const location = useLocation();
+
+  const dispatch = useDispatch();
+
+  const handleTaskSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      BoardHeaderSlice.actions.setSearchValue({ searchValue: e.target.value })
+    );
+  };
+
   return (
     <Flex
       justify='center'
       align='center'>
       <div className='border-l-[3px] pl-3 border-[#999999] ml-3'>
-        <SearchInput pholder='جست و جو در تسک‌ها' />
+        <SearchInput
+          onChange={handleTaskSearch}
+          pholder='جست و جو در تسک‌ها'
+        />
       </div>
       {location.pathname.includes('TaskCalendar') ? (
         <CalenderControl />
