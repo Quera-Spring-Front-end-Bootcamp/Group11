@@ -33,7 +33,7 @@
        transform="scale(0.1)">
       <path
          d="M 0,0 H 5000 V 5000 H 0 Z"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#ffffff;fill-opacity:0;fill-rule:nonzero;stroke:none"
          id="path12" />
       <path
          d="M 4177.01,2612.78 C 5109.29,2074.53 5114.2,1201.88 4187.98,663.621 3261.88,125.43 1755.23,125.359 822.949,663.609 -109.324,1201.86 -114.137,2074.57 811.977,2612.76 c 926.213,538.26 2432.763,538.27 3365.033,0.02"

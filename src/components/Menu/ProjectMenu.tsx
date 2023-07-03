@@ -19,10 +19,15 @@ import { RxCross2 } from 'react-icons/rx';
 
 import { Button, ClickOutsideWrapper, TextInput } from '..';
 import { ConfirmationButton } from './Components';
-import { ShareProjectModalSlice, userSlice } from '../../redux/slices/';
+import {
+  ProjectSlice,
+  ShareProjectModalSlice,
+  userSlice,
+} from '../../redux/slices/';
 
 import { storeStateTypes } from '../../util/types';
 import { deleteProjectApi, updateProjectApi } from '../../services/projectApi';
+import { useSearchParams } from 'react-router-dom';
 
 interface MenuProps extends MantineMenuProps {
   open: boolean;
@@ -35,6 +40,7 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [URLSearchParams] = useSearchParams();
   const prevWorkspacesData = useSelector(
     (state: storeStateTypes) => state.user.allWorkspaces
   );
@@ -75,6 +81,9 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
           updatedProject,
         })
       );
+      if (URLSearchParams.get('projectId') === projectId) {
+        dispatch(ProjectSlice.actions.setProjectName(name));
+      }
 
       toast.success('نام ورک‌اسپیس با موفقیت تغییر یافت');
 

@@ -115,7 +115,7 @@ const Board = () => {
             <BoardSideBar />
           </BaseSideBar>
         </div>
-        <div className='bg-[#FAFBFC] h-[100%] w-[77%] order-2'>
+        <div className='bg-[#fafbfc]/60 h-[100%] w-[77%] order-2'>
           {!selectedProject ? (
             welcomeState
           ) : loading ? (
@@ -126,17 +126,23 @@ const Board = () => {
                 <HeaderBoard />
               </div>
               <div className='h-[calc(100vh-170px)] mx-4 overflow-x-auto'>
-                {outlet ? (
-                  <Outlet />
+                {/* {outlet ? (
+                  
                 ) : (
-                  <div className='w-full h-full grid justify-center items-center'>
+
+                )} */}
+
+                <div className='w-full h-full relative overflow-hidden'>
+                  <div className='bg-[#FAFBFC] absolute -z-50 w-full h-full grid justify-center items-center'>
                     <img
+                      style={{ opacity: outlet ? 0.4 : 1 }}
                       src={boardImage}
                       alt='board image'
-                      className='opacity-40'
+                      className='w-[80vh] transition'
                     />
                   </div>
-                )}
+                  <Outlet />
+                </div>
               </div>
             </div>
           )}

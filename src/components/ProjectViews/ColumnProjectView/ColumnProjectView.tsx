@@ -183,9 +183,6 @@ export function ColumnProjectView({
   const data = useSelector(
     (state: storeStateTypes) => state.project.selectedProjectBoardData
   );
-  const projectName = useSelector(
-    (state: storeStateTypes) => state.project.selectedProjectName
-  );
 
   ///boards
   const [containers, setContainers] = useState<string[][]>([]);
@@ -516,7 +513,6 @@ export function ColumnProjectView({
                       getIndex={getIndex}
                       taskDetail={{
                         deadLine: 'N/A',
-                        projectName: projectName,
                         taskTitle: task.name,
                         taskId: task._id,
                       }}
@@ -596,7 +592,6 @@ export function ColumnProjectView({
         dragOverlay
         taskDetail={{
           deadLine: 'N/A',
-          projectName: projectName,
           taskTitle: task.name,
           taskId: id,
         }}
@@ -637,7 +632,6 @@ export function ColumnProjectView({
             renderItem={renderItem}
             taskDetail={{
               deadLine: 'N/A',
-              projectName: projectName,
               taskTitle: task.name,
               taskId: task._id,
             }}
@@ -646,24 +640,6 @@ export function ColumnProjectView({
       </Container>
     );
   }
-
-  // function handleAddColumn() {
-  // const newContainerId = getNextContainerId();
-  // unstable_batchedUpdates(() => {
-  //   setContainers((containers: any) => [...containers, newContainerId]);
-  //   setItems((_: any) => ({
-  //     ...items,
-  //     [newContainerId]: [],
-  //   }));
-  // });
-  // }
-
-  // function getNextContainerId() {
-  //   const containerIds = Object.keys(items);
-  //   const lastContainerId = containerIds[containerIds.length - 1];
-
-  //   return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
-  // }
 }
 
 interface SortableItemProps {
@@ -677,7 +653,6 @@ interface SortableItemProps {
   renderItem(): React.ReactElement;
   wrapperStyle({ index }: { index: number }): React.CSSProperties;
   taskDetail: {
-    projectName: string;
     taskTitle: string;
     deadLine: string;
     taskId: string;
