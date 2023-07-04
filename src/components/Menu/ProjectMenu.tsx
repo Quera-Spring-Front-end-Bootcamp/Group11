@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {
+  CopyButton,
   Flex,
+  Button as MantineBtn,
   Menu as MantineMenu,
   MenuProps as MantineMenuProps,
 } from '@mantine/core';
@@ -166,14 +168,14 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
         <MantineMenu.Dropdown>
           <MantineMenu.Item
             onClick={onCreateClickHandler}
-            icon={<AiOutlinePlus size={22} />}>
+            icon={<AiOutlinePlus size={20} />}>
             ساختن تسک جدید
           </MantineMenu.Item>
           <MantineMenu.Item
             onClick={() => {
               setEditingName(true);
             }}
-            icon={!editingName && <FiEdit size={22} />}>
+            icon={!editingName && <FiEdit size={20} />}>
             {editingName ? (
               <Flex
                 mah={'22px'}
@@ -215,13 +217,36 @@ export const ProjectMenu = ({ open, setOpen, projectId, wsId }: MenuProps) => {
               ' ویرایش نام پروژه'
             )}
           </MantineMenu.Item>
-          <MantineMenu.Item icon={<BsLink45Deg size={22} />}>
-            کپی لینک
+          <MantineMenu.Item icon={<BsLink45Deg size={20} />}>
+            <CopyButton
+              value={`/board/TaskList?projectId=${projectId}&workspaceId=${wsId}`}>
+              {({ copied, copy }) => (
+                <MantineBtn
+                  styles={() => ({
+                    root: {
+                      width: '100%',
+                      margin: '0',
+                      padding: '0',
+                      backgroundColor: 'transparent',
+                      color: copied ? 'teal' : 'blue',
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    },
+                    inner: {
+                      justifyContent: 'flex-start',
+                    },
+                  })}
+                  onClick={copy}>
+                  {copied ? 'لینک پروژه کپی شد' : 'کپی لینک'}
+                </MantineBtn>
+              )}
+            </CopyButton>
           </MantineMenu.Item>
           <MantineMenu.Item
             onClick={() => setDeleting(true)}
             c='red'
-            icon={<BsTrash3 size={22} />}>
+            icon={<BsTrash3 size={20} />}>
             {deleting ? (
               <Flex gap='5px'>
                 <ConfirmationButton
