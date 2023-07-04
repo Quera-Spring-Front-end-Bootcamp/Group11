@@ -88,6 +88,10 @@ const SignUpCard = () => {
           label='رمزعبور'
         />
         <Checkbox
+          onInvalid={(e) =>
+            e.currentTarget.setCustomValidity('مثل همیشه قوانین رو نخونده بپذیر 😃')
+          }
+          required
           className='mt-[20px]'
           label='قوانین و مقررات را می‌پذیرم.'
         />

@@ -18,25 +18,28 @@ const ForgetPassword = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setLoading(true);
     const { forgetPasswordEmail } = data;
+    if (forgetPasswordEmail === '') {
+      toast.error('ایمیل خود را وارد کنید');
+    } else {
+      setLoading(true);
+      try {
+        await forgetPasswordApi(forgetPasswordEmail);
 
-    try {
-      await forgetPasswordApi(forgetPasswordEmail);
+        setLoading(false);
+        setDone(true);
+      } catch (error: any) {
+        console.log(error);
 
-      setLoading(false);
-      setDone(true);
-    } catch (error: any) {
-      console.log(error);
-
-      if (error.message === 'Network Error') {
-        toast.error(
-          'مشکلی پیش آمده است، لطفا دوباره تلاش کنید یا اتصال اینترنت خود را بررسی نمایید'
-        );
-      } else {
-        toast.error('کاربر با این ایمیل یافت نشد');
+        if (error.message === 'Network Error') {
+          toast.error(
+            'مشکلی پیش آمده است، لطفا دوباره تلاش کنید یا اتصال اینترنت خود را بررسی نمایید'
+          );
+        } else {
+          toast.error('کاربر با این ایمیل یافت نشد');
+        }
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
