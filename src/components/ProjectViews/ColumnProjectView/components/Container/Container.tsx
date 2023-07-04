@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { storeStateTypes } from '../../../../../util/types';
 import { useDispatch } from 'react-redux';
 import { NewTaskModalSlice } from '../../../../../redux/slices';
+import { usePersianNumberTransform } from '../../../../../hook';
 
 export interface Props {
   children: React.ReactNode;
@@ -52,12 +53,19 @@ export const Container = forwardRef<HTMLDivElement, Props>(
     const [open, setOpen] = useState(false);
     const Component = onClick ? 'button' : 'div';
     const dispatch = useDispatch();
+    const toPersianNumeric = usePersianNumberTransform();
 
     const color = useSelector(
       (state: storeStateTypes) =>
         state.project.selectedProjectBoardData.find(
           (board) => board._id === boardId
         )?.color
+    );
+    const tasks = useSelector(
+      (state: storeStateTypes) =>
+        state.project.selectedProjectBoardData.find(
+          (board) => board._id === boardId
+        )?.tasks
     );
 
     const onPlusClickHandler = () => {
@@ -102,7 +110,12 @@ export const Container = forwardRef<HTMLDivElement, Props>(
           <div
             style={{ borderTop: `1px solid ${color}` }}
             className={styles.Header}>
-            {label}
+            <div className='flex flex-row gap-[4px]'>
+              <div> {label}</div>
+              <div className='flex flex-row items-center text-[10px] font-medium p-[2px_4px_0px_4px] rounded-[100px] bg-[#F4F4F4] '>
+                {toPersianNumeric(`${tasks?.length}`)}
+              </div>
+            </div>
             <div className={styles.Actions}>
               <Flex gap='5px'>
                 <div

@@ -45,7 +45,7 @@ export const NewTaskModalSlice = createSlice({
     ) => {
       const { deadline, deadLinePersianFormatted } = action.payload;
       state.deadline = deadline;
-      state.deadLinePersianFormatted = deadLinePersianFormatted
+      state.deadLinePersianFormatted = deadLinePersianFormatted;
     },
 
     // setTaskInfo: (
@@ -61,6 +61,7 @@ export const NewTaskModalSlice = createSlice({
   },
 });
 
-export const { onOpen, onClose, setBoardId } = NewTaskModalSlice.actions;
+export const { onOpen, onClose, setBoardId, setDeadline } =
+  NewTaskModalSlice.actions;
 
 export default NewTaskModalSlice;

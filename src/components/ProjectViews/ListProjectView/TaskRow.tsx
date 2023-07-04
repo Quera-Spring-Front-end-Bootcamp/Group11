@@ -8,7 +8,7 @@ import { EditTaskModalSlice } from '../../../redux/slices';
 import { getTaskTagsApi } from '../../../services/tagApi';
 import { useEffect, useState } from 'react';
 
-const TaskRow = ({ task }: { task: Task }) => {
+const TaskRow = ({ task, boardColor }: { task: Task; boardColor: string }) => {
   const [taskTags, setTaskTags] = useState([]);
   const toJalaliDate = useToPersianDate();
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const TaskRow = ({ task }: { task: Task }) => {
           height='16px'
           width='16px'
           radius='4px'
-          bg='#00000080'
+          bg={boardColor}
         />
         <Text fz='12px'>{task.name}</Text>
       </Flex>

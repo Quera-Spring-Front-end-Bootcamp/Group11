@@ -23,8 +23,27 @@ export const tagColors = [
   '#CCFBF1',
   '#E0E7FF',
   '#F3E8FF',
+  '#F1F5F9',
+  '#FCE7F3',
+  '#FAE8FF',
+  '#F5F5F4',
 ];
-
+export const boardColors = [
+  '#FCA5A5',
+  '#FDBA74',
+  '#FDE047',
+  '#BEF264',
+  '#86EFAC',
+  '#5EEAD4',
+  '#67E8F9',
+  '#93C5FD',
+  '#7DD3FC',
+  '#C4B5FD',
+  '#F0ABFC',
+  '#FDA4AF',
+  '#CBD5E1',
+  '#D6D3D1',
+];
 export const workSpaceColors = [
   '#E46161',
   '#9286EA',

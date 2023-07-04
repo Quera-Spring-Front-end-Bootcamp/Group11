@@ -86,7 +86,7 @@ const SideBar = () => {
       <hr />
       {workspaces.length === 0 ? (
         <div className='w-full h-full grid justify-center items-center '>
-          <Loader />
+          یک ورک اسپیس بسازید
         </div>
       ) : (
         <>
