@@ -462,7 +462,7 @@ export function ColumnProjectView({
       }}
       cancelDrop={cancelDrop}
       onDragCancel={() => setActiveId(null)}>
-      <div className='inline-grid box-border py-4 pl-4 grid-flow-col overflow-auto h-full w-full'>
+      <div className='inline-grid box-border py-4 pl-4 grid-flow-col overflow-auto h-full max-w-full '>
         <SortableContext
           items={
             [...containers] as unknown as (
