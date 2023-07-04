@@ -462,13 +462,7 @@ export function ColumnProjectView({
       }}
       cancelDrop={cancelDrop}
       onDragCancel={() => setActiveId(null)}>
-      <div
-        style={{
-          display: 'inline-grid',
-          boxSizing: 'border-box',
-          padding: '17px 0',
-          gridAutoFlow: vertical ? 'row' : 'column',
-        }}>
+      <div className='inline-grid box-border py-4 pl-4 grid-flow-col overflow-auto h-full w-full'>
         <SortableContext
           items={
             [...containers] as unknown as (
