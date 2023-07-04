@@ -358,9 +358,10 @@ const EditTaskModal = () => {
                       transitionProps={{ transition: 'pop', duration: 300 }}
                       position='top'
                       fz={'16px'}
-                      label={'عنوان بورد'}>
+                      label={'عنوان ستون'}>
                       <div
                         style={{
+                          color: 'black',
                           backgroundColor: `${
                             boardData?.color ? boardData.color : 'red'
                           }`,
@@ -377,7 +378,7 @@ const EditTaskModal = () => {
                       }}
                       className='flex flex-col justify-center items-center rounded-[3px_0px_0px_3px] h-[30px] w-[25px]'>
                       <BiChevronLeft
-                        color={'#FFFFFF'}
+                        color={'black'}
                         size={'1rem'}
                       />
                     </div>

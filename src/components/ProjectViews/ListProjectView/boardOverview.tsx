@@ -60,6 +60,7 @@ const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
             if (task.name.includes(searchedTask)) {
               return (
                 <TaskRow
+                  boardColor={color}
                   key={task._id}
                   task={task}
                 />
@@ -68,6 +69,7 @@ const BoardOverviewRow = ({ name, tasks, color }: BoardOverviewRow) => {
           } else {
             return (
               <TaskRow
+                boardColor={color}
                 key={task._id}
                 task={task}
               />
