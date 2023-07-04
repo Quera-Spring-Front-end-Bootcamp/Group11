@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   Flex,
-  Loader,
   Menu as MantineMenu,
   MenuProps as MantineMenuProps,
 } from '@mantine/core';
@@ -12,7 +11,7 @@ import { BsTrash3 } from 'react-icons/bs';
 import { AiOutlineCheck, AiOutlinePlus } from 'react-icons/ai';
 import toast from 'react-hot-toast';
 import { FiEdit } from 'react-icons/fi';
-import { IoColorPaletteOutline } from 'react-icons/io5';
+import { FiArchive } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
 
 import { ConfirmationButton } from './Components';
@@ -191,7 +190,7 @@ export const BoardMenu = ({ open, setOpen, boardId }: MenuProps) => {
             افزودن تسک
           </MantineMenu.Item>
 
-          <MantineMenu.Item icon={<IoColorPaletteOutline size={22} />}>
+          <MantineMenu.Item icon={<FiArchive size={22} />}>
             آرشیو تمام تسک‌ها
           </MantineMenu.Item>
 
