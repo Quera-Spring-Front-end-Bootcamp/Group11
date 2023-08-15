@@ -1,4 +1,4 @@
-import { Loader, Button as MantineBtn } from '@mantine/core';
+import { Loader } from '@mantine/core';
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 
 import { Button, Avatar, TextInput, Title } from '../../../components';
@@ -20,7 +20,6 @@ const PersonalInfo = () => {
 
   const [loading, setLoading] = useState(false);
   const [disabled, setdisabled] = useState(true);
-  const [image, setImage] = useState('');
   const [uploading, setUploading] = useState(false);
 
   const handleChange = () => {

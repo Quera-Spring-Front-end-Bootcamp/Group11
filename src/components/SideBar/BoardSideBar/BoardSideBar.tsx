@@ -8,7 +8,7 @@ import { WorkSpaceAccordion } from '..';
 import { storeStateTypes, workspaceObj } from '../../../util/types';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Flex, Loader, Text } from '@mantine/core';
+import { Flex, Text } from '@mantine/core';
 
 import { BsSearch, BsFillCaretDownFill } from 'react-icons/bs';
 

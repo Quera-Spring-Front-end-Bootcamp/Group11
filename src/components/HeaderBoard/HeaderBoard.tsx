@@ -7,7 +7,6 @@ import { tabValues } from '../../constants';
 import { Button } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeStateTypes } from '../../util/types';
-import { BoardHeaderSlice } from '../../redux/slices';
 
 export default function HeaderBoard() {
   const dispatch = useDispatch();

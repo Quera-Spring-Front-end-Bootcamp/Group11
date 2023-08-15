@@ -4,7 +4,7 @@ import { ColorInput } from '../..';
 import { workSpaceColors } from '../../../constants';
 import { Modal } from '..';
 import { AiOutlineCheck } from 'react-icons/ai';
-import { FieldValues, SubmitHandler, UseFormSetValue } from 'react-hook-form';
+import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 type ChangeColorModalProp = {
   setColor: UseFormSetValue<FieldValues>;

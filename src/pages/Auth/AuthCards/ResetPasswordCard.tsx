@@ -14,7 +14,6 @@ const ResetPassword = () => {
   const {
     register, //register function will pass to text inputs
     handleSubmit, //submit function
-    formState: { errors }, //error for form validation
   } = useForm<FieldValues>({
     defaultValues: {
       newPassword: '',
@@ -47,7 +46,9 @@ const ResetPassword = () => {
   return (
     <Card className='flex flex-col gap-5 min-w-[460px]'>
       <Title className='text-center'>فراموشی رمز عبور</Title>
-      <form className='flex flex-col gap-6' onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className='flex flex-col gap-6'
+        onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           id='newPassword'
           register={register}

@@ -2,7 +2,6 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 import {
@@ -85,7 +84,7 @@ const LogInCard = () => {
   };
   return (
     <Card className='flex flex-col'>
-      <Title>به کوئرا تسک منیجر خوش برگشتی</Title>
+      <Title>به تسک مستر خوش برگشتی</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           id='emailOrUsername'

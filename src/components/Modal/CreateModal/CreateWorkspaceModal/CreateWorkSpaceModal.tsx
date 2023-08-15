@@ -204,7 +204,7 @@ const CreateWorkSpaceModal = () => {
       body={body}
       footer={footer}
       actionLabel={actionLabel}
-      action={handleSubmit(onSubmit)}
+      action={handleSubmit(onSubmit) as any}
       back={haveback}
       backAction={onBack}
       loading={loading}
