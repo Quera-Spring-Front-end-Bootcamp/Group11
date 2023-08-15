@@ -20,7 +20,7 @@ const Accordion = ({
 }: AccordionProps) => {
   // Pattern of AccArray:
   // AccArray = [{id: id , AccTitle: AccTitle , AccDetail: AccDetails}]
-  const Acc = inputArray.map((item) => {
+  const Acc = inputArray.map((item: any) => {
     return (
       <MantineAccordion.Item
         key={item.id}
@@ -35,6 +35,7 @@ const Accordion = ({
     <MantineAccordion
       transitionDuration={200}
       defaultValue={inputArray[0].AccTitle}
+      //@ts-ignore
       styles={() => ({
         chevron: {
           marginLeft: '0',

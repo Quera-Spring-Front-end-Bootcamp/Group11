@@ -1,5 +1,5 @@
 import { BsSearch } from 'react-icons/bs';
-import React, { useState } from 'react';
+import React from 'react';
 import { TextInput } from '../../components';
 import { FieldValues, useForm } from 'react-hook-form';
 type SearchInputProps = {
@@ -12,8 +12,6 @@ const SearchInput = ({
 }: SearchInputProps) => {
   const {
     register, //register function will pass to text inputs
-    handleSubmit, //submit function
-    formState: { errors }, //error for form validation
   } = useForm<FieldValues>({
     defaultValues: {
       searchValue: '',

@@ -147,8 +147,6 @@ const WorkSpaceList = () => {
 
   const {
     register, //register function will pass to text inputs
-    handleSubmit, //submit function
-    formState: { errors }, //error for form validation
   } = useForm<FieldValues>({
     defaultValues: {
       taskDesc: '',

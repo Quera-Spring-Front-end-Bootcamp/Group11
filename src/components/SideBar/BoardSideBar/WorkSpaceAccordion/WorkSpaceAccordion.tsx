@@ -1,6 +1,5 @@
 import { Flex, Text } from '@mantine/core';
 import { ColorInput, WorkSpaceMenu } from '../../..';
-import { workSpaceColors } from '../../../../constants';
 import { useState } from 'react';
 import { workspaceObj } from '../../../../util/types';
 import {
@@ -8,7 +7,6 @@ import {
   BsThreeDots,
   BsFillCaretUpFill,
 } from 'react-icons/bs';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ProjectItem from './ProjectItem';
 
 interface WorkSpaceAccordionProps extends workspaceObj {
@@ -18,19 +16,8 @@ const WorkSpaceAccordion = ({
   _id: wsId,
   projects,
   name,
-  i,
   color,
 }: WorkSpaceAccordionProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [URLSearchParams] = useSearchParams();
-
-  const onProjectClickHandler = (id: string) => {
-    navigate({
-      pathname: location.pathname,
-      search: `?projectId=${id}&workspaceId=${wsId}`,
-    });
-  };
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [open, setOpen] = useState(true);
   return (

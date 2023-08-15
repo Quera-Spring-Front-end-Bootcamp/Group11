@@ -1,5 +1,5 @@
 import { ReactNode, forwardRef } from 'react';
-import { UnstyledButton as MantineButton, SystemProp } from '@mantine/core';
+import { UnstyledButton as MantineButton } from '@mantine/core';
 interface CircleButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   // height: string;
   // width: string;

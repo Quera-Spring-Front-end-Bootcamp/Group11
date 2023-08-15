@@ -66,7 +66,6 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId, wsColor }: MenuProps) => {
     register, //register function will pass to text inputs
     handleSubmit, //submit function
     setValue,
-    watch,
     formState: { errors }, //error for form validation
   } = useForm<FieldValues>({
     defaultValues: {
@@ -74,8 +73,6 @@ export const WorkSpaceMenu = ({ open, setOpen, wsId, wsColor }: MenuProps) => {
       color: '',
     },
   });
-
-  const color = watch('color');
 
   const onSubmitNewName: SubmitHandler<FieldValues> = async (data) => {
     const { name } = data;

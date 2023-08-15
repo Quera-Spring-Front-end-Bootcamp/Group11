@@ -14,13 +14,24 @@ const FilterComponent: React.FC = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  const [filters, setFilters] = useState<Filter[]>([{ uniqueId: 0, filter1: '', filter2: '', filter3: '' }]);
+  const [filters, setFilters] = useState<Filter[]>([
+    { uniqueId: 0, filter1: '', filter2: '', filter3: '' },
+  ]);
   const addFilterRow = () => {
-    const newFilter = { uniqueId: Date.now(), filter1: '', filter2: '', filter3: '' };
+    const newFilter = {
+      uniqueId: Date.now(),
+      filter1: '',
+      filter2: '',
+      filter3: '',
+    };
     setFilters([...filters, newFilter]);
   };
 
-  const handleFilterChange = (uniqueId: number, field: keyof Filter, value: string) => {
+  const handleFilterChange = (
+    uniqueId: number,
+    field: keyof Filter,
+    value: string
+  ) => {
     const updatedFilters = filters.map((filter) =>
       filter.uniqueId === uniqueId ? { ...filter, [field]: value } : filter
     );
@@ -28,23 +39,44 @@ const FilterComponent: React.FC = () => {
   };
 
   const removeFilterRow = (uniqueId: number) => {
-    const updatedFilters = filters.filter((filter) => filter.uniqueId !== uniqueId);
+    const updatedFilters = filters.filter(
+      (filter) => filter.uniqueId !== uniqueId
+    );
     setFilters(updatedFilters);
   };
 
   return (
     <>
-      <Anchor size="xl" color="blue" onClick={toggleDropdown} className='mt-5 block'>فیلترها</Anchor>
+      <Anchor
+        size='xl'
+        color='blue'
+        onClick={toggleDropdown}
+        className='mt-5 block'>
+        فیلترها
+      </Anchor>
 
       {isOpen && (
-        <Paper shadow="xs" style={{ marginTop: '10px', padding: '8px' }}>
+        <Paper
+          shadow='xs'
+          style={{ marginTop: '10px', padding: '8px' }}>
           <div className='flex items-center justify-between mb-5'>
-            <Text size="xl" className="font-bold">فیلترها</Text>
-            <Button size="md" variant="link" onClick={toggleDropdown}>X</Button>
+            <Text
+              size='xl'
+              className='font-bold'>
+              فیلترها
+            </Text>
+            <Button
+              size='md'
+              variant='link'
+              onClick={toggleDropdown}>
+              X
+            </Button>
           </div>
 
           {filters.map((filter) => (
-            <div key={filter.uniqueId} className='flex items-center gap-5 mb-5'>
+            <div
+              key={filter.uniqueId}
+              className='flex items-center gap-5 mb-5'>
               <span>تسک هایی که</span>
               <Select
                 data={[
@@ -55,8 +87,10 @@ const FilterComponent: React.FC = () => {
                 ]}
                 searchable
                 value={filter.filter1}
-                placeholder="انتخاب کنید"
-                onChange={(value) => handleFilterChange(filter.uniqueId, 'filter1', value)}
+                placeholder='انتخاب کنید'
+                onChange={(value) =>
+                  handleFilterChange(filter.uniqueId, 'filter1', value as any)
+                }
               />
               <p>آن ها</p>
               <Select
@@ -67,8 +101,10 @@ const FilterComponent: React.FC = () => {
                 ]}
                 searchable
                 value={filter.filter2}
-                placeholder="انتخاب کنید"
-                onChange={(value) => handleFilterChange(filter.uniqueId, 'filter2', value)}
+                placeholder='انتخاب کنید'
+                onChange={(value) =>
+                  handleFilterChange(filter.uniqueId, 'filter2', value as any)
+                }
               />
               <Select
                 data={[
@@ -77,8 +113,10 @@ const FilterComponent: React.FC = () => {
                 ]}
                 searchable
                 value={filter.filter3}
-                placeholder="انتخاب کنید"
-                onChange={(value) => handleFilterChange(filter.uniqueId, 'filter3', value)}
+                placeholder='انتخاب کنید'
+                onChange={(value) =>
+                  handleFilterChange(filter.uniqueId, 'filter3', value as any)
+                }
               />
 
               <Button onClick={() => removeFilterRow(filter.uniqueId)}>
@@ -87,7 +125,9 @@ const FilterComponent: React.FC = () => {
             </div>
           ))}
 
-          <Anchor color="blue" onClick={addFilterRow}>
+          <Anchor
+            color='blue'
+            onClick={addFilterRow}>
             افزودن فیلتر جدید
           </Anchor>
         </Paper>
